@@ -1,5 +1,5 @@
 {% for pots in analog_phones %}
 dial-peer voice 1 pots
-  destination-pattern {{ pots.directory_number }}
-  port {{ pots.port }}
+ destination-pattern {{ pots.directory_number }}
+ port {{ pots.port }}
 {% endfor %}
