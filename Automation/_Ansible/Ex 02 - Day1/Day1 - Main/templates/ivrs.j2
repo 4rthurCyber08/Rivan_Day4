@@ -26,10 +26,11 @@ application
   param aa-pilot {{ ivrs.destination_pattern }}
  service rivanqueue flash:app-b-acd-3.0.0.2.tcl
   param queue-len 15
-  param aa-hunt1 {{ ivrs.hunt_1 }}
-  param aa-hunt2 {{ ivrs.hunt_2 }}
-  param aa-hunt3 {{ ivrs.hunt_3 }}
-  param aa-hunt4 {{ ivrs.hunt_4 }}
+  param aa-hunt1 {{ ivrs.hunts.hunt_1 }}
+  param aa-hunt2 {{ ivrs.hunts.hunt_2 }}
+  param aa-hunt3 {{ ivrs.hunts.hunt_3 }}
+  param aa-hunt4 {{ ivrs.hunts.hunt_4 }}
   param queue-manager-debugs 1
   param number-of-hunt-grps 4
+
 
