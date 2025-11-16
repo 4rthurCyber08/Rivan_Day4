@@ -3,11 +3,11 @@ enable secret {{ secret }}
 no logging cons
 no ip domain lookup
 line cons 0 
-  password {{ password }}
-  login
-  exec-timeout 0 0  
+ password {{ password }}
+ login
+ exec-timeout 0 0  
 line vty 0 14
-  transport input all
-  password {{ password }}
-  login local
-  exec-timeout 0 0
+ transport input all
+ password {{ password }}
+ login local
+ exec-timeout 0 0
