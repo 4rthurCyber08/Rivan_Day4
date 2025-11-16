@@ -175,9 +175,10 @@ ivrs:
   codec: 'g711ulaw'
   music_on_hold: ' "flash:/en_bacd_music_on_hold.au" '
   hunts:
-    - hunt_1: '{{ dn_entry }}00'
-    - hunt_2: '{{ dn_entry }}01'
-    - hunt_3: '{{ dn_entry }}33'
-    - hunt_4: '{{ dn_entry }}77'
+    hunt_1: '{{ dn_entry }}00'
+    hunt_2: '{{ dn_entry }}01'
+    hunt_3: '{{ dn_entry }}33'
+    hunt_4: '{{ dn_entry }}77'
+
 
 
