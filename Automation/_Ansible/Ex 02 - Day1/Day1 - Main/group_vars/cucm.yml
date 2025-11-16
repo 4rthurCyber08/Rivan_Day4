@@ -170,7 +170,7 @@ ospf:
 # IVRS
 ivrs:
   id: '69'
-  destination-pattern: '{{ dn_entry }}69'
+  destination_pattern: '{{ dn_entry }}69'
   target: '10.{{ pc_num }}.100.1'
   codec: 'g711ulaw'
   music_on_hold: ' "flash:/en_bacd_music_on_hold.au" '
@@ -179,4 +179,5 @@ ivrs:
     - hunt_2: '{{ dn_entry }}01'
     - hunt_3: '{{ dn_entry }}33'
     - hunt_4: '{{ dn_entry }}77'
+
 
