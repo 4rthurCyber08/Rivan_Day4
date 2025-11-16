@@ -3,17 +3,18 @@
 ip dhcp excluded-address {{ dhcp.exclude.first_ip }} {{ dhcp.exclude.last_ip }}
 {% endif %}
 ip dhcp pool {{ dhcp.pool_name }}
-  network {{ dhcp.network }} {{ dhcp.mask }}
-  default-router {{ dhcp.gateway }}
+ network {{ dhcp.network }} {{ dhcp.mask }}
+ default-router {{ dhcp.gateway }}
 {% if dhcp.domain_name is defined and dhcp.domain_name %}
-  domain-name {{ dhcp.domain_name }}
+ domain-name {{ dhcp.domain_name }}
 {% endif %}
 {% if dhcp.dns_server is defined and dhcp.dns_server %}
-  dns-server {{ dhcp.dns_server }}
+ dns-server {{ dhcp.dns_server }}
 {% endif %}
 {% if dhcp.options is defined and dhcp.options %}
 {% for option in dhcp.options %}
-  option {{ option.option_id }} {{ option.option_value }}
+ option {{ option.option_id }} {{ option.option_value }}
 {% endfor %}
 {% endif %}
 {% endfor %}
+
