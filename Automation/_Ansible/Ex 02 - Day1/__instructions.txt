@@ -222,18 +222,19 @@ Identify Interface-Interface binding
 ip -br link
 
 @NetOps
-ifconfig ens192 10.#$34T#.1.6 netmask 255.255.255.0 up
-ip route add 10.0.0.0/8 via 10.#$34T#.1.4 dev ens192
-ip route add 200.0.0.0/24 via 10.#$34T#.1.4 dev ens192
+ifconfig ens256 10.#$34T#.1.6 netmask 255.255.255.0 up
+ip route add 10.0.0.0/8 via 10.#$34T#.1.4 dev ens256
+ip route add 200.0.0.0/24 via 10.#$34T#.1.4 dev ens256
 
 @NetOps
-sudo nmcli connection add \
+nmcli connection add \
 type ethernet \
-con-name "TunayNaLAN" \
-ifname ens192 \
+con-name BRIDGED \
+ifname ens256 \
 ipv4.method manual \
-ipv4.address 10.#$34T#.1.6/24 \
+ipv4.addresses 10.#$34T#.1.6/24 \
 autoconnect yes
+nmcli connection up BRIDGED
 
 =====| Step 7 - TFTP & Exchange SSH Keys
 
@@ -286,6 +287,7 @@ Make sure pings are SUCCESS
 @NetOps
 
 ansible-playbook run_all.yml
+
 
 
 
