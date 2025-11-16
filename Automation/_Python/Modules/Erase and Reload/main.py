@@ -1,7 +1,7 @@
 
 from netmiko import ConnectHandler
 
-list_of_device = input('What devices do you want to save configs? [ex. 10.12.1.2 10.12.1.4] ')
+list_of_device = input('What devices do you want to reload? [ex. 10.12.1.2 10.12.1.4] ')
 list_of_device = list_of_device.split()
 
 ### Device Information
