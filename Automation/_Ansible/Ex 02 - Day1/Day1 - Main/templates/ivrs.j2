@@ -1,8 +1,8 @@
 dial-peer voice {{ ivrs.id }} voip
  service rivanaa out-bound
- destination-pattern {{ ivrs.destination-pattern }}
+ destination-pattern {{ ivrs.destination_pattern }}
  session target ipv4:{{ ivrs.target }}
- incoming called-number {{ ivrs.destination-pattern }}
+ incoming called-number {{ ivrs.destination_pattern }}
  dtmf-relay h245-alphanumeric
  codec {{ ivrs.codec }}
  no vad
@@ -23,7 +23,7 @@ application
   param max-time-vm-retry 2
   param voice-mail 1234
   param max-time-call-retry 700
-  param aa-pilot {{ ivrs.destination-pattern }}
+  param aa-pilot {{ ivrs.destination_pattern }}
  service rivanqueue flash:app-b-acd-3.0.0.2.tcl
   param queue-len 15
   param aa-hunt1 {{ ivrs.hunt_1 }}
@@ -32,3 +32,4 @@ application
   param aa-hunt4 {{ ivrs.hunt_4 }}
   param queue-manager-debugs 1
   param number-of-hunt-grps 4
+
