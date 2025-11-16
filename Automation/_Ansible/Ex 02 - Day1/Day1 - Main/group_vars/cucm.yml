@@ -6,7 +6,7 @@ secret: pass
 
 # INTERFACES
 interfaces:
-  - name: 'FastEthernet0/1'
+  - name: 'FastEthernet0/0'
     desc: 'GATEWAY'
     ip: '10.{{ pc_num }}.100.8'
     mask: '255.255.255.0'
@@ -179,3 +179,4 @@ ivrs:
     - hunt_2: '{{ dn_entry }}01'
     - hunt_3: '{{ dn_entry }}33'
     - hunt_4: '{{ dn_entry }}77'
+
