@@ -1,17 +1,16 @@
-
-no telephony-service
 telephony-service
 {% if telephony.auto_assign is defined and not telephony.auto_assign %}
-  no auto assign
+ no auto assign
 {% endif %}
 {% if telephony.auto_reg_ephone is defined and not telephony.auto_reg_ephone %}
-  no auto-reg-ephone
+ no auto-reg-ephone
 {% endif %}
-  max-ephones {{ telephony.max_ephones }}
-  max-dn {{ telephony.max_directory_numbers }}
-  ip source-address {{ telephony.tftp_server }} port {{ telephony.sccp_port }}
-  create cnf-files
+ max-ephones {{ telephony.max_ephones }}
+ max-dn {{ telephony.max_directory_numbers }}
+ ip source-address {{ telephony.tftp_server }} port {{ telephony.sccp_port }}
 {% for dn in telephony.dn_list %}
- ephone-dn {{ dn.id }}
-  number {{ dn.number }}
+ephone-dn {{ dn.id }}
+ number {{ dn.number }}
 {% endfor %}
+telephony-service
+ create cnf-files
