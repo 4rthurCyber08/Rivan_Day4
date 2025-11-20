@@ -64,7 +64,7 @@ conf t
   app-resource profile custom
    cpu 1500 
    memory 512
-   persistent-disk 1000
+   persist-disk 1000
    end
 
 
