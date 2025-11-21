@@ -173,7 +173,7 @@ ip -br link
 3. Modify Interface IP
 VMNet2:  192.168.102.6/24
 VMNet3:  11.11.11.100/27
-Bridged: 10.$#34T#.1.6/24
+Bridged: 10.#$34T#.1.6/24
 
 
 ~~~
@@ -262,6 +262,43 @@ conf t
  ip ssh rsa keypair-name key
  end
 show ip ssh
+~~~
+
+<br>
+
+### Diffie-Hellman Key Exchange 
+~~~
+!@NetOps-PH
+openssl dhparam -out dhgroup.pem 1024
+~~~
+
+<br>
+
+~~~
+openssl genpkey -paramfile dhgroup.pem -out ph_priv.key
+openssl genpkey -paramfile dhgroup.pem -out jp_priv.key
+~~~
+
+<br>
+
+~~~
+openssl pkey -in ph_priv.key -pubout -out ph_pub.key
+openssl pkey -in jp_priv.key -pubout -out jp_pub.key
+~~~
+
+<br>
+
+~~~
+openssl pkeyutl -derive -inkey ph_priv.key -peerkey jp_pub.key -out ph-shared.secret
+openssl pkeyutl -derive -inkey jp_priv.key -peerkey ph_pub.key -out jp-shared.secret
+~~~
+
+<br>
+
+View Private key contents
+~~~
+!@NetOps
+openssl pkey -in rsa_priv.key -text -noout
 ~~~
 
 <br>
