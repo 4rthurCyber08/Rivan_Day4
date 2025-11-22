@@ -650,7 +650,7 @@ conf t
 !@edge
 conf t
  ip name-server 10.#$34T#.1.10   !8.8.8.8 8.8.4.4
- ip domain lookup source int g0/0/0
+ ip domain lookup source-int g0/0/0
  end
 
 
