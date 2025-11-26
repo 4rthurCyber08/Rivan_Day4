@@ -2,78 +2,11 @@
 <!-- Your monitor number = #$34T# -->
 
 
-## ⛅ Warm Up for Day 2.
-*"Repetition is the mother of all skills"*
+## ⛅ Warm Up for Day 4.
 
 <br>
 
-### 🔧 Setup cabling for your Day 1 BUT DO NOT configure any device.
-
-&nbsp;
----
-&nbsp;
-
-## Network Automation
-*From Shell Scripting to Automation management tools.*
-
-Shell scripting
-Output Hello
-~~~
-@linux
-nano hello.sh
-
-///Edit hello.sh
-echo "hello world"
-///
-
-chmod 500 hello.sh
-./hello.sh
-~~~
-
-
-Create Multi users
-~~~
-@linux
-nano add_user.sh
-
-///add_user.sh
-adduser m_user1
-echo "m_user1:C1sc0123" | chpasswd
-
-adduser m_user2
-echo "m_user2:C1sc0123" | chpasswd
-
-adduser m_user3
-echo "m_user3:C1sc0123" | chpasswd
-///
-
-chmod 500 add_user.sh
-./add_user.sh
-~~~
-
-### Configuration and Infrastructure Management Tools. (Ansible, Terraform, Puppet, & Chef)
-
-&nbsp;
----
-&nbsp;
-
-### Programming for Network Engineers via Python
-
-&nbsp;
----
-&nbsp;
-
-## Network Orchestration
-Multitenancy - One or more clients can be hosted with the same phyhsical or virtual infrastructure
-Scalability - Resources can be added and removed as needed to support current workload and task
-Workload Movement - Tasks can be migrated to different physical locations to increase efficiency or reduce cost.
-On Demand  - Resources are dedicated only when necessary instead of on a premanent
-Resiliency - Tasks and data residing on a failed server can be seamlessly migrated to other phhysical resources.
-
-Traditional Networking - Distributed Management
-Software Defined Networking - Centralized Management
-
-### Meraki Access
+### 🔧 Configure Day1 devices.
 
 <br>
 <br>
@@ -103,6 +36,7 @@ arp -a
 Broadcast Storm
 - STP 802.1d
 - - RSTP 802.1w
+  - Port Security
  
 - L3
   - Routing
@@ -127,9 +61,6 @@ Broadcast Storm
 - L7
   - NetFlow
 
-
- 
-
 OSI vs TCP/IP Model
 
 L7,L6,L5 = Application Layer
@@ -138,13 +69,81 @@ L3 = Network Layer
 L2, L1 = Data Link Layer
 
 
+
+
+<br>
+<br>
+
 ---
+&nbsp;
 
-3. Port Security
+## Routing
+*How do network devices forward IP packets? *
+~~~
+!@CoreTAAS
+conf t
+ ip routing
+ int fa0/9
+  no switchport
+  ip add 10.#$34T#.69.69 255.255.255.248
+  no shut
+  end
+~~~
 
-4. HSRP 
+<br>
 
-5. Routing
+~~~
+!@CoreBABA
+conf t
+ ip routing
+ int fa0/9
+  no switchport
+  ip add 10.#$34T#.72. 255.255.255.248
+  no shut
+  end
+~~~
+
+<br>
+
+### Network Engineer: Job Interview Questions for L1/L2 NOC-MSP postions.
+*What is a Routing Table?*
+*Interpret the components of routing table?*
+
+A routing table is a database, aka a FIB (Forward Information Base), that is used by network devices to efficiently make L3 forwarding decisions.
+
+Palo Alto
+| Destination | Next Hop | Metric | Weight | Flags | Age | Interface   |
+| ---         | ---      | ---    | ---    | ---   | --- | ---         |
+| 0.0.0.0/0   | 0.0.0.0  | 1      |        | A S   |     | ethernet1/1 |
+
+<br>
+
+Fortinet
+| Type   | Network  | Gateway IP | Interfaces  | Distance | Metric | Up Since     |
+| ---    | ---      | ---        | ---         | ---      | ---    | ---          |
+| Static | 0.0.0.0  | 10.0.0.1   | ethernet1/1 | 1        | 0      | 11 hours ago |
+
+<br>
+
+Juniper
+| Destination | Type | RtRef | Next hop | Type Index | NhRef | Netif |
+| ---         | ---  | ---   | ---      | ---        | ---   | ---   |
+| 0.0.0.0/32  | perm | 0     |          | dscd       | 34    | 1     |
+
+<br>
+
+
+
+<br>
+
+~~~
+
+
+
+### Static Routing
+
+
+
 
 Static Routing
 Default Routing
