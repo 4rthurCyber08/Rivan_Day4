@@ -955,6 +955,573 @@ conf t
  end
 ~~~
 
+<br>
+<br>
+
+---
+&nbsp;
+
+## S2S VPN Lab Setup
+### 1. Deploy
+Devices:  
+- 2x CSR1000v
+- 1x NetOps
+- 2x TinyCore (yvm.ova)
+
+CSR1000v:  
+  Name: UTM-PH  
+  
+  | NetAdapter   |        |
+  | ---          | ---    |
+  | NetAdapter   | NAT    |
+  | NetAdapter 2 | VMNet2 |
+  | NetAdapter 3 | VMNet3 |
+  
+<br>
+
+CSR1000v:  
+  Name: UTM-JP  
+  
+  | NetAdapter   |        |
+  | ---          | ---    |
+  | NetAdapter   | NAT    |
+  | NetAdapter 2 | VMNet2 |
+  | NetAdapter 3 | VMNet4 |
+
+<br> 
+
+NetOps:    
+  Name: NetOps-PH  
+  
+  | NetAdapter   |                    |
+  | ---          | ---                |
+  | NetAdapter   | VMNet1             |
+  | NetAdapter 2 | VMNet2             |
+  | NetAdapter 3 | VMNet3             |
+  | NetAdapter 4 | Bridge (Replicate) |
+
+<br>
+
+TinyCore (yvm.ova):  
+  Name: BLDG-JP-1  
+  
+  | NetAdapter   |                    |
+  | ---          | ---                |
+  | NetAdapter   | VMNet4             |
+
+<br>
+
+TinyCore (yvm.ova):  
+  Name: BLDG-JP-2  
+  
+  | NetAdapter   |                    |
+  | ---          | ---                |
+  | NetAdapter   | VMNet4             |
+
+&nbsp;
+---
+&nbsp;
+
+### 2. Bootstrap
+~~~
+!@UTM-PH
+conf t
+ hostname UTM-PH
+ enable secret pass
+ service password-encryption
+ no logging cons
+ no ip domain lookup
+ line vty 0 14
+  transport input all
+  password pass
+  login local
+  exec-timeout 0 0
+ int g1
+  ip add 208.8.8.11 255.255.255.0
+  no shut
+ int g2
+  ip add 192.168.102.11 255.255.255.0
+  no shut
+ int g3
+  ip add 11.11.11.113 255.255.255.224
+  no shut
+ !
+ username admin privilege 15 secret pass
+ ip http server
+ ip http secure-server
+ ip http authentication local
+ end
+wr
+!
+~~~
+
+<br>
+
+~~~
+!@UTM-JP
+conf t
+ hostname UTM-JP
+ enable secret pass
+ service password-encryption
+ no logging cons
+ no ip domain lookup
+ line vty 0 14
+  transport input all
+  password pass
+  login local 
+  exec-timeout 0 0
+ int g1
+  ip add 208.8.8.12 255.255.255.0
+  no shut
+ int g2
+  ip add 192.168.102.12 255.255.255.0
+  no shut
+ int g3
+  ip add 21.21.21.213 255.255.255.240
+  ip add 22.22.22.223 255.255.255.192 secondary
+  no shut
+ !
+ username admin privilege 15 secret pass
+ ip http server
+ ip http secure-server
+ ip http authentication local
+ end
+wr
+!
+~~~
+
+<br>
+
+~~~
+!@BLDG-JP-1
+sudo su
+ifconfig eth0 21.21.21.211 netmask 255.255.255.240 up
+route add default gw 21.21.21.213
+ping 21.21.21.213
+~~~
+
+<br>
+
+~~~
+!@BLDG-JP-2
+sudo su
+ifconfig eth0 22.22.22.221 netmask 255.255.255.192 up
+route add default gw 22.22.22.223
+ping 22.22.22.223
+~~~
+
+<br>
+
+&nbsp;
+---
+&nbsp;
+
+### NetOps-PH Setup
+> Login: root  
+> Pass: C1sc0123  
+
+1. Get the MAC Address for the Bridge connection  
+`VMWare > NetOps-PH Settings > NetAdapter (2, 3, & 4) > Advance > MAC Address`
+
+| NetAdapter   | MAC Address        | VM Interface |
+| ---          | ---                | ---          |
+| NetAdapter 2 | `___.___.___.___`  | ens___       |  ens192
+| NetAdapter 3 | `___.___.___.___`  | ens___       |  ens224
+| NetAdapter 4 | `___.___.___.___`  | ens___       |  ens256
+
+<br>
+
+2. Get Network-VM Mapping
+~~~
+!@NetOps-PH
+ip -br link
+~~~
+
+<br>
+
+3. Modify Interface IP
+VMNet2:  192.168.102.6/24  
+VMNet3:  11.11.11.100/27  
+Bridged: 10.#$34T#.1.6/24  
+
+<br>
+
+~~~
+!@NetOps-PH
+ifconfig ens192 192.168.102.6 netmask 255.255.255.0 up
+ifconfig ens224 11.11.11.100 netmask 255.255.255.224 up
+ifconfig ens256 10.#$34T#.1.6 netmask 255.255.255.0 up
+~~~
+
+<br>
+
+Verify:
+~~~
+!@NetOps-PH
+ip -4 addr
+
+nmcli connection show
+netstat -rn
+~~~
+
+<br>
+
+or  
+
+<br>
+
+__Using Network Management CLI for persistent IP.__
+
+<br>
+
+~~~
+!@NetOps-PH
+nmcli connection add \
+type ethernet \
+con-name VMNET2 \
+ifname ens192 \
+ipv4.method manual \
+ipv4.addresses 192.168.102.6/24 \
+autoconnect yes
+
+nmcli connection up VMNET2
+~~~
+
+<br>
+
+Verify:
+~~~
+!@NetOps-PH
+ip -4 addr
+
+nmcli connection show
+netstat -rn
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+### Provide Connections for VMNet3 & and Bridge Connections
+VMNet3:
+~~~
+!@NetOps-PH
+nmcli connection add \
+type ethernet \
+con-name VMNET3 \
+ifname ens224 \
+ipv4.method manual \
+ipv4.addresses 11.11.11.100/27 \
+autoconnect yes
+
+nmcli connection up VMNET3
+~~~
+
+<br>
+
+Bridged:
+~~~
+!@NetOps-PH
+nmcli connection add \
+type ethernet \
+con-name BRIDGED \
+ifname ens256 \
+ipv4.method manual \
+ipv4.addresses 10.#$34T#.1.6/24 \
+autoconnect yes
+
+nmcli connection up BRIDGED
+~~~
+
+<br>
+
+4. Routing
+~~~
+!@NetOps-PH
+ip route add 10.0.0.0/8 via 10.#$34T#.1.4 dev ens256
+ip route add 200.0.0.0/24 via 10.#$34T#.1.4 dev ens256
+ip route add 0.0.0.0/0 via 11.11.11.113 dev ens224
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+### Remote Access
+Connect to Management Interfaces of Devices
+
+NetOps-PH: 192.168.102.6
+UTM-PH: 192.168.102.11
+UTM-JP: 192.168.102.12
+
+<br>
+<br>
+
+---
+&nbsp;
+
+### Site-to-Site VPN & Cryptography
+1. Create a Key Pair for both UTM Routers
+
+~~~
+!@UTM-PH & UTM-JP
+conf t
+ ip domain name sec.plus
+ !
+ crypto key generate rsa modulus 2048 label key exportable
+ ip ssh version 2
+ ip ssh rsa keypair-name key
+ end
+show ip ssh
+~~~
+
+<br>
+
+View Private & Public Keys
+~~~
+!@UTM-PH & UTM-JP
+conf t
+ crypto key export rsa key pem terminal aes C1sc0123
+ end
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+### Diffie-Hellman Key Exchange 
+Ref: https://sec.cloudapps.cisco.com/security/center/resources/next_generation_cryptography
+
+<br>
+
+| DH GROUP | MODP                      | EC  |
+| ---      | ---                       | --- |
+| 1 	   | 768                       |     |
+| 2 	   | 1024                      |     |
+| 5 	   | 1536                      |     |
+| 14 	   | 2048                      |     |
+| 15 	   | 3072                      |     |
+| 16 	   | 4096                      |     |
+| 17 	   | 6144                      |     |
+| 18 	   | 8192                      |     |
+| 19       |                           | 256 |
+| 20       |                           | 384 |
+| 21       |                           | 521 |
+| 24       | 2048 Prime order 256 bits |     |
+
+<br>
+
+~~~
+!@NetOps-PH
+mkdir crypto; cd crypto
+openssl dhparam -out dhgroup.pem 1024
+~~~
+
+<br>
+
+~~~
+openssl genpkey -paramfile dhgroup.pem -out ph_priv.key
+openssl genpkey -paramfile dhgroup.pem -out jp_priv.key
+~~~
+
+<br>
+
+~~~
+openssl pkey -in ph_priv.key -pubout -out ph_pub.key
+openssl pkey -in jp_priv.key -pubout -out jp_pub.key
+~~~
+
+<br>
+
+~~~
+openssl pkeyutl -derive -inkey ph_priv.key -peerkey jp_pub.key -out ph-shared.secret
+openssl pkeyutl -derive -inkey jp_priv.key -peerkey ph_pub.key -out jp-shared.secret
+~~~
+
+<br>
+
+View Private key contents
+~~~
+!@NetOps
+openssl pkey -in rsa_priv.key -text -noout
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+### 2. Access the GUI of Both UTM Routers
+
+UTM-PH: https://192.168.102.11
+UTM-JP: https://192.168.102.12
+
+<br>
+
+What traffic does the ISP see if you have a VPN?  
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+VPN Cli Configuration:
+~~~
+!@UTM-PH
+conf t
+ crypto ikev2 proposal WEBUI-PROPOSAL-Tunnel1 
+  encryption aes-cbc-256
+  integrity sha512
+  group 14
+  exit
+ crypto ikev2 policy WEBUI-POLICY 
+  match fvrf any
+  proposal WEBUI-PROPOSAL-Tunnel1
+  exit
+ crypto ikev2 keyring WEBUI-KEYS
+  peer WEBUI-PEER-208.8.8.12
+   description KEY-PEER-208.8.8.12 
+   address 208.8.8.12 255.255.255.0
+   pre-shared-key C1sc0123
+   exit
+  exit
+ crypto ikev2 profile WEBUI-IKEV2-PROFILE
+  match fvrf any
+  match identity remote address 208.8.8.12 255.255.255.255 
+  authentication remote pre-share
+  authentication local pre-share
+  keyring local WEBUI-KEYS
+  exit
+ crypto ipsec transform-set WEBUI-TS-Tunnel1 esp-aes 256 esp-sha512-hmac 
+  mode tunnel
+  exit
+ crypto ipsec profile WEBUI-IPSEC-PROFILE-Tunnel1
+  set transform-set WEBUI-TS-Tunnel1 
+  set ikev2-profile WEBUI-IKEV2-PROFILE
+  exit
+ interface Tunnel1
+  description From PH to JP 
+  ip address 172.16.1.1 255.255.255.252
+  tunnel source GigabitEthernet1
+  tunnel mode ipsec ipv4
+  tunnel destination 208.8.8.12
+  tunnel protection ipsec profile WEBUI-IPSEC-PROFILE-Tunnel1
+  exit
+ ip route 22.22.22.192 255.255.255.192 Tunnel1
+ ip route 21.21.21.208 255.255.255.240 Tunnel1
+ end
+~~~
+
+<br>
+
+~~~
+!@UTM-JP
+conf t
+ crypto ikev2 proposal WEBUI-PROPOSAL-Tunnel1 
+  encryption aes-cbc-256
+  integrity sha512
+  group 14
+  exit
+ crypto ikev2 policy WEBUI-POLICY 
+  match fvrf any
+  proposal WEBUI-PROPOSAL-Tunnel1
+  exit
+ crypto ikev2 keyring WEBUI-KEYS
+  peer WEBUI-PEER-208.8.8.11
+   description KEY-PEER-208.8.8.11 
+   address 208.8.8.11 255.255.255.0
+   pre-shared-key C1sc0123
+   exit
+  exit
+ crypto ikev2 profile WEBUI-IKEV2-PROFILE
+  match fvrf any
+  match identity remote address 208.8.8.11 255.255.255.255 
+  authentication remote pre-share
+  authentication local pre-share
+  keyring local WEBUI-KEYS
+  exit
+ crypto ipsec transform-set WEBUI-TS-Tunnel1 esp-aes 256 esp-sha512-hmac 
+  mode tunnel
+  exit
+ crypto ipsec profile WEBUI-IPSEC-PROFILE-Tunnel1
+  set transform-set WEBUI-TS-Tunnel1 
+  set ikev2-profile WEBUI-IKEV2-PROFILE
+  exit
+ interface Tunnel1
+  description From JP to PH 
+  ip address 172.16.1.2 255.255.255.252
+  tunnel source GigabitEthernet1
+  tunnel mode ipsec ipv4
+  tunnel destination 208.8.8.11
+  tunnel protection ipsec profile WEBUI-IPSEC-PROFILE-Tunnel1
+  exit
+ ip route 11.11.11.96 255.255.255.224 Tunnel1
+ end
+~~~
+
+<br>
+
+~~~
+!@UTM-PH
+conf t
+ ip route 22.22.22.192 255.255.255.192 208.8.8.12
+ ip route 21.21.21.208 255.255.255.240 208.8.8.12
+ end
+~~~
+
+<br>
+
+~~~
+!@UTM-JP
+conf t
+ ip route 11.11.11.96 255.255.255.224 208.8.8.11
+ end
+~~~
+
+
+
+
+
+
+
+
+
+
 
 
 
