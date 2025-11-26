@@ -44,61 +44,71 @@ View your cameras:
 &nbsp;
 
 ## OSI Model 
-Interpret and Explain the OSI Model
+*Interpret and Explain the OSI Model*
 
-### Layer 1:
-Speed is measured in bits, while data is measured in Bytes
+PDU (Protocol Data Unit)
 
-### Layer 2:
-MAC Address: OUI | NIC
-Switching "How Switches Forward Packets"
+### 7. Application Layer 
+"Underlying service that supports applications"  
+SMTP  
+Resource sharing  
+Service advertisement  
+Gramaphone  
 
-@Linux
-arp -a
+<br>
 
-@Windows
-arp -a
+### 6. Presentation Layer - File extension
+Data  
+encryption  
+-tion  
+.wav .jpg .au .exe .psd  
 
-@Cisco
-arp -a
+<br>
 
-Broadcast Storm
-- STP 802.1d
-- - RSTP 802.1w
-  - Port Security
- 
-- L3
-  - Routing
-  - IP Packet Filtering
- 
-- L4
-  - Open Ports
-  - FTP
-  - HTTP
-  - DNS
-  - Chargen
-
-- L5
-  - RTP
-  - TCP/UDP
-  - SPAN (Port Mirror)
+### 5. Session Layer - Session established
+Data Stream  
+stateful  
   
-- L6
-  - Stegheide
-  - Alternate Data Stream
+Commands: netstat -s -p tcp, telnet, ssh  
 
-- L7
-  - NetFlow
+<br>
 
-OSI vs TCP/IP Model
+### 4. Transport Layer - TCP/UDP
+Segments  
+Three way handshake  
+Sliding Window  
+  
+Commands: nmap -v 10.#$34T#.1.10    
+  
+Well-known ports 0 - 1023  
+Registered ports 1024 - 49151  
+Ephemeral/Dynamic ports 49152 - 65535  
 
-L7,L6,L5 = Application Layer
-L4 = Transport Layer
-L3 = Network Layer
-L2, L1 = Data Link Layer
+<br>
 
+### 3. Network Layer - IP addresses
+Packets  
+Routing protocols  
+Forwarding packets  
+  
+Commands: show ip int br, sh ip route  
 
+<br>
 
+### 2. Data-link Layer - MAC Addresses
+Frames  
+FCS  
+Preamble  
+  
+Commands: show vlan brief  
+
+<br>
+
+### 1. Physical Layer - "Things you touch"
+Speed = b   
+Data = B  
+  
+Commands: show cdp neigh  
 
 <br>
 <br>
