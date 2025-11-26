@@ -193,7 +193,7 @@ Linux & Windows
 netstat -rn
 ~~~
 
-### Static Routing
+## Static Routing
 Remove routing to learn
 ~~~
 !@CoreBABA, CUCM, EDGE   (via Serial Connection)
@@ -385,7 +385,47 @@ route add 200.0.0.0 mask 255.255.255.0 10.#$34T#.1.4 -p
 ---
 &nbsp;
 
-### Exercise 01: By pair, connect your CoreBABA:VLAN 1 network and your partner's CoreBABA:VLAN 1 network using a network static route.
+### Exercise 01: Establish connectivity between the loopback 1 IP of EDGE and the loopback 25 IP of CoreTAAS
+- EDGE loop1 (#$34T#.0.0.1/32)
+- CoreTAAS loop25 (10.#$34T#.25.25/32)
+~~~
+!@CoreTAAS
+conf t
+ ip routing
+ int loopback 25
+  ip add 10.#$34T#.25.25 255.255.255.255
+  end
+~~~
+
+Verify - Make sure both CoreTAAS & EDGE can ping each other's loopback interface.
+~~~
+!@CoreTAAS
+ping #$34T#.0.0.1
+~~~
+
+<br>
+
+~~~
+!@EDGE
+ping 10.#$34T#.25.25
+~~~
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
 <br>
@@ -417,28 +457,60 @@ route add 200.0.0.0 mask 255.255.255.0 10.#$34T#.1.4 -p
 <summary>Show Answer</summary>
 
 ~~~
-!@CoreBABA-#$34T#
+!@CoreTAAS
 conf t
- ip route 10.___.1.4  255.255.255.0 10.#$34T#.#$34T#.1
+ ip route #$34T#.0.0.1 255.255.255.255 10.#$34T#.1.4
  end
 ~~~
 
 <br>
 
 ~~~
-!@EDGE-#$34T#
+!@EDGE
 conf t
- ip route 10.___.1.4  255.255.255.0 200.0.0.___
+ ip route 10.#$34T#.25.25 255.255.255.255 10.#$34T#.#$34T#.4
+ end
+~~~
+
+<br>
+
+Every device on path must know how to reach both destinations.
+~~~
+!@CoreBABA
+conf t
+ ip route 10.#$34T#.25.25 255.255.255.255 10.#$34T#.#$34T#.4
  end
 ~~~
 
 </details>
 
+<br>
+<br>
 
+---
+&nbsp;
 
+## 🔀 Dynamic Routing
+*What are the different dynamic routing protocols?*
 
+1. IGP (Interior Gateway Protocol)
+  - Link-state - __OSPF__ & __ISIS__
+  - Distance Vector - __EIGRP__ & __RIP__
 
+2. EGP (Exterior Gateway Protocol)
+  - __BGP__ (Border Gateway Protocol)
 
+<br>
+
+## 🔀 EIGRP
+~~~
+!@EDGE
+conf t
+ int loopback 100
+  ip add 10.#$34T#.100.100 255.255.255.240
+  desc EIGRP-NETWORK
+  end
+~~~
 
 
 
