@@ -397,6 +397,20 @@ conf t
   end
 ~~~
 
+<br>
+
+~~~
+!@EDGE
+conf t
+ ip routing
+ int loopback 1
+  ip add #$34T#.0.0.1 255.255.255.255
+  end
+~~~
+
+<br>
+<br>
+
 Verify - Make sure both CoreTAAS & EDGE can ping each other's loopback interface.
 ~~~
 !@CoreTAAS
@@ -478,7 +492,8 @@ Every device on path must know how to reach both destinations.
 ~~~
 !@CoreBABA
 conf t
- ip route 10.#$34T#.25.25 255.255.255.255 10.#$34T#.#$34T#.4
+ ip route 10.#$34T#.25.25 255.255.255.255 10.#$34T#.1.2
+ ip route #$34T#.0.0.1 255.255.255.255 10.#$34T#.#$34T#.4
  end
 ~~~
 
@@ -501,69 +516,322 @@ conf t
   - __BGP__ (Border Gateway Protocol)
 
 <br>
+<br>
 
 ## 🔀 EIGRP
+Steps in configuring EIGRP
+1. Decide on an ASN
+2. Determine Connected Networks
+3. Advertise
+
 ~~~
-!@EDGE
+!@CoreBABA
 conf t
- int loopback 100
-  ip add 10.#$34T#.100.100 255.255.255.240
-  desc EIGRP-NETWORK
+ int loopback 90
+  ip add 10.#$34T#.90.4 255.255.255.240
+  exit
+ router eigrp 100
+  network 10.#$34T#.90.0 0.0.0.15
+  network 10.#$34T#.1.0 0.0.0.255
+  network 10.#$34T#.10.0 0.0.0.255
+  network 10.#$34T#.50.0 0.0.0.255
+  network 10.#$34T#.100.0 0.0.0.255
   end
 ~~~
 
+<br>
 
+~~~
+!@CUCM
+conf t
+ int loopback 90
+  ip add 10.#$34T#.90.90 255.255.255.240
+  exit
+ router eigrp 100
+  network 10.#$34T#.90.80 0.0.0.15
+  network 10.#$34T#.100.0 0.0.0.255
+  end
+~~~
 
+&nbsp;
+---
+&nbsp;
 
+### EIGRP Database
+1. __`show ip eigrp neighbors`__ : Neighbor Table
+2. __`show ip eigrp interfaces`__ : Interface Table
+3. __`show ip eigrp topology`__ : Topology Table
 
+<br>
+<br>
 
+## Path Selection Process : Admin Distance & Metric Cost
+1. __Longest Prefix Match (LPM)__  
+2. __Administrative Distance__
+3. __Metric Cost__
 
+~~~
+!@CUCM
+show ip route
+~~~
 
+<br>
 
+| Legend | Routing Protocol | Administrative Distance | Metric |
+| ---    | ---              | ---                     | ---    |
+| C      | Connected        |                         |        |
+| S      | Static           |                         |        |
+| D      | EIGRP            |                         |        |
 
+<br>
+<br>
 
+What makes __EIGRP__ a __Distance Vector Protocol__?
+~~~
+!@CUCM
+show ip protocols
+show ip eigrp topology
+~~~
 
+<br>
+<br>
 
+### EIGRP Metric
+*EIGRP Metric Formula*
 
+<br>
 
+1. Reported Distance (__RD__)  
+2. Feasible Distance (__FD__)  
+3. Successor (Primary : Lowest Cost)  
+4. Feasible Successor (Backup)  
 
+<br>
 
+__Feasability Condition__ - An EIGRP route is a feasible successor route if the RD from the neighbor is less than the FD of the successor route.
 
-
-
-
-Static Routing
-Default Routing
-EIGRP
-OSPF
-BGP
-
-IGP
-Link-State : OSPF (110) ISIS (115)
-
-Distance Vector : RIP (120) , EIGRP (90)
-
-EGP
-BGP (WAN)
-
-
-Configure
-
-@EDGE OSPF AREA 0
-OSPF AREA M
-
-@CoreBABA 
-OSPF AREA M
-EIGRP 1
-
-@CUCM
-OSPF AREA M
-
-EXBGP 20
-INTBGP 200
-
+<br>
+<br>
 
 ---
+&nbsp;
+
+## 🔀 OSPF
+*What device do you need to filter data entering your network? Firewall*
+
+<br>
+
+Which is the best firewall?
+1. Palo Alto
+2. Fortinet
+3. Juniper
+4. Cisco Firepower
+
+<br>
+
+What Routing protocol to use if __Multi-Vendor__? __OSPF__
+
+&nbsp;
+---
+&nbsp;
+
+### Single Area OSPF
+~~~
+!@CoreBABA
+conf t
+ router ospf 1
+  router-id 10.#$34T#.#$34T#.4
+  network 10.#$34T#.1.0 0.0.0.255 area 0
+  network 10.#$34T#.#$34T#.0 0.0.0.255 area 0
+  end
+~~~
+
+<br>
+
+~~~
+!@EDGE
+conf t
+ router ospf 1
+  router-id #$34T#.0.0.1
+  network 10.#$34T#.#$34T#.0 0.0.0.255 area 0
+  network 200.0.0.0 0.0.0.255 area 0
+  network #$34T#.0.0.1 0.0.0.0 area 0
+  end
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+### OSPF Database
+1. __`show ip ospf neighbors`__ : Neighbor Table
+2. __`show ip ospf interface brief`__ : Interface Table
+3. __`show ip ospf topology-info`__ : Topology Table
+
+&nbsp;
+---
+&nbsp;
+
+## Job Interview Question.
+### What are the contents of an OSPF Hello Packet?
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<details>
+<summary>Show Answer</summary>
+	
+- Router ID/Source OSPF Router
+- Area ID
+- Subnet Mask
+- Authentication Type
+
+- Hello Timer: 10
+- Dead Timer: 40
+- Designated Router
+- Backup Designated Router
+
+</details>
+
+&nbsp;
+---
+&nbsp;
+
+### Link-State Routing Protocol & Multi-Area OSPF
+__LSU__ - Link-State Updates  
+__LSA__ - Link-State Advertisement  
+
+<br>
+
+- Type 1 LSA - (__O__) Router LSA : Router info & Advertisements
+- Type 2 LSA - (__O__) Network LSA : via DR/BDR Network Routes
+- Type 3 LSA - (__O IA__) Summary LSA
+- Type 5 LSA - (__O E2__) AS-External LSA
+
+<br>
+
+Summary LSA
+~~~
+!@EDGE
+conf t
+ int loopback 110
+  ip add 10.#$34T#.110.110 255.255.255.255
+  ip ospf 1 area #$34T#
+  end
+clear ip ospf process
+yes
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+### OSPF States
+D: __Down__ - The initial state where no hello packets have been received from a neighbor  
+I: __Init__ - A hello packet has been received from a neighbor, but that neighbor's Router ID was not included in the hello packet, indicating a lack of bidirectional communication  
+T: __Two-way__ - Bidirectional communication is established, as both routers have received each other's Router IDs in hello packets. DR/BDR Election occurs.  
+E: __Exstart__ - Routers determine who will be the master and who will be the slave for the upcoming database exchange. The router with the higher Router ID becomes the master and begins the exchange of Database Description (DBD) packets, synchronizing sequence numbers.  
+E: __Exchange__ - Routers exchange DBD packets to describe their Link State Databases (LSDBs). They compare the contents and identify any missing link-state information  
+L: __Loading__ - Routers request the missing link-state information by sending Link-State Requests (LSRs). They then receive Link-State Updates (LSUs) and acknowledge them with Link-State Acknowledgements (LSAs)  
+F: __Full__ - the LSDBs are fully synchronized and identical between the adjacent routers. The routers have all the necessary information to form a complete network map and are ready to share routing data  
+
+<br>
+
+Attempt to view OSPF States
+
+~~~
+!@R2 & R1
+clear ip ospf process
+yes
+show ip ospf neighbor
+~~~
+
+<br>
+<br>
+
+---
+&nbsp;
+
+## Route Redistribution
+~~~
+!@CoreBABA
+conf t
+ router eigrp 100
+  redistribute ospf 1 metric 10000 100 255 1 1500
+  exit
+ router ospf 1
+  redistribute eigrp 100 subnets
+end
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+## Path Selection Process : Admin Distance & Metric Cost
+1. __Longest Prefix Match (LPM)__  
+2. __Administrative Distance__
+3. __Metric Cost__
+
+<br>
+
+| Legend | Routing Protocol | Administrative Distance | Metric |
+| ---    | ---              | ---                     | ---    |
+| C      | Connected        |                         |        |
+| S      | Static           |                         |        |
+| D      | EIGRP            |                         |        |
+| D EX   | External EIGRP   |                         |        |
+| O, OIA | OSPF             |                         |        |
+| O E2   | External T5 OSPF |                         |        |
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+
+
+
+
+
+
 
 6. ACL
 
