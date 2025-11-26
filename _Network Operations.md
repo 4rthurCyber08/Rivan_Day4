@@ -826,8 +826,124 @@ end
 &nbsp;
 
 ## Tunneling and IP Security
+*INET vs Private Line*
 
+~~~
+!@EDGE
+conf t
+ int gi 0/0/0
+  no shut
+  ip add 10.#$34T#.#$34T#.1 255.255.255.0
+  ip nat inside
+  desc INSIDE
+ int gi 0/0/1
+  no shut
+  ip add 200.0.0.#$34T# 255.255.255.0
+  ip nat outside
+  desc OUTSIDE
+ int loopback 0
+  ip add #$34T#.0.0.1 255.255.255.255
+  desc VIRTUALIP
+ !
+ ip access-list extended NAT-POLICY
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.11.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.12.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.21.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.22.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.31.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.32.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.41.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.42.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.51.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.52.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.61.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.62.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.71.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.72.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.81.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.82.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.91.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.92.0.0 0.0.255.255
+  no deny ip 10.#$34T#.0.0 0.0.255.255 10.#$34T#.0.0 0.0.255.255
+  permit ip any any
+  exit
+ !
+ ip nat inside source list NAT-POLICY int g0/0/1 overload
+ ip route 0.0.0.0 0.0.0.0 200.0.0.1
+ !
+ router ospf 1
+  router-id #$34T#.0.0.1
+  network 10.#$34T#.#$34T#.0 0.0.0.255 area 0
+  !
+  no network 200.0.0.0 0.0.0.255 area 0
+  default-information originate always
+  exit
+  !
+ ip name-server 8.8.8.8 8.8.4.4
+ ip domain lookup
+ ip domain lookup source int g0/0/0
+ end
+ping 8.8.8.8
+ping google.com
+~~~
 
+<br>
+
+### Tunneling (Unsecure)
+~~~
+!@EDGE
+conf t
+ int tun1
+  ip add 172.16.1.#$34T# 255.255.255.0
+  tunnel source g0/0/1
+  tunnel mode gre multipoint
+  no shut
+  tun key 123
+  ip nhrp authentication C1sc0123
+  ip nhrp map multicast dynamic
+  ip nhrp network-id 1337
+  ip nhrp map 172.16.1.11 200.0.0.11
+  ip nhrp map 172.16.1.12 200.0.0.12
+  ip nhrp map 172.16.1.21 200.0.0.21
+  ip nhrp map 172.16.1.22 200.0.0.22
+  ip nhrp map 172.16.1.31 200.0.0.31
+  ip nhrp map 172.16.1.32 200.0.0.32
+  ip nhrp map 172.16.1.41 200.0.0.41
+  ip nhrp map 172.16.1.42 200.0.0.42
+  ip nhrp map 172.16.1.51 200.0.0.51
+  ip nhrp map 172.16.1.52 200.0.0.52
+  ip nhrp map 172.16.1.61 200.0.0.61
+  ip nhrp map 172.16.1.62 200.0.0.62
+  ip nhrp map 172.16.1.71 200.0.0.71
+  ip nhrp map 172.16.1.72 200.0.0.72
+  ip nhrp map 172.16.1.81 200.0.0.81
+  ip nhrp map 172.16.1.82 200.0.0.82
+  ip nhrp map 172.16.1.91 200.0.0.91
+  ip nhrp map 172.16.1.92 200.0.0.92
+  no ip nhrp map 172.16.1.#$34T# 200.0.0.#$34T#
+  exit
+ ip route 10.11.0.0 255.255.0.0 172.16.1.11 252
+ ip route 10.12.0.0 255.255.0.0 172.16.1.12 252
+ ip route 10.21.0.0 255.255.0.0 172.16.1.21 252
+ ip route 10.22.0.0 255.255.0.0 172.16.1.22 252
+ ip route 10.31.0.0 255.255.0.0 172.16.1.31 252
+ ip route 10.32.0.0 255.255.0.0 172.16.1.32 252
+ ip route 10.41.0.0 255.255.0.0 172.16.1.41 252
+ ip route 10.42.0.0 255.255.0.0 172.16.1.42 252
+ ip route 10.51.0.0 255.255.0.0 172.16.1.51 252
+ ip route 10.52.0.0 255.255.0.0 172.16.1.52 252
+ ip route 10.61.0.0 255.255.0.0 172.16.1.61 252
+ ip route 10.62.0.0 255.255.0.0 172.16.1.62 252
+ ip route 10.71.0.0 255.255.0.0 172.16.1.71 252
+ ip route 10.72.0.0 255.255.0.0 172.16.1.72 252
+ ip route 10.81.0.0 255.255.0.0 172.16.1.81 252
+ ip route 10.82.0.0 255.255.0.0 172.16.1.82 252
+ ip route 10.91.0.0 255.255.0.0 172.16.1.91 252
+ ip route 10.92.0.0 255.255.0.0 172.16.1.92 252
+ !
+ no ip route 10.#$34T#.0.0 255.255.0.0 172.16.1.#$34T# 252
+ end
+~~~
 
 
 
