@@ -1513,11 +1513,304 @@ conf t
  end
 ~~~
 
+&nbsp;
+---
+&nbsp;
 
+## Forward Proxy & Proxy Chaining
 
+NAT:
+1. Specify INSIDE and OUTSIDE interfaces
+~~~
+!@UTM-PH & UTM-JP
+conf t
+ int g1
+  ip nat outside
+ int g2
+  ip nat inside
+ int g3
+  ip nat inside
+  end
+~~~
 
+<br>
 
+2. Match Traffic
+~~~
+!@UTM-PH
+conf t
+ ip access-list extended NAT
+  deny ip 11.11.11.96 0.0.0.31 21.21.21.208 0.0.0.15
+  deny ip 11.11.11.96 0.0.0.31 22.22.22.192 0.0.0.63
+  permit ip any any
+  end
+~~~
 
+<br>
+
+~~~
+!@UTM-JP
+conf t
+ ip access-list extended NAT
+  deny ip 21.21.21.208 0.0.0.15 11.11.11.96 0.0.0.31 
+  deny ip 22.22.22.192 0.0.0.63 11.11.11.96 0.0.0.31 
+  permit ip any any
+  end
+~~~
+
+<br>
+
+3. Apply INSIDE NAT/PAT
+~~~
+!@UTM-PH & UTM-JP
+conf t
+ ip nat inside source list NAT int g1 overload
+ end
+~~~
+
+<br>
+
+4. Set Default Gateway and DNS
+~~~
+!@UTM-PH & UTM-JP
+conf t
+ ip route 0.0.0.0 0.0.0.0 208.8.8.2
+ ip domain lookup
+ ip domain lookup source-int g2
+ ip name-server 8.8.8.8 1.1.1.1
+ end
+~~~
+
+<br>
+
+~~~
+!@NetOps-PH & BLDG-JP-1 & BLDG-JP-2
+vi /etc/resolv.conf
+~~~
+
+<br>
+
+Forward Proxy
+~~~
+!@BLDG-JP-1
+ssh -l root 11.11.11.100
+
+> (yes/no) yes
+~~~
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+&nbsp;
+---
+&nbsp;
+
+## Packet Filtering (L3 ACL)
+~~~
+!@NetOps-PH
+youporn.com
+pornhub.com
+redtube.com
+faketaxi.com
+bangbros.com
+bangbus.com
+pinayflix.com
+xhamster.com
+iyottube.com
+~~~
+
+<br>
+
+Protect your most important asset: The brain
+Create a standard ACL named FWP1
+~~~
+!@UTM-PH
+config t
+ no ip access-list standard FWP1
+ ip access-list standard FWP1
+  deny __.__.__.__  __.__.__.__
+  deny __.__.__.__  __.__.__.__
+  deny __.__.__.__  __.__.__.__
+  permit any
+ int gi 1
+  ip access-group FWP1 in
+  end
+show ip access-list int g1
+~~~
+
+<br>
+
+### Exercise: Block Torrents - Create a standard ACL named FWP2
+~~~
+!@UTM-PH
+www.thepiratebay.org 
+www.limetorrents.net
+www.freeanimeonline.com
+~~~
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+&nbsp;
+---
+&nbsp;
+
+### L4 Firewall Rules
+`www.rivanit.com` vs `neu.edu.ph` vs 'sti.edu.ph'
+
+<br>
+
+### Make Your UTM Router Vulnerable
+~~~
+!@UTM-PH
+config t
+ ip access-list extended NAT 
+  25 deny ip 208.8.8.0 0.0.0.255 208.8.8.0 0.0.0.255
+  exit
+ service finger
+ service tcp-small-servers
+ service udp-small-servers
+ ip dns server
+ ip http server
+ ip http secure-server
+ telephony-service
+  no auto-reg-ephone
+  max-ephones 5
+  max-dn 20
+  ip source-address 208.8.8.11 port 2000
+  exit
+ voice service voip
+  allow-connections h323 to sip
+          
+  allow-connections sip to h323
+  allow-connections sip to sip
+  supplementary-service h450.12
+ sip
+   bind control source-interface g1
+   bind media source-interface g1
+   registrar server expires max 600 min 60
+ voice register global
+  mode cme
+  source-address 208.8.8.11 port 5060
+  max-dn 12
+  max-pool 12
+  authenticate register
+  create profile sync syncinfo.xml
+  end
+~~~
+
+<br>
+
+### Protect you Network
+Create an extended ACL named FWP3
+Open only the following ports:
+  http, https, ping, ssh, dns
+
+<br>
+
+Formula:
+|  PROTOCOL    |  HACKER  |  VICTIM  |  PORT         |
+| ---          | ---      | ---      | ---           |
+| TCP/UDP/ICMP |   ANY    |          |  Dest.Port eq |
+
+~~~
+!@UTM-PH
+conf t
+ no ip access-list extended FWP3
+ ip access-list extended FWP3
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com log
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com eq __ log
+ Int gi 3
+  ip access-group FWP3 in
+  end
+~~~
+
+<br>
+
+### Exercise: Learn by doing the wrong things
+Create an extended ACL named FWP4
+Open only the following ports:
+  telnet, sql, sip, sccp, ftp, imap, pop, smtp
 
 
 
