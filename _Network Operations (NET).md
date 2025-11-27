@@ -137,7 +137,7 @@ conf t
  ip routing
  int fa0/9
   no switchport
-  ip add 10.#$34T#.69.72 255.255.255.248
+  ip add 10.#$34T#.69.73 255.255.255.248
   no shut
   end
 ~~~
