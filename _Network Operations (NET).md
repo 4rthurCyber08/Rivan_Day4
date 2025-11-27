@@ -919,7 +919,7 @@ conf t
   !
  ip name-server 8.8.8.8 8.8.4.4
  ip domain lookup
- ip domain lookup source int g0/0/0
+ ip domain lookup source-int g0/0/0
  end
 ping 8.8.8.8
 ping google.com
@@ -1058,7 +1058,7 @@ conf t
  enable secret pass
  service password-encryption
  no logging cons
- no ip domain lookup
+ no 
  line vty 0 14
   transport input all
   password pass
