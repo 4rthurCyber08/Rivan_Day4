@@ -147,7 +147,7 @@ conf t
 Will they ping?
 ~~~
 !@CoreTAAS
-ping 10.#$34T#.69.72
+ping 10.#$34T#.69.73
 ~~~
 
 &nbsp;
@@ -503,7 +503,27 @@ Every device on path must know how to reach both destinations.
 !@CoreBABA
 conf t
  ip route 10.#$34T#.25.25 255.255.255.255 10.#$34T#.1.2
- ip route #$34T#.0.0.1 255.255.255.255 10.#$34T#.#$34T#.4
+ ip route #$34T#.0.0.1 255.255.255.255 10.#$34T#.#$34T#.1
+ end
+~~~
+
+<br>
+
+Allow EDGE & CoreTAAS to ping directly:
+
+~~~
+!@CoreTAAS
+conf t
+ ip route 10.#$34T#.#$34T#.1 255.255.255.255 10.#$34T#.1.4
+ end
+~~~
+
+<br>
+
+~~~
+!@EDGE
+conf t
+ ip route 10.#$34T#.1.2 255.255.255.255 10.#$34T#.#$34T#.4
  end
 ~~~
 
