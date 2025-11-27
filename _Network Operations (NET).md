@@ -818,6 +818,14 @@ show ip ospf neighbor
 &nbsp;
 
 ## Route Redistribution
+Will the ping:
+~~~
+!@CUCM
+ping 200.0.0.#$34T#
+~~~
+
+<br>
+
 ~~~
 !@CoreBABA
 conf t
