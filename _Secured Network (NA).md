@@ -1508,6 +1508,28 @@ config t
   end
 ~~~
 
+<br>
+
+REMOVE THE TUNNEL
+~~~
+!@UTM-PH
+conf t
+ ip route 22.22.22.192 255.255.255.192 208.8.8.12
+ ip route 21.21.21.208 255.255.255.240 208.8.8.12
+ end
+~~~
+
+<br>
+
+~~~
+!@UTM-JP
+conf t
+ ip route 11.11.11.96 255.255.255.224 208.8.8.11
+ end
+~~~
+
+<br>
+
 Stateless vs Stateful
 
 <br>
@@ -2136,6 +2158,7 @@ nano /opt/jumpserver/config/config.txt
 !@NetOps-PH
 jmsctl.sh restart
 ~~~
+
 
 
 
