@@ -1671,8 +1671,8 @@ Access the Web: http://208.8.8.200:8080
 <br>
 
 ### Exercise: Set Portforwarding Rules for:
-- 208.8.8.200 8443 > 22.22.22.221 443
-- 208.8.8.200 2222 > 21.21.21.211 22
+- 208.8.8.12 8443 > 22.22.22.221 443
+- 208.8.8.12 2222 > 21.21.21.211 22
 
 <br>
 
@@ -2158,6 +2158,7 @@ nano /opt/jumpserver/config/config.txt
 !@NetOps-PH
 jmsctl.sh restart
 ~~~
+
 
 
 
