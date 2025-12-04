@@ -1660,7 +1660,7 @@ config t
   25 deny ip 208.8.8.0 0.0.0.255 208.8.8.0 0.0.0.255
   exit
  !
- ip nat inside source static tcp 21.21.21.211 80 208.8.8.200 8080
+ ip nat inside source static tcp 21.21.21.211 80 208.8.8.12 8080
   end
 ~~~
 
@@ -2158,6 +2158,7 @@ nano /opt/jumpserver/config/config.txt
 !@NetOps-PH
 jmsctl.sh restart
 ~~~
+
 
 
 
