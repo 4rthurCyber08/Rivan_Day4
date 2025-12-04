@@ -1494,6 +1494,22 @@ __Make sure to remove firewall for next activity:__
 &nbsp;
 
 ## Zone Based Firewall
+~~~
+!@UTM-JP
+config t
+ int g1
+  ip add 208.8.8.200 255.255.255.0 secondary
+  no shut
+  exit
+ ip host www.bet200.com 208.8.8.200
+ ip access-list extended NAT 
+  25 deny ip 208.8.8.0 0.0.0.255 208.8.8.0 0.0.0.255
+  exit
+ !
+ ip nat inside source static tcp 21.21.21.211 80 208.8.8.200 8080
+  end
+~~~
+
 Stateless vs Stateful
 
 <br>
@@ -2122,6 +2138,7 @@ nano /opt/jumpserver/config/config.txt
 !@NetOps-PH
 jmsctl.sh restart
 ~~~
+
 
 
 
