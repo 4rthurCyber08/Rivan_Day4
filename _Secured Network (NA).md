@@ -290,206 +290,6 @@ conf t
 
 </details>
 
-<br>
-<br>
-
----
-&nbsp;
-
-## AUTOMATION
-### Configuration and Infrastructure Management Tools. (Ansible, Terraform, Puppet, & Chef)
-*From Shell Scripting to Automation management tools.*
-
-__Shell scripting__  
-1. Output a basic Hello
-~~~
-@linux
-nano hello.sh
-
-///Edit hello.sh
-echo "hello world"
-///
-
-chmod 500 hello.sh
-./hello.sh
-~~~
-
-<br>
-
-2. Create Multi users
-~~~
-@linux
-nano add_user.sh
-
-///add_user.sh
-adduser m_user1
-echo "m_user1:C1sc0123" | chpasswd
-
-adduser m_user2
-echo "m_user2:C1sc0123" | chpasswd
-
-adduser m_user3
-echo "m_user3:C1sc0123" | chpasswd
-///
-
-chmod 500 add_user.sh
-./add_user.sh
-~~~
-
-&nbsp;
----
-&nbsp;
-
-### Agentless vs Agentbased
-Puppet - Master (8143) & Agent (8142)  
-Chef - Server (10000 & 10002) & Client  
-
-<br>
-
-### Programming Language
-Ansible - Python  
-Chef & Puppet(.pp) - Ruby, DSL (Domain-specific Language)  
-Terraform(.tf) - HCL (Hashicorp Configuration Language)  
-
-<br>
-
-### Ansible
-__Playbook (any.yml)__
-~~~
----
-- name: addloop
-  hosts: realdevices
-  gather_facts: no
-  become: yes
-  tasks:
-    - name: "Create Loopbacks"
-      ios_command:
-        commands:
-          - conf t
-          - int lo100
-          - ip add 100.100.100.100 255.255.255.255
-          - exit
-          - int lo101
-          - ip add 101.101.101.101 255.255.255.255
-          - exit
-          - int lo102
-          - ip add 102.102.102.102 255.255.255.255
-      vars:
-        ansible_network_os: ios
-~~~
-
-<br>
-
-__hosts (Inventory)__
-~~~
-[CoreBaba]
-10.11.1.4
-
-[CoreBaba:vars]
-ansible_user=admin
-ansible_password=C1sc0123
-ansible_connection=network_cli
-ansible_network_os=ios
-~~~
-
-&nbsp;
----
-&nbsp;
-
-### CHEF
-__Cookbook__  
-__Recipe (default.rb file)__
-
-~~~
-cisco_ios_config 'set_hostname_and_ssh' do
-  config_lines [
-    "hostname #{node['cisco_ios_config']['hostname']}",
-	"ip domain-name #{node[cisco_ios_config]['domain_name']}",
-	"crypto key generate rsa modulus 2048",
-	"ip ssh version 2",
-	"line vty 0 4",
-	"transport input all",
-	"login local"
-  ]
-  action :apply
-end
-~~~
-
-<br>
-
-__Credentials__
-~~~
-['CoreBaba']
-Host = '192.168.240.2'
-User = 'admin'
-Password = 'password'
-~~~
-
-&nbsp;
----
-&nbsp;
-
-### PUPPET
-__Manifest (.pp Pocket Physics file)__
-~~~
-node 'cisco.example.com' {
-  cisco_ios_interface { 'GigabitEthernet0/1':
-    ensure => present,
-    description => "Uplink to Core",
-    speed => 'auto',
-    duplex => 'auto',
-    vlan_access => '10',
-}
-~~~
-
-<br>
-
-__Device.conf (Inventory)__
-~~~
-[rivan.com]
-type cisco_ios_interfaceurl file:////etc/puppetlabs/puppet/devices/rivan.com.conf
-~~~
-
-<br>
-
-__Credentials__
-~~~
-host: "10.#$34T#.1.4"
-port: 22
-user: admin
-password: password
-enable_password: password
-~~~
-
-&nbsp;
----
-&nbsp;
-
-### TERRAFORM
-__HCL (.tf File)__
-~~~
-terraform {
-  required_providers {
-    iosxe = {
-      source = "CiscoDevNet/iosxe"
-    }
-  }
-}
-
-provider "iosxe" {
-  username = "admin"
-  password = "pass"
-  url      = "https://10.11.11.1"
-}
-
-resource "iosxe_interface_loopback" "example" {
-  name               = 200
-  description        = "My First TF Script Attempt"
-  shutdown           = false
-  ipv4_address       = "2.2.2.2"
-  ipv4_address_mask  = "255.255.255.255"
-}
-~~~
 
 <br>
 <br>
@@ -497,347 +297,190 @@ resource "iosxe_interface_loopback" "example" {
 ---
 &nbsp;
 
-### Exercise 01: Write Scripts to add loopbacks via Python, Ansible, Terraform
 
-Tip - Open "Auto AddLoop" folder
-
-
-__________
-**********
-03. Domain Name System
-"Connect to websites through IP addresses alone"
-
-@cmd
-ping google.com         ___.___.___.___
-ping cisco.com     
-ping rivanit.com   
-
-
-
-Set up your own DNS Server.
- - Create a Zone File for ccna#$34T#.com
-   Forward & Reverse
-
- - DNS Records
-
-@cmd
-ping ns.google.com      ___.___.___.___
-ping www
-ping imap
-ping pop
-ping smtp
-
-
-Exercise 02: Configure DNS records for devices:
-  CoreBABA,   cb
-  CoreTaas,   ct
-  CUCM,       cm
-  EDGE,       ed
-  AP,         ap
-  WLC,        wc
-  Cam6,       c6
-  Cam8,       c8
-  Ephone1,    e1
-  Ephone2,    e2
-
-
-Configure a webserver for ccna#$34T#.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#########################################################################
-### Powershell Script to install DNS & IIS (Windows Web Server)
-
-Install-WindowsFeature -name dns -includeManagementTools
-﻿Install-WindowsFeature -name Web-Server -includeManagementTools
-
-
-#########################################################################
-### Powershell Script for DNS Zones & Records
-
-add-DnsServerPrimaryZone -Name "ccna#$34T#.com" -ZoneFile "ccna#$34T#.com.dns"
-
-﻿add-DnsServerResourceRecord -zonename ccna#$34T#.com -A -name ns -ipv4address 10.#$34T#.1.7
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -Cname -name www -hostname ns.ccna#$34T#.com
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -Cname -name imap -hostname ns.ccna#$34T#.com
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -Cname -name pop -hostname ns.ccna#$34T#.com
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -Cname -name smtp -hostname ns.ccna#$34T#.com
-
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -A -name cb -ipv4address 10.#$34T#.1.4
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -A -name ct -ipv4address 10.#$34T#.1.2
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -A -name cm -ipv4address 10.#$34T#.100.8
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -A -name ed -ipv4address 10.#$34T#.#$34T#.1
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -A -name e1 -ipv4address 10.#$34T#.100.101
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -A -name e2 -ipv4address 10.#$34T#.100.102
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -A -name c6 -ipv4address 10.#$34T#.50.6
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -A -name c8 -ipv4address 10.#$34T#.50.8
-add-DnsServerResourceRecord -zonename ccna#$34T#.com -A -name ap -ipv4address 10.#$34T#.10.3
-
-
-#########################################################################
-### Powershell Script for Website configuration
-
-New-Website -name "ccna#$34T#.com" -hostheader "www.ccna#$34T#.com" -physicalpath "d:\webs\officebiz"
-
-
-
-Exercise 03: Configure DNS and Web for bpiph#$34T#.com
-
-  - The zone file must contain records for Web, eMail, CUCM,EDGE, ePhone1 and ePhone2.
-  - Assign the bpi html as its own main page.
-
-
-
-Internet Assigned Numbers Authority
-Authoritative DNS Root Servers 
-
-What happens when a dns server does not know how to map a domain name?
-
-
-@cmd
-nslookup -type=NS com. a.root-servers.net
-nslookup -type=NS rivanit.com d.gtld-servers.net
-nslookup -type=NS rivanit.com ns1.dns-parking.com
-
-
-Root Servers
-  > TLD
-    > SLD
-	  > DNS RECORDS
-
-DNS Forwarders
-Recursive
-
-
-Lookup nemsu.edu.ph
-
-@cmd
-nslookup -type=NS
-
-
-Configure Forwarders
-
-#########################################################################
-### Powershell Script for DNS Forwarders
-
-! You do not forward things yourself
-
-Remove-DnsServerForwarder -ipAddress 10.11.1.10, 10.12.1.10, 10.21.1.10, 10.22.1.10, 10.31.1.10, 10.32.1.10, 10.41.1.10, 10.42.1.10,10.51.1.10, 10.52.1.10, 10.61.1.10, 10.62.1.10, 10.71.1.10, 10.72.1.10, 10.81.1.10, 10.82.1.10 -PassThru
-Add-DnsServerForwarder -ipAddress 10.11.1.10, 10.12.1.10, 10.21.1.10, 10.22.1.10, 10.31.1.10, 10.32.1.10, 10.41.1.10, 10.42.1.10,10.51.1.10, 10.52.1.10, 10.61.1.10, 10.62.1.10, 10.71.1.10, 10.72.1.10, 10.81.1.10, 10.82.1.10 -PassThru
-
-
-
-
-
-Verify:
-
-@Cisco
-conf t
- ip domain lookup
- ip name-server 10.#$34T#.1.10
- end
-ping ns.ccna#$34T#.com
-
-
-
-__________
-**********
-04. File Transfer
-
-Upload configurations to FTP Server. (CoreTaas, CoreBaba, CUCM, EDGE)
-
-@Cisco
-copy run ftp://ccna#$34T#.com
-
-
-How to copy the current IOS of a Cisco Switch
-
-@Cisco
-archive upload-sw ftp://ccna#$34T#.com
-
-
-
-__________
-**********
-05. Mail Exchanger
-
-Create an MX record on the Zone file.
-	Install .NET Framework 3.5 Features
-
-
-Create users and emails for ccna#$34T#.com and bpiph#$34T#.com
-
-  User1: ac
-  Pass: C1sc0123
-  
-  User: Support
-  Pass: C1sc0123
-  
-  
-
-__________
-**********
-06. SoftWare Defined Networking
-
-On-Prem => Cloud
-
-Infrastructure Layer / Data Plane - Processing of Data
-Control Layer / Control Plane - Reference of Data
-Application Layer / Management Plane - Graphical presentation of Data
-
-@Cisco
-show run
-
-Meraki, SD-WAN, Cisco NSO
-
-
-
-Get started with Meraki: https://account.meraki.com/login
-
-MERAKI Account:
-  Firewall 1 (Monitor Numbers that end with 1)
-	USER: rivanmeraki1@gmail.com
-	PASS: C1sc0,123
-  
-  Firewall 2 (Monitor Numbers that end with 2)
-	USER: rivanmeraki2@gmail.com
-	PASS: C1sc0,123
-	
-
-GMAIL Account (if asked for verification)
-  Firewall 1 
-    USER: rivanmeraki1@gmail.com
-    PASS: C1sc0123$$
-
-  Firewall 2
-   USER: rivanmeraki2@gmail.com
-   PASS: C1sc0123$$
-  
-
-
-
-
-__________
-**********
-07. OSI Layer
-
+## OSI Layer
 PDU (Protocol Data Unit)
 
-7. Application Layer 
+<br>
 
+### 7. Application Layer 
 "Underlying service that supports applications"
-SMTP
-Resource sharing
-Service advertisement
-Gramaphone
+- SMTP
+- Resource sharing
+- Service advertisement
+- Gramaphone
 
-6. Presentation Layer - File extension
+<br>
 
-Data
-encryption
--tion
-.wav .jpg .au .exe .psd
+### 6. Presentation Layer - File extension
+- __Data__
+- Anything "-tion" (encryption, )
+- .wav .jpg .au .exe .psd
+
+<br>
+
+### 5. Session Layer - Session established
+- __Data Stream__
+- Session Established, Session Terminated
+- Commands: netstat -s -p tcp, telnet, ssh
+
+<br>
+
+__SPAN__
+~~~
+!@CoreBABA
+conf t
+ monitor session 1 source interface fa0/3,fa0/5,fa0/7
+ monitor session 1 destination interface fa0/1,fa0/9
+ end
+~~~
+
+<br>
+
+Real-time Transport Protocol
+
+<br>
+
+~~~
+!@cmd
+nmap -sP 10.k.1.0/24
+nmap -v 10.k.1.10
+~~~
+
+<br>
+
+What ports are revealed?  
+139? 445?  
+
+<br>
+
+That's a vulnerable system. No Firewall. Attack it.
+~~~
+!@cmd
+net use \\10.k.1.10\ipc$     Privilege Escalation
+net use x: /delete
+net use x: \\10.k.1.10\c$
+~~~
+
+<br>
+
+### 4. Transport Layer - TCP/UDP
+- __Segments__
+- Three way handshake
+- TCP Sliding Window
+- Commands: `nmap -v 10.#$34T#.1.10`
+
+<br>
+
+- __Well-known ports__ 0 - 1023
+- __Registered ports__ 1024 - 49151
+- __Ephemeral/Dynamic__ ports 49152 - 65535
+
+<br>
+
+### 3. Network Layer - IP addresses
+- __Packets__
+- Routing protocols
+- Forwarding packets
+- Commands: `show ip int br` `sh ip route`
+
+<br>
+
+### 2. Data-link Layer - MAC Addresses
+- __Frames__
+- FCS
+- Preamble
+
+<br>
+
+- Commands: `show vlan brief`
+
+<br>
+
+### 1. Physical Layer - "Things you touch"
+- __Bits__
+- Speed = b 
+- Data = B
+
+<br>
+
+- Commands: `show cdp neigh`
 
 
-5. Session Layer - Session established
+<br>
+<br>
 
-Data Stream
-stateful
-
-Commands: netstat -s -p tcp, telnet, ssh
-
-
-4. Transport Layer - TCP/UDP
-
-Segments
-Three way handshake
-Sliding Window
-
-Commands: nmap -v 10.#$34T#.1.10
-
-Well-known ports 0 - 1023
-Registered ports 1024 - 49151
-Ephemeral/Dynamic ports 49152 - 65535
+---
+&nbsp;
 
 
-3. Network Layer - IP addresses
+## Lab Setup
 
-Packets
-Routing protocols
-Forwarding packets
+### 1. Deploy
 
-Commands: show ip int br, sh ip route
-
-
-2. Data-link Layer - MAC Addresses
-
-Frames
-FCS
-Preamble
-
-Commands: show vlan brief
-
-
-1. Physical Layer - "Things you touch"
-
-Speed = b 
-Data = B
-
-Commands: show cdp neigh
-
-
-
-
-
-
-
-
-__________
-**********
-08. Security Fundamentals
-
-Setup
+Devices:
+- 2x CSR1000v
+- 1x NetOps
+- 2x TinyCore (yvm.ova)
 
 CSR1000v:
   Name: UTM-PH
-  Size: Small
-  Config: None
   
-  NetAdapter: NAT         208.8.8.0 /24
-  NetAdapter 2: VMnet2    192.168.102.0 /24
-  NetAdapter 3: VMnet3    192.168.103.0 /24
+  | NetAdapter   |        |
+  | ---          | ---    |
+  | NetAdapter   | NAT    |
+  | NetAdapter 2 | VMNet2 |
+  | NetAdapter 3 | VMNet3 |
+  
 
+CSR1000v:
+  Name: UTM-JP
   
+  | NetAdapter   |        |
+  | ---          | ---    |
+  | NetAdapter   | NAT    |
+  | NetAdapter 2 | VMNet2 |
+  | NetAdapter 3 | VMNet4 |
+
+NetOps:
+  Name: NetOps-PH
+  
+  | NetAdapter   |                    |
+  | ---          | ---                |
+  | NetAdapter   | VMNet1             |
+  | NetAdapter 2 | VMNet2             |
+  | NetAdapter 3 | VMNet3             |
+  | NetAdapter 4 | Bridge (Replicate) |
+
+TinyCore (yvm.ova):
+  Name: BLDG-JP-1
+  
+  | NetAdapter   |                    |
+  | ---          | ---                |
+  | NetAdapter   | VMNet4             |
+
+TinyCore (yvm.ova):
+  Name: BLDG-JP-2
+  
+  | NetAdapter   |                    |
+  | ---          | ---                |
+  | NetAdapter   | VMNet4             |
+
+
+### 2. Bootstrap
+~~~
 !@UTM-PH
 conf t
  hostname UTM-PH
  enable secret pass
  service password-encryption
- no logging console
+ no logging cons
  no ip domain lookup
- username admin privilege 15 secret pass
- ip http server
- ip http secure-server
- ip http authentication local
- line vty 0 24
+ line vty 0 14
+  transport input all
   password pass
   login local
   exec-timeout 0 0
-  transport input all
  int g1
   ip add 208.8.8.11 255.255.255.0
   no shut
@@ -845,61 +488,700 @@ conf t
   ip add 192.168.102.11 255.255.255.0
   no shut
  int g3
-  ip add 10.10.10.11 255.255.255.0
+  ip add 11.11.11.113 255.255.255.224
   no shut
- ip route 0.0.0.0 0.0.0.0 208.8.8.2
- ip name-server 8.8.8.8 10.#$34T#.1.10
- ip domain lookup
+ !
+ username admin privilege 15 secret pass
+ ip http server
+ ip http secure-server
+ ip http authentication local
  end
 wr
+!
+~~~
 
+<br>
 
-How to attack? Network scanning
-
-@cmd
-ping 10.k.100.8
-nmap -sP 10.k.100.0/24
-nmap -v 10.k.100.8
-
-What ports are revealed?
- -
- -
-
-
-
-SPAN
-
-@CoreBABA
+~~~
+!@UTM-JP
 conf t
- monitor session 1 source interface fa0/3,fa0/5,fa0/7
- monitor session 1 destination interface fa0/1
+ hostname UTM-JP
+ enable secret pass
+ service password-encryption
+ no logging cons
+ no ip domain lookup
+ line vty 0 14
+  transport input all
+  password pass
+  login local 
+  exec-timeout 0 0
+ int g1
+  ip add 208.8.8.12 255.255.255.0
+  no shut
+ int g2
+  ip add 192.168.102.12 255.255.255.0
+  no shut
+ int g3
+  ip add 21.21.21.213 255.255.255.240
+  ip add 22.22.22.223 255.255.255.192 secondary
+  no shut
+ !
+ username admin privilege 15 secret pass
+ ip http server
+ ip http secure-server
+ ip http authentication local
  end
+wr
+!
+~~~
 
-Real-time Transport Protocol
+<br>
+
+~~~
+!@BLDG-JP-1
+sudo su
+ifconfig eth0 21.21.21.211 netmask 255.255.255.240 up
+route add default gw 21.21.21.213
+ping 21.21.21.213
+~~~
+
+<br>
+
+~~~
+!@BLDG-JP-2
+sudo su
+ifconfig eth0 22.22.22.221 netmask 255.255.255.192 up
+route add default gw 22.22.22.223
+ping 22.22.22.223
+~~~
+
+<br>
 
 
-@cmd
-nmap -sP 10.k.1.0/24
-nmap -v 10.k.1.10
+### NetOps-PH Setup
+> Login: root
+> Pass: C1sc0123
 
-What ports are revealed?
-139? 445?
+1. Get the MAC Address for the Bridge connection
+VMWare > NetOps-PH Settings > NetAdapter (2, 3, & 4) > Advance > MAC Address
 
-That's a vulnerable system. No Firewall. Attack it.
+| NetAdapter   | MAC Address      | VM Interface |
+| NetAdapter 2 | ___.___.___.___  | ens___       |  ens192
+| NetAdapter 3 | ___.___.___.___  | ens___       |  ens224
+| NetAdapter 4 | ___.___.___.___  | ens___       |  ens256
 
-net use \\10.k.1.10\ipc$     Privilege Escalation
-net use x: /delete
-net use x: \\10.k.1.10\c$
+<br>
+
+2. Get Network-VM Mapping
+~~~
+!@NetOps-PH
+ip -br link
+~~~
+
+<br>
+
+3. Modify Interface IP
+VMNet2:  192.168.102.6/24
+VMNet3:  11.11.11.100/27
+Bridged: 10.#$34T#.1.6/24
+
+<br>
+
+~~~
+!@NetOps-PH
+ifconfig ens192 192.168.102.6 netmask 255.255.255.0 up
+ifconfig ens224 11.11.11.100 netmask 255.255.255.224 up
+ifconfig ens256 10.#$34T#.1.6 netmask 255.255.255.0 up
+~~~
+
+<br>
+
+Verify:
+~~~
+!@NetOps-PH
+ip -4 addr
+
+nmcli connection show
+netstat -rn
+~~~
+
+<br>
+
+or  
+
+<br>
+
+__Using Network Management CLI for persistent IP.__
+
+<br>
+
+~~~
+!@NetOps-PH
+nmcli connection add \
+type ethernet \
+con-name VMNET2 \
+ifname ens192 \
+ipv4.method manual \
+ipv4.addresses 192.168.102.6/24 \
+autoconnect yes
+
+nmcli connection up VMNET2
+~~~
+
+<br>
+
+Verify:
+~~~
+!@NetOps-PH
+ip -4 addr
+
+nmcli connection show
+netstat -rn
+~~~
+
+<br>
+
+### Provide Connections for VMNet3 & and Bridge Connections
+VMNet3:
+~~~
+!@NetOps-PH
+nmcli connection add \
+type ethernet \
+con-name VMNET3 \
+ifname ens224 \
+ipv4.method manual \
+ipv4.addresses 11.11.11.100/27 \
+autoconnect yes
+
+nmcli connection up VMNET3
+~~~
+
+<br>
+
+Bridged:
+~~~
+!@NetOps-PH
+nmcli connection add \
+type ethernet \
+con-name BRIDGED \
+ifname ens256 \
+ipv4.method manual \
+ipv4.addresses 10.#$34T#.1.6/24 \
+autoconnect yes
+
+nmcli connection up BRIDGED
+~~~
+
+<br>
+
+4. Routing
+~~~
+!@NetOps-PH
+ip route add 10.0.0.0/8 via 10.#$34T#.1.4 dev ens256
+ip route add 200.0.0.0/24 via 10.#$34T#.1.4 dev ens256
+ip route add 0.0.0.0/0 via 11.11.11.113 dev ens224
+~~~
 
 
-__________
-**********
-09. Packet Filtering
+### Remote Access
+Connect to Management Interfaces of Devices
 
-There's a big problem in humanity. 
-It's corrupting everyone's brains.
+NetOps-PH: 192.168.102.6
+UTM-PH: 192.168.102.11
+UTM-JP: 192.168.102.12
 
-@cmd
+
+<br>
+<br>
+
+---
+&nbsp;
+
+## Site-to-Site VPN & Cryptography
+
+### 1. Create a Key Pair for both UTM Routers
+
+~~~
+!@UTM-PH & UTM-JP
+conf t
+ ip domain name sec.plus
+ !
+ crypto key generate rsa modulus 2048 label key exportable
+ ip ssh version 2
+ ip ssh rsa keypair-name key
+ end
+show ip ssh
+~~~
+
+<br>
+
+
+View Private & Public Keys
+~~~
+!@UTM-PH & UTM-JP
+conf t
+ crypto key export rsa key pem terminal aes C1sc0123
+ end
+~~~
+
+<br>
+
+### Diffie-Hellman Key Exchange 
+Ref: https://sec.cloudapps.cisco.com/security/center/resources/next_generation_cryptography
+
+<br>
+
+| DH GROUP | MODP                      | EC  |
+| ---      | ---                       | --- |
+| 1 	   | 768                       |     |
+| 2 	   | 1024                      |     |
+| 5 	   | 1536                      |     |
+| 14 	   | 2048                      |     |
+| 15 	   | 3072                      |     |
+| 16 	   | 4096                      |     |
+| 17 	   | 6144                      |     |
+| 18 	   | 8192                      |     |
+| 19       |                           | 256 |
+| 20       |                           | 384 |
+| 21       |                           | 521 |
+| 24       | 2048 Prime order 256 bits |     |
+
+<br>
+
+~~~
+!@NetOps-PH
+mkdir crypto; cd crypto
+openssl dhparam -out dhgroup.pem 1024
+~~~
+
+<br>
+
+~~~
+openssl genpkey -paramfile dhgroup.pem -out ph_priv.key
+openssl genpkey -paramfile dhgroup.pem -out jp_priv.key
+~~~
+
+<br>
+
+~~~
+openssl pkey -in ph_priv.key -pubout -out ph_pub.key
+openssl pkey -in jp_priv.key -pubout -out jp_pub.key
+~~~
+
+<br>
+
+~~~
+openssl pkeyutl -derive -inkey ph_priv.key -peerkey jp_pub.key -out ph-shared.secret
+openssl pkeyutl -derive -inkey jp_priv.key -peerkey ph_pub.key -out jp-shared.secret
+~~~
+
+<br>
+
+View Private key contents
+~~~
+!@NetOps
+openssl pkey -in rsa_priv.key -text -noout
+~~~
+
+<br>
+
+### 2. Access the GUI of Both UTM Routers
+
+UTM-PH: https://192.168.102.11
+UTM-JP: https://192.168.102.12
+
+<br>
+
+Wireshark: ssh vs telnet vs esp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VPN Cli Configuration:
+~~~
+!@UTM-PH
+conf t
+ crypto ikev2 proposal WEBUI-PROPOSAL-Tunnel1 
+  encryption aes-cbc-256
+  integrity sha512
+  group 14
+  exit
+ crypto ikev2 policy WEBUI-POLICY 
+  match fvrf any
+  proposal WEBUI-PROPOSAL-Tunnel1
+  exit
+ crypto ikev2 keyring WEBUI-KEYS
+  peer WEBUI-PEER-208.8.8.12
+   description KEY-PEER-208.8.8.12 
+   address 208.8.8.12 255.255.255.0
+   pre-shared-key C1sc0123
+   exit
+  exit
+ crypto ikev2 profile WEBUI-IKEV2-PROFILE
+  match fvrf any
+  match identity remote address 208.8.8.12 255.255.255.255 
+  authentication remote pre-share
+  authentication local pre-share
+  keyring local WEBUI-KEYS
+  exit
+ crypto ipsec transform-set WEBUI-TS-Tunnel1 esp-aes 256 esp-sha512-hmac 
+  mode tunnel
+  exit
+ crypto ipsec profile WEBUI-IPSEC-PROFILE-Tunnel1
+  set transform-set WEBUI-TS-Tunnel1 
+  set ikev2-profile WEBUI-IKEV2-PROFILE
+  exit
+ interface Tunnel1
+  description From PH to JP 
+  ip address 172.16.1.1 255.255.255.252
+  tunnel source GigabitEthernet1
+  tunnel mode ipsec ipv4
+  tunnel destination 208.8.8.12
+  tunnel protection ipsec profile WEBUI-IPSEC-PROFILE-Tunnel1
+  exit
+ ip route 22.22.22.192 255.255.255.192 Tunnel1
+ ip route 21.21.21.208 255.255.255.240 Tunnel1
+ end
+~~~
+
+<br>
+
+~~~
+!@UTM-JP
+conf t
+ crypto ikev2 proposal WEBUI-PROPOSAL-Tunnel1 
+  encryption aes-cbc-256
+  integrity sha512
+  group 14
+  exit
+ crypto ikev2 policy WEBUI-POLICY 
+  match fvrf any
+  proposal WEBUI-PROPOSAL-Tunnel1
+  exit
+ crypto ikev2 keyring WEBUI-KEYS
+  peer WEBUI-PEER-208.8.8.11
+   description KEY-PEER-208.8.8.11 
+   address 208.8.8.11 255.255.255.0
+   pre-shared-key C1sc0123
+   exit
+  exit
+ crypto ikev2 profile WEBUI-IKEV2-PROFILE
+  match fvrf any
+  match identity remote address 208.8.8.11 255.255.255.255 
+  authentication remote pre-share
+  authentication local pre-share
+  keyring local WEBUI-KEYS
+  exit
+ crypto ipsec transform-set WEBUI-TS-Tunnel1 esp-aes 256 esp-sha512-hmac 
+  mode tunnel
+  exit
+ crypto ipsec profile WEBUI-IPSEC-PROFILE-Tunnel1
+  set transform-set WEBUI-TS-Tunnel1 
+  set ikev2-profile WEBUI-IKEV2-PROFILE
+  exit
+ interface Tunnel1
+  description From JP to PH 
+  ip address 172.16.1.2 255.255.255.252
+  tunnel source GigabitEthernet1
+  tunnel mode ipsec ipv4
+  tunnel destination 208.8.8.11
+  tunnel protection ipsec profile WEBUI-IPSEC-PROFILE-Tunnel1
+  exit
+ ip route 11.11.11.96 255.255.255.224 Tunnel1
+ end
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+~~~
+!@UTM-PH
+conf t
+ ip route 22.22.22.192 255.255.255.192 208.8.8.12
+ ip route 21.21.21.208 255.255.255.240 208.8.8.12
+ end
+~~~
+
+<br>
+
+~~~
+!@UTM-JP
+conf t
+ ip route 11.11.11.96 255.255.255.224 208.8.8.11
+ end
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+## Internet Connectivity
+1. Specify INSIDE and OUTSIDE interfaces
+~~~
+!@edge
+conf t
+ int g0/0/0 
+  ip nat inside
+  exit
+ int g0/0/1
+  ip nat outside
+  end
+~~~
+
+<br>
+
+2. Match Traffic
+~~~
+!@edge
+conf t
+ ip access-list extended NAT-POLICY
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.11.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.12.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.21.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.22.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.31.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.32.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.41.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.42.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.51.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.52.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.61.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.62.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.71.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.72.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.81.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.82.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.91.0.0 0.0.255.255
+  deny ip 10.#$34T#.0.0 0.0.255.255 10.92.0.0 0.0.255.255
+  no deny ip 10.#$34T#.0.0 0.0.255.255 10.#$34T#.0.0 0.0.255.255
+  permit ip any any
+  end
+~~~
+
+<br>
+
+3. Apply INSIDE NAT/PAT
+~~~
+!@edge
+conf t
+ ip nat inside source list NAT-POLICY int g0/0/1 overload
+ ip route 0.0.0.0 0.0.0.0 200.0.0.1
+ end
+~~~
+
+<br>
+
+4. Set Default Gateway and DNS
+~~~
+!@edge
+conf t
+ no router ospf 1
+ router ospf 1
+  router-id #$34T#.0.0.1
+  network 10.#$34T#.#$34T#.0 0.0.0.255 area 0
+  default-information originate always
+  exit
+ ip name-server 10.#$34T#.1.10   !8.8.8.8 8.8.4.4
+ ip domain lookup
+ ip domain lookup source-int g0/0/0
+ end
+~~~
+
+<br>
+
+### mGRE Tunnel (Full Mesh)
+~~~
+!@edge
+conf t
+ int tun1
+  ip add 172.16.1.#$34T# 255.255.255.0
+  tunnel source g0/0/1
+  tunnel mode gre multipoint
+  no shut
+  tun key 123
+  ip nhrp authentication C1sc0123
+  ip nhrp map multicast dynamic
+  ip nhrp network-id 1337
+  ip nhrp map 172.16.1.11 200.0.0.11
+  ip nhrp map 172.16.1.12 200.0.0.12
+  ip nhrp map 172.16.1.21 200.0.0.21
+  ip nhrp map 172.16.1.22 200.0.0.22
+  ip nhrp map 172.16.1.31 200.0.0.31
+  ip nhrp map 172.16.1.32 200.0.0.32
+  ip nhrp map 172.16.1.41 200.0.0.41
+  ip nhrp map 172.16.1.42 200.0.0.42
+  ip nhrp map 172.16.1.51 200.0.0.51
+  ip nhrp map 172.16.1.52 200.0.0.52
+  ip nhrp map 172.16.1.61 200.0.0.61
+  ip nhrp map 172.16.1.62 200.0.0.62
+  ip nhrp map 172.16.1.71 200.0.0.71
+  ip nhrp map 172.16.1.72 200.0.0.72
+  ip nhrp map 172.16.1.81 200.0.0.81
+  ip nhrp map 172.16.1.82 200.0.0.82
+  ip nhrp map 172.16.1.91 200.0.0.91
+  ip nhrp map 172.16.1.92 200.0.0.92
+  no ip nhrp map 172.16.1.#$34T# 200.0.0.#$34T#
+  end
+~~~
+
+<br>
+
+~~~
+!@edge
+conf t
+ ip route 10.11.0.0 255.255.0.0 172.16.1.11 252
+ ip route 10.12.0.0 255.255.0.0 172.16.1.12 252
+ ip route 10.21.0.0 255.255.0.0 172.16.1.21 252
+ ip route 10.22.0.0 255.255.0.0 172.16.1.22 252
+ ip route 10.31.0.0 255.255.0.0 172.16.1.31 252
+ ip route 10.32.0.0 255.255.0.0 172.16.1.32 252
+ ip route 10.41.0.0 255.255.0.0 172.16.1.41 252
+ ip route 10.42.0.0 255.255.0.0 172.16.1.42 252
+ ip route 10.51.0.0 255.255.0.0 172.16.1.51 252
+ ip route 10.52.0.0 255.255.0.0 172.16.1.52 252
+ ip route 10.61.0.0 255.255.0.0 172.16.1.61 252
+ ip route 10.62.0.0 255.255.0.0 172.16.1.62 252
+ ip route 10.71.0.0 255.255.0.0 172.16.1.71 252
+ ip route 10.72.0.0 255.255.0.0 172.16.1.72 252
+ ip route 10.81.0.0 255.255.0.0 172.16.1.81 252
+ ip route 10.82.0.0 255.255.0.0 172.16.1.82 252
+ ip route 10.91.0.0 255.255.0.0 172.16.1.91 252
+ ip route 10.92.0.0 255.255.0.0 172.16.1.92 252
+ !
+ no ip route 10.#$34T#.0.0 255.255.0.0 172.16.1.#$34T# 252
+ end
+~~~
+
+<br>
+<br>
+
+---
+&nbsp;
+
+## Forward Proxy & Proxy Chaining
+
+NAT:
+1. Specify INSIDE and OUTSIDE interfaces
+~~~
+!@UTM-PH & UTM-JP
+conf t
+ int g1
+  ip nat outside
+ int g2
+  ip nat inside
+ int g3
+  ip nat inside
+  end
+~~~
+
+<br>
+
+2. Match Traffic
+~~~
+!@UTM-PH
+conf t
+ ip access-list extended NAT
+  deny ip 11.11.11.96 0.0.0.31 21.21.21.208 0.0.0.15
+  deny ip 11.11.11.96 0.0.0.31 22.22.22.192 0.0.0.63
+  permit ip any any
+  end
+~~~
+
+<br>
+
+~~~
+!@UTM-JP
+conf t
+ ip access-list extended NAT
+  deny ip 21.21.21.208 0.0.0.15 11.11.11.96 0.0.0.31 
+  deny ip 22.22.22.192 0.0.0.63 11.11.11.96 0.0.0.31 
+  permit ip any any
+  end
+~~~
+
+<br>
+
+3. Apply INSIDE NAT/PAT
+~~~
+!@UTM-PH & UTM-JP
+conf t
+ ip nat inside source list NAT int g1 overload
+ end
+~~~
+
+<br>
+
+4. Set Default Gateway and DNS
+~~~
+!@UTM-PH & UTM-JP
+conf t
+ ip route 0.0.0.0 0.0.0.0 208.8.8.2
+ ip domain lookup
+ ip domain lookup source-int g2
+ ip name-server 8.8.8.8 1.1.1.1
+ end
+~~~
+
+<br>
+
+~~~
+!@NetOps-PH & BLDG-JP-1 & BLDG-JP-2
+vi /etc/resolv.conf
+~~~
+
+<br>
+
+Forward Proxy
+~~~
+!@BLDG-JP-1
+ssh -l root 11.11.11.100
+
+> (yes/no) yes
+~~~
+
+<br>
+<br>
+
+---
+&nbsp;
+
+## Packet Filtering (L3 ACL)
+~~~
+!@NetOps-PH
 youporn.com
 pornhub.com
 redtube.com
@@ -909,38 +1191,46 @@ bangbus.com
 pinayflix.com
 xhamster.com
 iyottube.com
+~~~
+
+<br>
 
 Protect your most important asset: The brain
 
+<br>
 
-@UTM-PH
+### Create a standard ACL named FWP1
+~~~
+!@UTM-PH
 config t
- no ip access-list standard NOPORNFAP
- ip access-list standard NOPORNFAP
+ no ip access-list standard FWP1
+ ip access-list standard FWP1
   deny __.__.__.__  __.__.__.__
   deny __.__.__.__  __.__.__.__
   deny __.__.__.__  __.__.__.__
   permit any
  int gi 1
-  ip access-group NOPORNFAP in
+  ip access-group FWP1 in
   end
-wr
 show ip access-list int g1
+~~~
 
+<br>
 
 Remove the access-list
-
-@UTM-PH
+~~~
+!@UTM-PH
 config t
  int gi 1
-  no ip access-group NOPORNFAP in
+  no ip access-group FWP1 in
   end
+~~~
 
-
+<br>
 
 Alternative: use standard ACL 1-99
-
-@UTM-PH
+~~~
+!@UTM-PH
 config t
  no access-list 69
  access-list 69 deny 66.254.0.0 0.0.255.255
@@ -954,228 +1244,96 @@ config t
  int gi 1
   ip access-group 69 in
   end
+~~~
 
+<br>
 
-Exercise 04: Block schools
-
-@cmd
+### Block schools - FWP2
+~~~
+!@NetOps-PH
 ping www.dlsu.edu.ph 
 ping www.ccp.edu.ph      
 ping www.feu.edu.ph 
 ping  www.ue.edu.ph 
 ping  www.yourschool.edu.ph = _________
+~~~
 
+<br>
 
-@UTM-PH
+~~~
+!@UTM-PH
 config t
- no ip access-list standard NOSKUL
- ip access-list standard NOSKUL
+ no ip access-list standard FWP2
+ ip access-list standard FWP2
   deny __.__.__.__  __.__.__.__
   deny __.__.__.__  __.__.__.__
   deny __.__.__.__  __.__.__.__
   permit any
  int gi 1
-  ip access-group NOSKUL in
+  ip access-group FWP2 in
   end
 wr
 show ip access-list int g1
+~~~
 
+<br>
 
-Exercise 05: Block torrents
-
+### Block torrents
+~~~
 www.thepiratebay.org
 www.limetorrents.com
 www.freeanimeonline.com
 www.torlock2.com
 www.hentaisites.com
 www.iptorrents.com
+~~~
 
+<br>
+
+~~~
 @UTM-PH
 config t
- no ip access-list standard NOTOR
- ip access-list standard NOTOR
+ no ip access-list standard FWP3
+ ip access-list standard FWP3
   deny __.__.__.__  __.__.__.__
   deny __.__.__.__  __.__.__.__
   deny __.__.__.__  __.__.__.__
   permit any
  int gi 1
-  ip access-group NOTOR in
+  ip __________ FWP3 in
   end
 wr
 show ip access-list int g1
+~~~
 
+<br>
+<br>
 
+---
+&nbsp;
 
-Exercise 06: Block Klassmates
+### L4 Firewall Rules
+`www.rivanit.com` vs `neu.edu.ph` vs 'sti.edu.ph'
 
+Make Your UTM Router Vulnerable
+~~~
+!@UTM-PH
 config t
- no ip access-list standard NOCLASSMATES
- ip access-list standard NOCLASSMATES
-  deny 10.__.0.0 0.0.255.255
-  deny 10.__.0.0 0.0.255.255
-  deny 10.__.0.0 0.0.255.255
-  deny 10.__.0.0 0.0.255.255
-  deny 10.__.0.0 0.0.255.255
-  deny 10.__.0.0 0.0.255.255
-  deny 10.__.0.0 0.0.255.255
-  permit any
- int gi 0/0/1
- ip access-group NOCLASSMATES in
- end
-
-
-
-
-
-BLUE TEAM
-@cmd
-netstat -ano
-
-Higher port = Hacker
-
-SCAN for Vulnerable sites
-
-www.sti.edu.ph
-www.rivanit.com
-www.cia.gov
-www.nemsu.edu.ph
-
-Which sites are secure?
-
-
-RED TEAM
-Make the firewall vulnerable to learn.
-
-@UTM-PH
-config t
- int gi 3
+ int g1
+  ip add 208.8.8.100 255.255.255.0 secondary
   no shut
-  ip add 192.168.103.11 255.255.255.0
-  ip add 192.168.103.10 255.255.255.0 Secondary
+  exit
+ ip host www.bet100.com 208.8.8.100
+ ip access-list extended NAT 
+  25 deny ip 208.8.8.0 0.0.0.255 208.8.8.0 0.0.0.255
+  exit
  service finger
  service tcp-small-servers
  service udp-small-servers
  ip dns server
  ip http server
  ip http secure-server
- ip host www.web310.com 192.168.103.10
- ip host www.web311.com 192.168.103.11
- end
-
-Review: Create a DNS A record for www.ccna#$34T#.com
-192.168.103.10 www.web310.com
-192.168.103.11 www.web311.com
-  
-  or
-  
-Modify the hosts file: c:\Windows\system32\drivers\etc\hosts
-
-
-Scan the sites:
-
-@cmd
-nmap -v www.web310.com
-nmap -v www.web311.com
-
-
-
-Exercise 07: BLUE TEAM, protect your POGO sites.
-Open only the following port:
-  www.web310.com open only http, https, ping
-  www.web311.com open only dns, https, ssh
-  
-   protocol         hacker    victim       port
-tcp,udp,icmp,IP     Any      web310/11
-
-@UTM-PH
-conf t
- service timestamps log datetime
- service timestamps debug datetime
- logging 10.#$34T#.1.10
- logging trap 5
- end
-wr
-
-@UTM-PH
-conf t
- no ip access-list extended FWP1
- ip access-list extended FWP1
- permit tcp Any host www.web310.com eq __ log
- permit tcp Any host www.web310.com eq __ log
- permit __ Any host www.web310.com log
- permit tcp Any host www.web311.com eq __ log
- permit tcp Any host www.web311.com eq __ log
- permit tcp Any host www.web311.com eq __ log
- Int gi 3
-  ip access-group FWP1 in
-  end
-  
-Remove the Firewall:
-
-@UTM-PH
-config t
- int gi 3
-  no ip access-group FWP1 in
-end
-
-
-
-Exercise 07: Attacking the wrong ports
-
-@UTM-PH
-telnet 208.8.8.11 19
-
-
-
-CTRL + SHIFT + 6 Then X
-
-
-Exercise 08: 
-Create an access-list named FWP2 to open the following ports:
-
-www.web310.com open only ssh, domain, ftp, mysql
-www.web311.com open only imap, smtp, ping, daytime
-
-@UTM-PH
-conf t
- no ip access-list extended FWP2
- ip access-list extended FWP2
- permit __ Any host www.____.com eq __ log
- permit __ Any host www.____.com eq __ log
- permit __ Any host www.____.com log
- permit __ Any host www.____.com eq __ log
- permit __ Any host www.____.com eq __ log
- permit __ Any host www.____.com eq __ log
- Int gi 3
-  ip access-group FWP2 in
-  end
-
-
-Exercise 09: You are the SUPERPRANING Admin for POGO sites:
-www.web310.com open only https
-www.web311.com open only ping
-
-config t
- no ip access-list Extended PRANING3
- ip access-list Extended PRANING3
-  ?
-  ?
- int gi 3
-  ip access-group PRANING3 in
-  end
-
-
-Exercise 10: You are taking the CCNA exam and these are the ports you should remember:
-
-BUT FIRST: Go to UTM-PH GUI and activate CME
-
-Then,
-
-@UTM-PH
-conf t
- no telephony-service
  telephony-service
-  no auto assign
   no auto-reg-ephone
   max-ephones 5
   max-dn 20
@@ -1199,618 +1357,784 @@ conf t
   authenticate register
   create profile sync syncinfo.xml
   end
-  
+~~~
 
-Now, open the following ports otherwise you will work in Jollibee.
+<br>
 
-www.web310.com open only daytime, chargen, skinny-client-control-protocol
-www.web311.com open only domain, discard, sip, finger, ping, ntp
+Review: Create a DNS A record for www.ccna#$34T#.com
+208.8.8.100 www.bet100.com
 
+<br>
+
+or
+
+<br>
+
+Modify the hosts file: c:\Windows\system32\drivers\etc\hosts
+
+<br>
+
+Scan the sites:
+~~~
+@cmd
+nmap -v www.bet100.com
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+### Protect you GAMBLING SITES
+Create an extended ACL named FWP4
+Open only the following ports:
+  http, https, ping, ssh, dns
+
+Formula:
+|  PROTOCOL       |  HACKER  |  VICTIM  |  PORT         |
+| ---             | ---      | ---      | ---           |
+| TCP/UDP/ICMP/IP |   ANY    |          |  Dest.Port eq |
+
+<br>
+
+__SYSLOG__
+~~~
+!@UTM-PH
+conf t
+ service timestamps log datetime
+ service timestamps debug datetime
+ logging 10.#$34T#.1.10
+ logging trap 5
+ end
+wr
+~~~
+
+<br>
+
+~~~
+!@UTM-PH
+conf t
+ no ip access-list extended FWP4
+ ip access-list extended FWP4
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com log
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com eq __ log
+ Int gi 3
+  ip access-group FWP4 in
+  end
+~~~
+
+<br>
+
+Remove the Firewall:
+~~~
 @UTM-PH
 config t
- no ip access-list ______ NOJOLLIBEEPLS
- ip access-list ______ NOJOLLIBEEPLS
-
  int gi 3
-  ip ______  ___  ___
-  end
-  
-  
-Make sure to remove firewall for next activity:
-
-@UTM-PH
+  no ip access-group FWP4 in
 end
-show run | s interface
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+### Learn by doing the wrong things
+Create an access-list named FWP5 to open the following ports:  
+www.bet100.com open only telnet, sql, domain, ftp, ping  
+
+<br>
+
+~~~
+!@UTM-PH
+conf t
+ no ip access-list extended FWP5
+ ip access-list extended FWP5
+  permit __ Any host www.____.com eq __ log
+  exit
+ int gi 3
+  ip access-group FWP5 in
+  end
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+### Remember Ports
+Create an access-list named FWP6 to open the following ports:  
+www.bet100.com open only sccp, sip, imap, smtp, pop3, ftp, tftp, ntp
+
+~~~
+!@UTM-PH
+conf t
+ no ip access-list extended FWP6
+ ip access-list extended FWP6
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com eq __ log
+ permit __ Any host www.____.com eq __ log
+ Int gi 3
+  ip access-group FWP6 in
+  end
+~~~
+
+<br>
+
+__Make sure to remove firewall for next activity:__
+
+<br>
+<br>
+
+---
+&nbsp;
+
+## Zone Based Firewall
+Stateless vs Stateful
+
+<br>
+
+Establish Zero Trust
+~~~
+!@UTM-JP
+
+G1: OUTSIDE
+G2: INSIDE
+G3: DMZ
+Tun1: VPN
+
+Policy
+INBOUND:  OUT-IN      DROP
+OUTBOUND: IN-OUT      INSPECT
+DOMAIN:   OUT-DMZ     INSPECT (RESTRICT)
+~~~
+
+<br>
+
+1. Define Zones and Interfaces
+~~~
+!@UTM-JP
+conf t
+ zone security OUTSIDE
+  description PUBLIC_INTERFACE
+ zone security INSIDE
+  description LOCAL_LAN
+ zone security DMZ
+  description SECURE_PUB_SERVERS
+ !
+ int g1
+  zone-member security OUTSIDE
+ int g2
+  zone-member security INSIDE
+ int g3
+  zone-member security DMZ
+  end
+~~~
+
+<br>
+
+2. Create an ACL to match traffic rules
+~~~
+!@FW
+conf t
+ ip access-list extended INSIDE-TO-OUTSIDE
+  10 permit ip any any
+ ip access-list extended OUTSIDE-TO-INSIDE
+  10 deny ip any any
+  end
+~~~
+
+<br>
+
+3. Group traffic using Class Maps
+~~~
+!@FW
+conf t
+ class-map type inspect match-any CM-IN-TO-OUT
+  match access-group name INSIDE-TO-OUTSIDE
+ class-map type inspect match-any CM-OUT-TO-IN
+  match access-group name OUTSIDE-TO-INSIDE
+  end
+~~~
+
+<br>
+
+4. Define Policy Maps to Act on the traffic (ex. inspect, drop, pass, log)
+~~~
+!@FW
+conf t
+ policy-map type inspect INSIDE-OUTSIDE-POLICY
+  class class-default
+   drop log
+ policy-map type inspect OUTSIDE-INSIDE-POLICY
+  class class-default
+   drop log
+   end
+~~~
+
+<br>
+
+5. Define Zone-Pairs to link source and destination zone to policies in a specific direction.
+~~~
+!@FW
+conf t
+ zone-pair security INSIDE-OUTSIDE source INSIDE destination OUTSIDE
+  service-policy type inspect INSIDE-OUTSIDE-POLICY
+ zone-pair security OUTSIDE-INSIDE source OUTSIDE destination INSIDE
+  service-policy type inspect OUTSIDE-INSIDE-POLICY
+  end
+~~~
+
+<br>
+
+### Exercise: On UTM-JP
+- Allow traffic coming from UTM-PH (208.8.8.11) except Ping and Telnet
+- Allow traffic to ports http and https
+
+<br>
+
+Verify:
+~~~
+!@cmd
+nmap -v 208.8.8.12
+~~~
+
+<br>
+<br>
+
+---
+&nbsp;
+
+## Reverse Proxy/Port Forwarding
+`www.fbi.gov` vs `www.cia.gov`
+
+~~~
+!@UTM-JP
+config t
+ int g1
+  ip add 208.8.8.200 255.255.255.0 secondary
+  no shut
+  exit
+ ip host www.bet200.com 208.8.8.200
+ ip access-list extended NAT 
+  25 deny ip 208.8.8.0 0.0.0.255 208.8.8.0 0.0.0.255
+  exit
+ !
+ ip nat inside source static tcp 21.21.21.211 80 208.8.8.200 8080
+  end
+~~~
+
+<br>
+
+Access the Web: http://208.8.8.200:8080
+
+<br>
+
+### Exercise: Set Portforwarding Rules for:
+- 208.8.8.200 8443 > 22.22.22.221 443
+- 208.8.8.200 2222 > 21.21.21.211 22
+
+<br>
+
+Well-Known Ports    Registered Ports     Dynamic/Ephemeral Ports
+	0-1023            1024-49151            49152-65535
 
 
+<br>
+<br>
 
-__________
-**********
-10. Configure Cisco Network Services
+---
+&nbsp;
 
-NETWORK TIME PROTOCOL OR NTP 
-
+## Configure Cisco Network Services (NTP)
+~~~
 @cmd
 ping time.google.com
+~~~
 
+<br>
+
+~~~
 @UTM-PH
 config t
 ntp server 216.239.35.8
 end
 show ntp associations
+~~~
 
+<br>
 
 Configure Master Time Server
-
+~~~
 @UTM-PH
 config t
 ntp master 1
+ntp source 208.8.8.11
 ntp update-calendar
 end
 show ntp associations
-
-
-__________
-**********
-11. Network Address Translation
-
-INSIDE LOCAL    INSIDE GLOBAL    OUTSIDE LOCAL    OUTSIDE GLOBAL
-
-
-
-@BLDG-1
-sudo su
-ifconfig eth0 192.168.103.21 netmask 255.255.255.0 up
-route add default gw 192.168.103.11
-ping 192.168.103.11
-
-@BLDG-2
-sudo su
-ifconfig eth0 192.168.103.22 netmask 255.255.255.0 up
-route add default gw 192.168.103.11
-ping 192.168.103.11
-
-@BLDG-3
-sudo su
-ifconfig eth0 192.168.103.23 netmask 255.255.255.0 up
-route add default gw 192.168.103.11
-
-
-
-
-
-
-
-STEP 1: Define INSIDE AND OUTSIDE
-
-STEP 2: Create Access-list to permit IP of Inside
-
-STEP 3: Create a NAT pool with overload
-
-
-@UTM-PH
-config t
- int gi 1
-  ip nat OUTSIDE
- int gi 2
-  ip nat INSIDE
- int gi 3
-  ip nat INSIDE
- no access-list 8
- access-list 8 permit 192.168.102.0 0.0.0.255
- access-list 8 permit 192.168.103.0 0.0.0.255
- ip nat inside source list 8 interface Gi 1 overload
- ip nat inside source static 192.168.103.21 208.8.8.51
- ip nat inside source static 192.168.103.22 208.8.8.52
- end
-show ip nat translations 
-
-@BLDGS
-ping   8.8.8.8    4.4.4.4     8.8.4.4
-
-
-
-
-
-Remove Conflicts:
-
-@UTM-PH
-clear ip nat translations *
- no ip nat inside source list 8 interface Gi 1 overload
- no ip nat inside source static 192.168.103.21 208.8.8.51
- no ip nat inside source static 192.168.103.22 208.8.8.52
- end
-show ip nat translations 
-
-
-
-
-
-
-CREATING A WEB PROXY OR HIDING BEHIND NAT:
-
-@ping
-www.sti.edu.ph:      vs     www.dlsu.edu.ph:
-
-
-Access the web of BLDG first.
-192.168.103.21
-192.168.103.22
-192.168.103.23
-
-
-Now hide behind the firewall.
-
-
-@UTM-PH
-config t
-IP Nat inside source static tcp 192.168.103.21 80 208.8.8.101 8080
-end
-show ip nat translation
-
-Now open 208.8.8.101:8080 on browser
-
-
-
-
-
-
-__________
-**********
-12. S2S VPN with Certificate Auth
-
-_____________________
-********************* SETUP VMNETS
-
-VMWare > Edit > Virtual Network Editor
-
-Add/Edit the following VMNets:
-
-VMNet 2, 
-	VMNet Info: Host-only
-	IP address: 192.168.102.0
-	Subnet Mask: 255.255.255.0
-	DHCP: Unchecked
-
-VMNet 3, 
-	VMNet Info: Host-only
-	IP address: 192.168.103.0
-	Subnet Mask: 255.255.255.0
-	DHCP: Unchecked
-
-VMNet 4, 
-	VMNet Info: Host-only
-	IP address: 192.168.104.0
-	Subnet Mask: 255.255.255.0
-	DHCP: Unchecked
-	
-VMNet 8(NAT)
-	VMNet Info: NAT
-	IP address: 208.8.8.0
-	Subnet Mask: 255.255.255.0
-	DHCP: Checked
-	
-	
-_____________________
-********************* DEPLOY CSRS AND LINUX
-
-Note the following VM Files:
-
-CSR1000v 17.x = VPN-EDGE
-YVM-v6 = BLDG
-
-
-Deploy 2 CSR1000v
-
-1. VPN-PH
-	Name of Virtual Machine: VPN-PH
-	Deployment Options: Small
-	Bootstrap:
-		Router Name: VPN-PH
-		Login User: admin
-		Login Pass: pass
-
-	Network Adapter: NAT
-	Network Adapter 2: VMNet2
-	Network Adapter 3: VMNet3
-		
-2. VPN-JP
-	Name of Virtual Machine: VPN-JP
-	Deployment Options: Small
-	Bootstrap:
-		Router Name: VPN-JP
-		Login User: admin
-		Login Pass: pass
-
-	Network Adapter: NAT
-	Network Adapter 2: VMNet2
-	Network Adapter 3: VMNet4
-	
-
-
-Deploy 2 YVM-v6
-
-1. BLDG-PH
-	Name of Virtual Machine: BLDG-PH
-	Network Adapter: VMNet3
-	
-2. BLDG-JP
-	Name of Virtual Machine: BLDG-JP
-	Network Adapter: VMNet4
-
-
-_____________________
-********************* CONFIGURE DEVICES
-
-!@VPN-PH
+~~~
+
+<br>
+<br>
+
+---
+&nbsp;
+
+## Honeypot
+~~~
+!@cmd
+nmap -v www.dpwh.gov.ph
+~~~
+
+<br>
+
+### 1. Create a python file for the honeypot operation.
+~~~
+!@NetOps
+sudo nano /usr/local/bin/tcp-6969-honeypot.py
+~~~
+
+<br>
+
+Then paste the following contents to the nano shell.
+
+<br>
+
+~~~
+#!/usr/bin/env python3
+import asyncio
+import datetime
+import os
+import argparse
+import binascii
+import pathlib
+
+### LOG FILE LOCATION
+BASE_LOG = '/var/log/tcp-6969-honeypot'
+os.makedirs(BASE_LOG, exist_ok=True)
+
+
+### CONVERT RAW BYTES TO HUMAN READABLE DATA
+def hexdump(data: bytes) -> str:
+
+  ### CONVERT RAW BYTES TO HEX STRINGS
+  hexs = binascii.hexlify(data).decode('ascii')
+  
+  ### LOOP 32 CHAR CHUNKS TO BE A HUMAN READABLE DATA
+  lines = []
+  for i in range(0, len(hexs), 32):
+    chunk = hexs[i:i+32]
+    b = bytes.fromhex(chunk)
+    printable = ''.join((chr(x) if 32 <= x < 127 else '.') for x in b)
+    lines.append(f'{i//2:08x} {chunk} {printable}')
+  return '\n'.join(lines)
+
+
+### LOG INFORMATION ABOUT THE ATTACKER
+async def handle(reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
+  
+  ### IDENTIFY ATTACKER IP
+  peer = writer.get_extra_info('peername')
+  if peer is None:
+    peer = ('unknown', 0)
+  ip, port = peer[0], peer[1]
+  
+  
+  ### SESSION LOGS - Year-Month-Day Hour-Minutes-Seconds
+  start = datetime.datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
+  sess_name = f"{start}_{ip.replace(':','_')}_{port}"
+  sess_dir = pathlib.Path(BASE_LOG) / sess_name
+  sess_dir.mkdir(parents=True, exist_ok=True)
+  meta_file = sess_dir / "meta.txt"
+  
+  ### WRITE SESSION LOGS
+  with meta_file.open("w") as mf:
+    mf.write(f"start: {start}\npeer: {ip}:{port}\n")
+  print(f"[+] connection from {ip}:{port} -> {sess_dir}")
+
+
+  ### SEND MESSAGE TO THE ATTACKER
+  try:
+    writer.write(b'Welcome to Rivan, you Hacker!!! \r\n')
+    await writer.drain()
+  except Exception:
+    pass
+
+
+  ### DUMP RAW AND HEX DATA
+  raw_file = sess_dir / "raw.bin"
+  hexd_file = sess_dir / "hexdump.txt"
+  try:
+    with raw_file.open("ab") as rb, hexd_file.open("a") as hf:
+      while True:
+        data = await asyncio.wait_for(reader.read(4096), timeout=300.0)
+        if not data:
+          break
+        ts = datetime.datetime.utcnow().isoformat() + "Z"
+        rb.write(data)
+        hf.write(f"\n-- {ts} --\n")
+        hf.write(hexdump(data) + "\n")
+        
+        ### RECORD READABLE COPY
+        printable = ''.join((chr(x) if 32 <= x < 127 else '.') for x in data)
+        with (sess_dir / "printable.log").open("a") as pf:
+          pf.write(f"{ts} {printable}\n")
+        
+        ### SEND TARPITTED RESPONSE
+        try:
+          writer.write(b"OK\r\n")
+          await writer.drain()
+        except Exception:
+          break
+  except asyncio.TimeoutError:
+    print(f"[-] connection timed out {ip}:{port}")
+  except Exception as e:
+    print(f"[-] session error {e}")
+  finally:
+    try:
+      writer.close()
+      await writer.wait_closed()
+    except Exception:
+      pass
+    end = datetime.datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
+    with meta_file.open("a") as mf:
+      mf.write(f"end: {end}\n")
+    print(f"[+] closed {ip}:{port} -> {sess_dir}")
+
+
+### TCP HANDLER
+async def main(host, port):
+  server = await asyncio.start_server(handle, host, port)
+  addrs = ", ".join(str(sock.getsockname()) for sock in server.sockets)
+  print(f"Listening on {addrs}")
+  async with server:
+    await server.serve_forever()
+      
+### CLI ENTRYPOINT
+if __name__ == "__main__":
+  parser = argparse.ArgumentParser()
+  parser.add_argument("--host", default="0.0.0.0")
+  parser.add_argument("--port", type=int, default=6969)
+  args = parser.parse_args()
+  try:
+    asyncio.run(main(args.host, args.port))
+  except KeyboardInterrupt:
+    pass
+~~~
+
+<br>
+
+> [!NOTE]
+> Imports
+> - asyncio: event loop + async IO (handles many connections efficiently).
+> - datetime: timestamps.
+> - os, pathlib: filesystem operations.
+> - argparse: parse CLI arguments (--host, --port).
+> - binascii: binary ⇄ hex conversion.
+
+&nbsp;
+---
+&nbsp;
+
+### 2. Create the directory for the log files.
+~~~
+!@NetOps
+sudo mkdir /var/log/tcp-6969-honeypot
+~~~
+
+<br>
+
+Make the file excecutable
+
+<br>
+
+~~~
+!@NetOps
+sudo chmod +x /usr/local/bin/tcp-6969-honeypot.py
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+### 3. Prevent the honeypot server from being compronised by assigning a nologin account to it.
+~~~
+!@NetOps
+sudo useradd -r -s /sbin/nologin honeypot69 || true
+sudo chown -R honeypot69:honeypot69 /var/log/tcp-6969-honeypot
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+### 4. Create a Systemd Service unit file
+~~~
+!@NetOps
+nano /etc/systemd/system/tcp-6969-honeypot.service
+~~~
+
+<br>
+
+Then paste the following
+
+<br>
+
+~~~
+[Unit]
+Description=A TCP Honeypot for port 6969
+After=network.target
+
+[Service]
+User=honeypot69
+Group=honeypot69
+ExecStart=/usr/local/bin/tcp-6969-honeypot.py --host 0.0.0.0 --port 6969
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=10
+ProtectSystem=full
+ProtectHome=yes
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateNetwork=no
+ReadOnlyPaths=/usr
+AmbientCapabilities=
+SystemCallFilter=~@clock @cpu-emulation
+
+[Install]
+WantedBy=multi-user.target
+~~~
+
+&nbsp;
+---
+&nbsp;
+
+### 5. Then start the service
+~~~
+!@NetOps
+sudo systemctl daemon-reload
+sudo systemctl start tcp-6969-honeypot.service
+sudo systemctl status tcp-6969-honeypot.service --no-pager
+~~~
+
+<br>
+
+### 6. OPTIONAL
+If binding to ports below 1024 use the following systemd setup
+~~~
+NoNewPrivileges=No
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+~~~
+
+<br>
+
+Exercise: Set a port forwarding rule for the honeypot and modify the firewall to allow any access to the honeypot port.
+
+<br>
+<br>
+
+---
+&nbsp;
+
+## Secure Authentication Methods & Privilege Access Management Solutions
+Generate SSH Keys:
+
+CISCO:
+~~~
+!@UTM-PH
 conf t
- hostname VPN-PH
- enable secret pass
- service password-encryption
- no logging cons
- no ip domain lookup
- line vty 0 14
-  transport input all
-  password pass
-  login local
-  exec-timeout 0 0
- int g1
-  ip add 208.8.8.11 255.255.255.0
-  no shut
- int g2
-  ip add 192.168.102.11 255.255.255.0
-  no shut
- int g3
-  ip add 10.10.10.40 255.255.255.224
-  no shut
+ ip domain name sec.plus
  !
- username admin privilege 15 secret pass
- ip http server
- ip http secure-server
- ip http authentication local
+ crypto key generate rsa modulus 2048 label key exportable
+ ip ssh version 2
+ ip ssh rsa keypair-name key
  end
-wr
+show ip ssh
+~~~
 
+<br>
 
-!@VPN-JP
+LINUX:
+~~~
+!@NetOps-PH
+ssh-keygen -t rsa -b 1024 -f rsa.key
+fold -w 46 rsa.key.pub
+~~~
+
+<br>
+
+__RSA__ vs __ECDSA__ vs __ED25519__
+
+<br>
+
+RSA (Rivest Shamir Adleman)
+- Algo: Integer factorization
+= Key Size: 2048-4096 bits
+  
+ECDSA (Elliptical Curve Digital Signature)
+- Algo: Elliptic-curve (NIST P-256/384/521)
+- Key Size: 256, 384, 521 bits
+
+ED25519 (Edwards Curve over the 2^255-19 prime field)
+- Algo: Elliptic-curve (Curve25519)
+- Key-Size: 256 bits
+
+&nbsp;
+---
+&nbsp;
+
+### ECDSA Key Pair
+LINUX:
+~~~
+!@NetOps-PH
+ssh-keygen -t ecdsa -b 521 -f ec.key
+fold -w 46 ec.key.pub
+~~~
+
+<br>
+
+CISCO:
+~~~
+!@UTM-PH
 conf t
- hostname VPN-JP
- enable secret pass
- service password-encryption
- no logging cons
- no ip domain lookup
- line vty 0 14
-  transport input all
-  password pass
-  login local 
-  exec-timeout 0 0
- int g1
-  ip add 208.8.8.12 255.255.255.0
-  no shut
- int g2
-  ip add 192.168.102.12 255.255.255.0
-  no shut
- int g3
-  ip add 20.20.20.50 255.255.255.248
-  no shut
- !
- username admin privilege 15 secret pass
- ip http server
- ip http secure-server
- ip http authentication local
+ crypto key generate ec keysize 256 label key exportable
  end
-wr
+~~~
 
+&nbsp;
+---
+&nbsp;
 
-!@BLDG-PH
-sudo su
-ifconfig eth0 10.10.10.41 netmask 255.255.255.224 up
-route add default gw 10.10.10.40
-ping 10.10.10.40
+### ED25519 Key Pair
+LINUX:
+~~~
+!@NetOps-PH
+ssh-keygen -t ed25519 -a 256 -f ed.key
+fold -w 46 ed.key.pub
+~~~
 
+<br>
 
-!@BLDG-JP
-sudo su
-ifconfig eth0 20.20.20.51 netmask 255.255.255.248 up
-route add default gw 20.20.20.50
-ping 20.20.20.50
-
-
-_____________________
-********************* CREATE USER ACCOUNTS ON BLDGs
-!@BLDG-PH, BLDG-JP
-sudo  su
-adduser admin
-> pass
-> pass
-
-
-_____________________
-********************* Deploy CA Server & Issue Certificates
-
-NetOps VM
-	NetAdapter: NAT
-	NetAdapter 2: VMNet2
-	NetAdapter 3: VMNet3
-	NetAdapter 4: Bridged (Replicate)
-
-	Login: root
-	Pass: C1sc0123
-	
-
-1. Configure IP addressing for NetAdapter 2 (Verify MAC ADDRESS of interface)
-
-!@NetOps
-ifconfig ens192 192.168.102.100 netmask 255.255.255.0 up
-ifconfig ens224 192.168.103.100 netmask 255.255.255.0 up
-
-
-
-2. Create a directory for keys and certificates.
-
-!@NetOps
-cd
-mkdir keystore
-cd keystore
-mkdir rivankeys
-cd rivankeys
-
-
-3. Create a Private key with a Selfsigned Certificate (x509)
-
-!@NetOps
-openssl req -x509 -newkey rsa:2048 -days 365 -keyout key-rivan.pem -out ca-rivan.pem -nodes
-
-
-Sample Output:
------
-Country Name (2 letter code) [XX]:PH
-State or Province Name (full name) []:National Capital Region
-Locality Name (eg, city) [Default City]:Makati
-Organization Name (eg, company) [Default Company Ltd]:Rivancorp
-Organizational Unit Name (eg, section) []:Head Quarters
-Common Name (eg, your name or your server's hostname) []: Rivan Corporation Cybersecurity Institute
-Email Address []:admin@rivancorp.com
-
-
-Include -subj information so that no prompts appear:
-
-!@NetOps
--subj "/C=PH/ST=NCR/L=Makati/O=Rivancorp/OU=HQ/CN=rivan.com/emailAddress=admin@rivancorp.com/subjectAltName=DNS:rivan.com,DNS:www.rivan.com,IP:192.168.102.100,DNS:software.rivan.com"
-
-
-Display Certificate Info
-
-!@NetOps
-openssl x509 -in ca-rivan.pem -noout -text
-
-
-
-4. Generate RSA Key Pair on both routers.
-
-!@VPN-PH, VPN-JP
+CISCO:
+~~~
+!@UTM-PH
 conf t
- crypto key generate rsa general-keys label rivankeys modulus 2048 exportable
+ crypto key generate ed25519 keysize 256 label key exportable
  end
+~~~
 
+<br>
 
-
-5. Create a trustpoint and import the CA.
-
-!@VPN-PH
+Exercise: Create accounts on both Cisco and Linux servers then attach the public key to accounts.
+~~~
+!@UTM-PH
 conf t
- crypto pki trustpoint rivantrust
-  enrollment terminal pem
-  hash sha512
-  subject-name CN=siteph.rivan.com, C=PH, ST=NCR, L=Makati, O=Rivancorp, OU=SitePH, E=siteph@rivancorp.com
-  subject-alt-name siteph.rivan.com
-  subject-alt-name ph.rivan.com
-  storage nvram: 
-  primary
-  revocation-check none
-  rsakeypair rivankeys
-  exit
- crypto pki authenticate rivantrust
-> Paste the CA
-
-
-!@VPN-JP
-conf t
- crypto pki trustpoint rivantrust
-  enrollment terminal pem
-  hash sha512
-  subject-name CN=siteph.rivan.com, C=JP, ST=Kanto, L=Tokyo, O=Rivancorp, OU=SiteJP, E=sitejp@rivancorp.com
-  subject-alt-name sitejp.rivan.com
-  subject-alt-name jp.rivan.com
-  storage nvram: 
-  primary
-  revocation-check none
-  rsakeypair rivankeys
-  exit
- crypto pki authenticate rivantrust
-> Paste the CA
-
-
-
-6. Generate a CSR for both Routers
-
-!@VPN-PH, VPN-JP
-crypto pki enroll rivantrust
-
-> Outputs a CSR . Must be signed by the CA
-
-
-
-7. Import the CSR to the CA Server (NetOps)
-
-!@NetOps
-nano req-ph.pem
-> paste VPN-PH's CSR
-> ctrl + s (save)
-> ctrl + x (exit)
-
-
-!@NetOps
-nano req-jp.pem
-> paste VPN-JP's CSR
-> ctrl + s (save)
-> ctrl + x (exit
-
-
-
-8. Sign the CSRs
-
-!@NetOps
-openssl x509 -req -in req-ph.pem -CA ca-rivan.pem -CAkey key-rivan.pem -out signed-ph.pem
-openssl x509 -req -in req-jp.pem -CA ca-rivan.pem -CAkey key-rivan.pem -out signed-jp.pem
-
-include subject names:
--subj "/C=PH/ST=NCR/L=Makati/O=Rivancorp/OU=SitePH/CN=Rivan Corporation PH/emailAddress=siteph@rivancorp.com/subjectAltName=DNS:siteph.rivan.com,DNS:ph.rivan.com,IP:208.8.8.11"
--subj "/C=JP/ST=Kanto/L=Tokyo/O=Rivancorp/OU=SiteJP/CN=Rivan Corporation PH/emailAddress=sitejp@rivancorp.com/subjectAltName=DNS:sitejp.rivan.com,DNS:jp.rivan.com,IP:208.8.8.12"
- 
-!@NetOps - obtain the signed CSRs
-cat signed-rivansitea.pem
-cat signed-rivansiteb.pem
-
-
-6. Import the signed CSRs
-
-!@VPN-PH, VPN-JP
-conf t
- crypto pki import rivantrust certificate
-
-> Paste the signed CSR
-
-7. Verify existing certificates.
-
-!@VPN-PH, VPN-JP
-show crypto pki certificates
-
-_____________________
-********************* Configure GRE over IPSec via Certificate Authentication
-
-1. GRE Tunnel
-
-!@VPN-PH
-conf t
- int tun1
-  ip add 172.16.10.1 255.255.255.0
-  tunnel source g1
-  tunnel destination 208.8.8.12
-  tunnel mode gre ip
-  end
-
-!@VPN-JP
-conf t
- int tun1
-  ip add 172.16.10.2 255.255.255.0
-  tunnel source g1
-  tunnel destination 208.8.8.11
-  tunnel mode gre ip
-  end
-
-
-2. Routing Interesting traffic
-
-!@VPN-PH
-conf t
- ip route 20.20.20.48 255.255.255.248 172.16.10.2
+ username admin priv 15 secret pass
+ username rivanph priv 15 secret pass
+ username ______  priv 15 secret pass
  end
- 
-!@VPN-JP
+~~~
+
+<br>
+
+~~~
+!@NetOps-PH
+adduser rivanph
+passwd rivanph
+~~~
+
+<br>
+
+CISCO:
+~~~
+!@UTM-PH
 conf t
- ip route 10.10.10.32 255.255.255.224 172.16.10.1
- end
-
-
-3. Configure ISAKMP Policy
-
-!@VPN-PH, VPN-JP
-conf t
- crypto isakmp policy 1
-  authentication rsa-sig
-  encryption aes 256
-  hash sha512
-  group 14
-  end
-
-
-4. Configure IPSec Profile
-
-!@VPN-PH, VPN-JP
-conf t
- crypto ipsec transform-set IPSECTUNNEL esp-aes 256 esp-sha-hmac
-  mode transport
-  exit
- crypto ipsec profile RIVAN
-  set transform-set IPSECTUNNEL
-  set pfs group14
-  end
-
-
-5 Apply IPSec Profile Protection to Tunnel
-
-!@VPN-PH, VPN-JP
-conf t
- int tunnel 1
-  tunnel protection ipsec profile RIVAN 
-  end
-
-
-_____________________
-********************* Verification
-
-!@VPN-PH, VPN-JP
-show crypto isakmp sa
-show crypto ipsec sa
-
-
-
-
-
-
-
-
-
-
-
-
-
-Other
-
-crypto isakmp key secretkey address 133.33.33.2
-
-
-
-________________
-****************
-13. SSH Keygen Public key Authentication
-
-@Linux
-ssh-keygen -t rsa -b 2048 -f mine
-fold -b -w 72 /home/ubuntu/.ssh/id_rsa.pub
-
-
-3. Create a User with public key-chain.
-@Cisco
-conf t
- username aerin privilege 15
  ip ssh pubkey-chain
-  username aerin
+  username rivanph
    key-string
     <PASTE PUB KEY>
 	exit
    end
+~~~
 
+<br>
 
-4. Disable Password authentication.
-
-@Cisco
+Disable Password authentication.
+~~~
+!@UTM-PH
 conf t
  ip ssh server algorithm authentication publickey
  no ip ssh server algorithm authentication password
  no ip ssh server algorithm authentication keyboard
  end
+~~~
+
+<br>
+
+LINUX:
+~~~
+!@NetOps-PH
+nano /etc/ssh/ssh_config.d
+cat key.pub >> /.ssh/authorized_keys
+
+Paste Public Keys
+~~~
+
+
+
+
+
+
+
+
+
+
+
+http://192.168.102.6
+
+<br>
+
+Register Devices in the JumpServer
+
+
+
+
+
+
+
+
+TShoot Possible Domain Errors
+~~~
+!@NetOps-PH
+nano /opt/jumpserver/config/config.txt
+~~~
+
+<br>
+
+`DOMAINS=set.domain.name`
+
+~~~
+!@NetOps-PH
+jmsctl.sh restart
+~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
