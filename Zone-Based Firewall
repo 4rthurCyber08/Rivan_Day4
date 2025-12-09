@@ -1,5 +1,79 @@
 Policy Based Firewall
 
+### Deploy
+- NetOps KRB Server
+- WinServer 2022
+- BLDG-PH
+- BLDG-JP
+
+### 2. Configuration
+~~~
+!@UTM-PH
+conf t
+ hostname UTM-PH
+ enable secret pass
+ service password-encryption
+ no logging cons
+ no ip domain lookup
+ line vty 0 14
+  transport input all
+  password pass
+  login local
+  exec-timeout 0 0
+ int g1
+  ip add 208.8.8.11 255.255.255.0
+  no shut
+ int g2
+  ip add 192.168.102.11 255.255.255.0
+  no shut
+ int g3
+  ip add 11.11.11.113 255.255.255.224
+  ip add 11.11.11.133 255.255.255.224 secondary
+  no shut
+ !
+ username admin privilege 15 secret pass
+ ip http server
+ ip http secure-server
+ ip http authentication local
+ end
+wr
+!
+~~~
+
+<br>
+
+~~~
+!@Win
+ip: 11.11.11.100/27
+gateway: 11.11.11.113
+dns: 127.0.0.1
+
+!@cmd
+route add 208.8.8.0 mask 255.255.255.0 11.11.11.113
+~~~
+
+<br>
+
+~~~
+!@BLDG-PH
+sudo su
+ifconfig eth0 11.11.11.130 netmask 255.255.255.224 up
+route add default gw 11.11.11.133
+ping 11.11.11.133
+~~~
+
+<br>
+
+~~~
+!@BLDG-JP
+sudo su
+ifconfig eth0 208.8.8.12 netmask 255.255.255.0 up
+route add default gw 208.8.8.11
+ping 208.8.8.11
+~~~
+
+
+
 1. Define Zones and Interfaces
 
 !@FW
