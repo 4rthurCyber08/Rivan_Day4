@@ -47,6 +47,30 @@ conf t
 
 <br>
 
+~~~
+!@CoreBABA
+conf t
+ monitor session 1 source interface fa0/3,fa0/5,fa0/7
+ monitor session 1 destination int fa0/1,fa0/9
+ end
+~~~
+
+<br>
+
+Remove SPAN
+
+<br>
+
+~~~
+!@CoreBABA
+conf t
+ no monitor session 1 source interface fa0/3,fa0/5,fa0/7
+ no monitor session 1 destination int fa0/1,fa0/9
+ end
+~~~
+
+<br>
+
 ### 4. Transport Layer - TCP/UDP
 Segments  
 Three way handshake  
