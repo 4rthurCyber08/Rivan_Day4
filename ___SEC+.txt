@@ -31,6 +31,20 @@ stateful
   
 Commands: netstat -s -p tcp, telnet, ssh  
 
+~~~
+!@Cisco
+conf t
+ username admin priv 15 secret pass
+ ip domain name net.sec
+ crypto key generate rsa modulus 2048 label key exportable
+ ip ssh version 2
+ line vty 0 14
+  password pass
+  login local
+  exec-timeout 0 0
+  end
+~~~
+
 <br>
 
 ### 4. Transport Layer - TCP/UDP
