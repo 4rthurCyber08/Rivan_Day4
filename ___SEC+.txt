@@ -100,6 +100,26 @@ Preamble
   
 Commands: show vlan brief  
 
+~~~
+!@CoreBABA
+config t
+ int fa0/6
+  switchport mode access
+  switchport port-security
+  switchport port-security mac-address Sticky
+  switchport port-security maximum 1
+  switchport port-security violation shutdown
+ int fa0/8
+  switchport mode access
+  switchport port-security
+  switchport port-security mac-address Sticky
+  switchport port-security maximum 1
+  switchport port-security violation shutdown
+  end
+sh port-security address
+sh int status err-disable
+~~~
+
 <br>
 
 ### 1. Physical Layer - "Things you touch"
