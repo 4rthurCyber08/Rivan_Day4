@@ -3,6 +3,79 @@
 
 
 =======================================
+## OSI Model 
+*Interpret and Explain the OSI Model*
+
+PDU (Protocol Data Unit)
+
+### 7. Application Layer 
+"Underlying service that supports applications"  
+SMTP  
+Resource sharing  
+Service advertisement  
+Gramaphone  
+
+<br>
+
+### 6. Presentation Layer - File extension
+Data  
+encryption  
+-tion  
+.wav .jpg .au .exe .psd  
+
+<br>
+
+### 5. Session Layer - Session established
+Data Stream  
+stateful  
+  
+Commands: netstat -s -p tcp, telnet, ssh  
+
+<br>
+
+### 4. Transport Layer - TCP/UDP
+Segments  
+Three way handshake  
+Sliding Window  
+  
+Commands: nmap -v 10.#$34T#.1.10    
+  
+Well-known ports 0 - 1023  
+Registered ports 1024 - 49151  
+Ephemeral/Dynamic ports 49152 - 65535  
+
+<br>
+
+### 3. Network Layer - IP addresses
+Packets  
+Routing protocols  
+Forwarding packets  
+  
+Commands: show ip int br, sh ip route  
+
+<br>
+
+### 2. Data-link Layer - MAC Addresses
+Frames  
+FCS  
+Preamble  
+  
+Commands: show vlan brief  
+
+<br>
+
+### 1. Physical Layer - "Things you touch"
+Speed = b   
+Data = B  
+  
+Commands: show cdp neigh  
+
+<br>
+<br>
+
+---
+&nbsp;
+
 ## Lab Setup
 
 ### 1. Deploy
