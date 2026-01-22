@@ -135,7 +135,7 @@
     },
 
     "i1_config": {
-        "hostname": "ISP1",
+        "hostname": "ISP1-CONVERGE",
         "lo0": "44.44.44.44",
         "neigh_45": "neighbor 45.4.5.5 remote-as 45",
         "neigh_24": "neighbor 24.2.4.2 remote-as 2",
@@ -146,7 +146,7 @@
     },
 
     "i2_config": {
-        "hostname": "ISP2",
+        "hostname": "ISP2-PLDT",
         "lo0": "22.22.22.22",
         "neigh_32": "neighbor 32.3.2.3 remote-as 3",
         "neigh_25": "neighbor 25.2.5.5 remote-as 45",
@@ -159,7 +159,7 @@
     },
 
     "i3_config": {
-        "hostname": "ISP3",
+        "hostname": "ISP3-GLOBE",
         "lo0": "33.33.33.33",
         "neigh_35": "neighbor 35.3.5.5 remote-as 45",
         "neigh_32": "neighbor 32.3.2.2 remote-as 2",
@@ -170,7 +170,7 @@
     },
 
     "i4_config": {
-        "hostname": "ISP4",
+        "hostname": "ISP4-GoogleDNS",
         "lo0": "55.55.55.55",
         "google": "8.8.8.8",
         "neigh_35": "neighbor 35.3.5.3 remote-as 3",
@@ -181,4 +181,5 @@
         "neigh_45_on": "neighbor 45.4.5.4 activate"
         
     }
+
 }
