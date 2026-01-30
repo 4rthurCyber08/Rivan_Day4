@@ -1,4 +1,13 @@
 
+
+Your Monitor Number = #$34t#
+
+
+
+
+
+
+
 Check Supported Ciphers/Cipher Suite
 
 Directory:
@@ -959,13 +968,13 @@ conf t
 ## Packet Filtering (L3 ACL)
 ~~~
 !@NetOps-PH
-youporn.com
-pornhub.com
-redtube.com
-faketaxi.com
+youporn.com      66.254.114.79
+pornhub.com      66.254.114.41
+redtube.com      66.254.114.238
+faketaxi.com     66.254.114.234
 bangbros.com
-bangbus.com
-pinayflix.com
+bangbus.com      172.67.133.243
+pinayflix.com    104.21.55.88
 xhamster.com
 iyottube.com
 ~~~
@@ -1663,3 +1672,122 @@ cat key.pub >> /.ssh/authorized_keys
 
 Paste Public Keys
 ~~~
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**********************
+AAA
+
+CSR1KV
+- NET 2 = Bridged Replicate
+
+~~~
+!@UTM
+conf t
+ int g1
+  ip add 208.8.8.11 255.255.255.0
+  no shut
+ int g2
+  no shut
+  ip add 10.#$34t#.1.11 255.255.255.0
+ int g3
+  no shut
+  ip add 11.11.11.100 255.255.255.224
+  exit
+ ip route 0.0.0.0 0.0.0.0 208.8.8.2
+ ip route 10.0.0.0 255.0.0.0 10.#$34t#.1.4
+ ip route 200.0.0.0 255.255.255.0 10.#$34t#.1.4
+ ip name-server 8.8.8.8 1.1.1.1
+ ip domain lookup
+ !
+ no int tunnel 1
+ no ip route 21.21.21.208 255.255.255.240
+ no ip route 22.22.22.192 255.255.255.192
+ end
+~~~
+
+
+SETUP RADIUS
+
+~~~
+!@UTM
+conf t
+ username admin privilege 15 secret pass
+ aaa new-model
+ radius server WINRAD
+  address ipv4 10.12.1.8 auth-port 1812 acct-port 1813
+  key C1sc0123
+  exit
+ aaa group server radius RADGROUP
+  server name WINRAD
+  exit
+ aaa authentication login default group RADGROUP local
+ aaa authorization exec default group RADGROUP local
+ line vty 0 14
+  login authentication default
+ end
+~~~
+
+
+
+
+REMOVE AAA
+~~~
+!@Cisco
+conf t
+ no aaa new-model
+ 
+~~~
+
+
+
+**********
+Enable Remote Server Features
+
+SSH
+Optional Features: OpenSSH
+
+!@Powershell
+start-service sshd
+
+*************
+
+
+
+!@PH
+sudo su
+ifconfig eth0 10.#$34T#.1.100 netmask 255.255.255.0 up
+route add default gw 10.#$34T#.1.11
+ping 10.#$34T#.1.11
+
+
+!@JP
+sudo su
+ifconfig eth0 208.8.8.200 netmask 255.255.255.0 up
+route add default gw 208.8.8.11
+ping 208.8.8.11
+
+
+
+!@IAM-LDAP
+route add 0.0.0.0 mask 0.0.0.0 10.#$34T#.1.11
+
+
