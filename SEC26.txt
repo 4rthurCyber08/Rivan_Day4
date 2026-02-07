@@ -1,5 +1,5 @@
 
-<!-- Your monitor number = 12 -->
+<!-- Your monitor number = #$34T# -->
 
 
 ## CIDR - Finger Method
@@ -26,11 +26,11 @@
 
 ### Review
 __Jobs of a firewall__
-1. 
-2. 
-3. 
-4. 
-5. 
+1. Traffic Filtering (ACLs, Policy Based Rules)
+2. Transport Security (VPN, DMVPN, ZTNA)
+3. Threat Prevention (NGFW, IPS, Proxy)
+4. Network Segmentation/Isolation (INSIDE, OUTSIDE, DMZ)
+5. Monitoring, Logging, and Alerts
 
 
 <br>
@@ -164,7 +164,7 @@ ip -br link
 ### 3. Modify Interface IP
 VMNet2:  192.168.102.6/24
 VMNet3:  11.11.11.100/27
-Bridged: 10.12.1.6/24
+Bridged: 10.#$34T#.1.6/24
 
 <br>
 
@@ -172,7 +172,7 @@ Bridged: 10.12.1.6/24
 !@NetOps-PH
 ifconfig ens192 192.168.102.6 netmask 255.255.255.0 up
 ifconfig ens224 11.11.11.100 netmask 255.255.255.224 up
-ifconfig ens256 10.12.1.6 netmask 255.255.255.0 up
+ifconfig ens256 10.#$34T#.1.6 netmask 255.255.255.0 up
 ~~~
 
 or 
@@ -210,14 +210,14 @@ type ethernet \
 con-name BRIDGED \
 ifname ens256 \
 ipv4.method manual \
-ipv4.addresses 10.12.1.6/24 \
+ipv4.addresses 10.#$34T#.1.6/24 \
 autoconnect yes
 
 nmcli connection up BRIDGED
 
 
-ip route add 10.0.0.0/8 via 10.12.1.4 dev ens256
-ip route add 200.0.0.0/24 via 10.12.1.4 dev ens256
+ip route add 10.0.0.0/8 via 10.#$34T#.1.4 dev ens256
+ip route add 200.0.0.0/24 via 10.#$34T#.1.4 dev ens256
 ip route add 0.0.0.0/0 via 11.11.11.113 dev ens224
 ~~~
 
@@ -225,12 +225,12 @@ ip route add 0.0.0.0/0 via 11.11.11.113 dev ens224
 <br>
 
 
-__Make Sure EDGE-12 is Configured__
+__Make Sure EDGE-#$34T# is Configured__
 
 ~~~
-!@EDGE-12
+!@EDGE-#$34T#
 conf t
- hostname EDGE-12
+ hostname EDGE-#$34T#
  enable secret pass
  service password-encryption
  no logging console
@@ -245,23 +245,23 @@ conf t
   exec-timeout 0 0
  int gi 0/0/0
   no shut
-  ip add 10.12.12.1 255.255.255.0
+  ip add 10.#$34T#.#$34T#.1 255.255.255.0
   desc INSIDE
  int gi 0/0/1
   no shut
-  ip add 200.0.0.12 255.255.255.0
+  ip add 200.0.0.#$34T# 255.255.255.0
   desc OUTSIDE
  int loopback 0
-  ip add 12.0.0.1 255.255.255.255
+  ip add #$34T#.0.0.1 255.255.255.255
   desc VIRTUALIP
   exit
   
 !@ospf routing edge
  router ospf 1
-  router-id 12.0.0.1
+  router-id #$34T#.0.0.1
   network 200.0.0.0 0.0.0.255 area 0
-  network 10.12.12.0 0.0.0.255 area 0
-  network 12.0.0.1 0.0.0.0 area 0
+  network 10.#$34T#.#$34T#.0 0.0.0.255 area 0
+  network #$34T#.0.0.1 0.0.0.0 area 0
  int gi 0/0/0
   ip ospf network point-to-point
  end
@@ -270,9 +270,9 @@ conf t
 <br>
 
 ~~~
-!@BABA-12
+!@BABA-#$34T#
 conf t
- hostname coreBaba-12
+ hostname coreBaba-#$34T#
  enable secret pass
  service password-encryption
  no logging console
@@ -288,22 +288,22 @@ conf t
  int gi 0/1
   no shut
   no switchport
-  ip add 10.12.12.4 255.255.255.0
+  ip add 10.#$34T#.#$34T#.4 255.255.255.0
  int vlan 1
   no shut
-  ip add 10.12.1.4 255.255.255.0
+  ip add 10.#$34T#.1.4 255.255.255.0
   desc DEFAULT-VLAN
  int vlan 10
   no shut
-  ip add 10.12.10.4 255.255.255.0
+  ip add 10.#$34T#.10.4 255.255.255.0
   desc WIFI-VLAN
  int vlan 50
   no shut
-  ip add 10.12.50.4 255.255.255.0
+  ip add 10.#$34T#.50.4 255.255.255.0
   desc CCTV-VLAN
  int vlan 100
   no shut
-  ip add 10.12.100.4 255.255.255.0
+  ip add 10.#$34T#.100.4 255.255.255.0
   desc VOICE-VLAN
   exit
  !
@@ -341,8 +341,8 @@ conf t
   exit
  !
  router ospf 1
-  router-id 10.12.12.4
-  network 10.12.0.0 0.0.255.255 area 0
+  router-id 10.#$34T#.#$34T#.4
+  network 10.#$34T#.0.0 0.0.255.255 area 0
  int gi 0/1
   ip ospf network point-to-point
   end
@@ -351,9 +351,9 @@ conf t
 <br>
 
 ~~~
-!@CUCM-12
+!@CUCM-#$34T#
 conf t
- hostname CUCM-12
+ hostname CUCM-#$34T#
  enable secret pass
  service password-encryption
  no logging console
@@ -368,11 +368,11 @@ conf t
   exec-timeout 0 0
  int fa 0/0
   no shut
-  ip add 10.12.100.8 255.255.255.0
+  ip add 10.#$34T#.100.8 255.255.255.0
   exit
  router ospf 1
-  router-id 10.12.100.8
-  network 10.12.100.0 0.0.0.255 area 0
+  router-id 10.#$34T#.100.8
+  network 10.#$34T#.100.0 0.0.0.255 area 0
   end
 ~~~
 
@@ -436,7 +436,7 @@ conf t
 __X1  vs  X2__
 
 ~~~
-!@EDGE-12
+!@EDGE-#$34T#
 config t
  no ip access-list extended NOCLASSMATES
  ip access-list extended NOCLASSMATES
@@ -457,7 +457,7 @@ show ip access-list int g1
 will be able to gain access to the blocked network.
 
 ~~~
-!@EDGE-12
+!@EDGE-#$34T#
 config t
  ip access-list extended NOCLASSMATES
   1 permit ip host __.__.__.__ any log
@@ -471,7 +471,7 @@ show ip access-list int g1
 
 Remove the ACL
 ~~~
-!@EDGE-12
+!@EDGE-#$34T#
 conf t
  int gi 0/0/1
   no ip access-group NOCLASSMATES in
@@ -589,7 +589,7 @@ __SYSLOG__
 conf t
  service timestamps log datetime
  service timestamps debug datetime
- logging 10.12.1.10
+ logging 10.#$34T#.1.10
  logging trap 5
  end
 wr
@@ -659,29 +659,29 @@ Review on Ports:
 
 | Port   | No.  | Port   | No.   |
 | ---    | ---  | ---    | ---   |
-| Telnet |      | SMTPS  |       |
-| SSH    |      | IMAPS  |       |
-| DNS    |      | POP3S  |       |
-| HTTP   |      | MYSQL  |       |
-| HTTPS  |      | SCCP   |       |
-| SMTP   |      | SIP    |       |
-| IMAP   |      | FTP    |       |
-| POP3   |      | TFTP   |       |
+| Telnet | 23   | SMTPS  | 465   |
+| SSH    | 22   | IMAPS  | 993   |
+| DNS    | 53   | POP3S  | 995   |
+| HTTP   | 80   | MYSQL  | 3306  |
+| HTTPS  | 443  | SCCP   | 2000  |
+| SMTP   | 25   | SIP    | 5060  |
+| IMAP   | 143  | FTP    | 20/21 |
+| POP3   | 110  | TFTP   | 69    |
 
 <br>
 
 
-### Task 6: On the EDGE-12 router:  
+### Task 6: On the EDGE-#$34T# router:  
 Create an extended ACL named LIMIT-TELNET
 - Block all Telnet access on CoreBABA on:
-  - VLAN 10  - 10.12.10.4
-  - VLAN 50  - 10.12.50.4
-  - VLAN 100 - 10.12.100.4 
+  - VLAN 10  - 10.#$34T#.10.4
+  - VLAN 50  - 10.#$34T#.50.4
+  - VLAN 100 - 10.#$34T#.100.4 
   
-Make sure only 10.12.1.4 can be connected via Telnet on CoreBABA
+Make sure only 10.#$34T#.1.4 can be connected via Telnet on CoreBABA
 
 ~~~
-!@EDGE-12
+!@EDGE-#$34T#
 conf t
  no ip access-list extended LIMIT-TELNET
  ip access-list extended LIMIT-TELNET
