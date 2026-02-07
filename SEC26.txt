@@ -16,30 +16,21 @@
 
 | Infected PCs         | IP                    | Network             |
 | ---                  | ---                   | ---                 |
-| ADMIN                | 192.168.240.50  /18   | 192.168.192.0   /18 |
-| HR                   | 192.168.221.254 /21   | 192.168.224.0   /21 |
-| FINANCE              | 192.168.229.75  /23   | 192.168.228.0   /23 |
-| NOC                  | 192.168.228.130 /25   | 192.168.228.128 /25 |
-| SOC                  | 192.168.228.147 /29   | 192.168.228.144 /29 |
+| ADMIN                | 192.168.240.50  /18   |                 /18 |
+| HR                   | 192.168.221.254 /21   |                 /21 |
+| FINANCE              | 192.168.229.75  /23   |                 /23 |
+| NOC                  | 192.168.228.130 /25   |                 /25 |
+| SOC                  | 192.168.228.147 /29   |                 /29 |
 
 <br>
 
 ### Review
-__Jobs of a router__
-1. Site Connectivity
-2. Routing & Path Selection
-3. Traffic Control
-4. Route Policies
-5. High Availability
-
-<br>
-
 __Jobs of a firewall__
-1. Traffic Filtering (ACLs, Policy Based Rules)
-2. Transport Security (VPN, DMVPN, ZTNA)
-3. Threat Prevention (NGFW, IPS, Proxy)
-4. Network Segmentation/Isolation (INSIDE, OUTSIDE, DMZ)
-5. Monitoring, Logging, and Alerts
+1. 
+2. 
+3. 
+4. 
+5. 
 
 
 <br>
@@ -676,21 +667,6 @@ Review on Ports:
 | SMTP   |      | SIP    |       |
 | IMAP   |      | FTP    |       |
 | POP3   |      | TFTP   |       |
-
-<br>
-
-| Port   | No.  | Port   | No.   |
-| ---    | ---  | ---    | ---   |
-| Telnet | 23   | SMTPS  | 465   |
-| SSH    | 22   | IMAPS  | 993   |
-| DNS    | 53   | POP3S  | 995   |
-| HTTP   | 80   | MYSQL  | 3306  |
-| HTTPS  | 443  | SCCP   | 2000  |
-| SMTP   | 25   | SIP    | 5060  |
-| IMAP   | 143  | FTP    | 20/21 |
-| POP3   | 110  | TFTP   | 69    |
-
-
 
 <br>
 
