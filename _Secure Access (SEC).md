@@ -695,7 +695,6 @@ conf t
 
 ### [Activity] On the EDGE Router create an extended ACL named FWP4 with the following:
 - Allow Pings destined for your PC (10.#$34T#.1.10)  
-- Allow VoIP Calls from anyone  
 - Allow Telnet access to your CoreBABA's VLAN 1 SVI,  
 - but make sure to block everything else  
 
@@ -705,7 +704,7 @@ conf t
 !@EDGE-#$34T#
 config t
  ip access-list extended FWP5
-  permit  icmp  any  10.#$34T#.1.10             log 
+  permit  icmp  any  host 10.#$34T#.1.10             log 
   permit  tcp   any  host  ___.___.___.___  eq  ____  log
   
   
@@ -814,14 +813,14 @@ accomplish this goal?
 
 | Port   | No.  | Port   | No.   |
 | ---    | ---  | ---    | ---   |
-| Telnet | 23   | SMTPS  | 465   |
-| SSH    | 22   | IMAPS  | 993   |
-| DNS    | 53   | POP3S  | 995   |
-| HTTP   | 80   | MYSQL  | 3306  |
-| HTTPS  | 443  | SCCP   | 2000  |
-| SMTP   | 25   | SIP    | 5060  |
-| IMAP   | 143  | FTP    | 20/21 |
-| POP3   | 110  | TFTP   | 69    |
+| Telnet |      | SMTPS  |       |
+| SSH    |      | IMAPS  |       |
+| DNS    |      | POP3S  |       |
+| HTTP   |      | MYSQL  |       |
+| HTTPS  |      | SCCP   |       |
+| SMTP   |      | SIP    |       |
+| IMAP   |      | FTP    |       |
+| POP3   |      | TFTP   |       |
 
 
 <br>
@@ -889,7 +888,7 @@ adduser admin
 | ---         | ---         | ---            | ---          |
 | CoreTAAS    | 23          | 200.0.0.#$34T# | 2023         |
 | CoreBABA    | 23          | 200.0.0.#$34T# | 4023         |
-| CUCM        | 2000        | 200.0.0.#$34T# | 8020         |
+| CUCM        | 23          | 200.0.0.#$34T# | 8020         |
 
 
 <br>
@@ -913,6 +912,21 @@ conf t
  ip nat inside source list NAT-POLICY int g0/0/1 overload
  ip route 0.0.0.0 0.0.0.0 200.0.0.1
  end
+~~~
+
+
+<br>
+
+
+~~~
+!@EDGE-#$34T#
+conf t
+ no router ospf 1
+ router ospf 1
+  router-id #$34T#.0.0.1
+  network 10.#$34T#.#$34T#.0 0.0.0.255 area 0
+  default-information originate always
+  end
 ~~~
 
 
@@ -1255,6 +1269,25 @@ ping 208.8.8.11
 
 
 Create a user account on __BLDG-JP-1__
+
+~~~
+!@UTM-PH
+clear ip nat trans *
+clear ip nat trans *
+clear ip nat trans *
+conf t
+ no ip nat inside source list NAT interface GigabitEthernet1 overload
+ no ip nat inside source static tcp 11.11.11.100 22 208.8.8.100 2202 extendable
+ no ip nat inside source static tcp 11.11.11.111 22 208.8.8.100 2222 extendable
+ no ip nat inside source static tcp 11.11.11.111 80 208.8.8.100 8080 extendable
+ no ip nat inside source static tcp 11.11.11.111 443 208.8.8.100 8443 extendable
+ end
+~~~
+
+
+<br>
+
+
 ~~~
 !@BLDG-JP-1
 sudo su
@@ -2099,8 +2132,8 @@ conf t
 ~~~
 !@UTM-PH
 conf t
- ip route 21.21.21.208  255.255.255.248  172.16.1.2
- ip route 22.22.22.192  255.255.255.192  172.16.1.2
+ ip route __.__.__.__   __.__.__.__   __.__.__.__
+ ip route __.__.__.__   __.__.__.__   __.__.__.__
  end
 ~~~
 
@@ -2109,7 +2142,7 @@ conf t
 ~~~
 !@UTM-JP
 conf t
- ip route 11.11.11.96  255.255.255.224  172.16.1.1
+ ip route __.__.__.__   __.__.__.__   __.__.__.__
  end
 ~~~
 
