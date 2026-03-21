@@ -1,0 +1,1787 @@
+Day 4
+
+### Lab Setup
+
+- RSTHayup
+
+
+
+
+## IPv6 Subnetting
+
+![IPv6_IMG](img/link.png)
+
+&nbsp;
+---
+&nbsp;
+
+
+| Prefix | Hextet | Hexadecimal | i   |
+| ---    | ---    | ---         | --- |
+| /32    |        |             |     |
+| /41    |        |             |     |         
+| /70    |        |             |     |
+| /7     |        |             |     |
+| /111   |        |             |     |
+| /124   |        |             |     |
+
+
+&nbsp;
+---
+&nbsp;
+
+
+| Decimal | Binary  | Hexadecimal |
+| ---     | ---     | ---         |
+| 0       | 0 0 0 0 | 0           |
+| 1       | 0 0 0 1 | 1           |
+| 2       | 0 0 1 0 | 2           | 
+| 3       | 0 0 1 1 | 3           |
+| 4       | 0 1 0 0 | 4           |
+| 5       | 0 1 0 1 | 5           |
+| 6       | 0 1 1 0 | 6           |
+| 7       | 0 1 1 1 | 7           |
+| 8       | 1 0 0 0 | 8           |
+| 9       | 1 0 0 1 | 9           |
+| 10      | 1 0 1 0 | A           |
+| 11      | 1 0 1 1 | B           |
+| 12      | 1 1 0 0 | C           |
+| 13      | 1 1 0 1 | D           |
+| 14      | 1 1 1 0 | E           |
+| 15      | 1 1 1 1 | F           |
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### 🎯 Exercise 01: Subnet for 8 offices using the network address fd00:1::/64
+
+__CONVERT *(Bit Value. NOT Length)*__  
+
+
+
+<br>
+
+
+__ADD__  
+
+  
+  
+<br>
+
+
+__INSERT(*IPASOK Many Times*)__  
+
+
+<br>
+
+
+1. Office: 
+2. Office: 
+3. Office: 
+4. Office: 
+5. Office: 
+6. Office: 
+7. Office: 
+8. Office: 
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### 🎯 Exercise 02: Subnet for 4 offices using the network address fd00:2::/88
+
+__CONVERT__  
+ 
+
+
+<br>
+
+
+__ADD__  
+ 
+  
+  
+<br>
+
+
+__INSERT(*IPASOK Many Times*)__  
+
+
+
+<br>
+
+
+1. Office: 
+2. Office: 
+3. Office:
+4. Office:
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### 🎯 Exercise 03: Subnet for 52 offices using the network address fd00:3:0:33::/112  Determine the 6th subnet.
+
+
+__CONVERT__  
+
+
+<br>
+
+
+__ADD__  
+
+  
+  
+<br>
+
+
+__INSERT(*IPASOK Many Times*)__  
+
+
+
+
+<br>
+
+
+1. Office: 
+2. Office: 
+3. Office: 
+4. Office: 
+5. Office: 
+6. Office: 
+
+
+<br>
+<br>
+
+|         | IP Address             |
+| ---     | ---                    | 
+| Network |                        |
+| 1st IP  |                        |
+| Last IP |                        |
+|         |                        |
+| Not Net |                        |
+
+
+<br>
+
+__Reserved Anycast__
+
+|             | IP Address             |
+| ---         | ---                    | 
+| Network ANY |                        |
+| 1st IP      |                        |
+| Last IP     |                        |
+|             |                        |
+| 1st ANY     |                        |
+| Last ANY    |                        |
+|             |                        |
+| Not Net     |                        |
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+## IPv6 Implementation
+
+<br>
+
+### Manual
+
+### 🎯 Exercise 04: Apply the first and last non-Anycast IP on R4's e0/0 and I4 - GOOGLE's e0/0 respectively.
+- Use the ipv6 network from Exercise 1, 4th Office.
+
+<br>
+
+
+
+<br>
+
+|             | IP Address                                  |
+| ---         | ---                                         | 
+| Network ANY |                                             |
+| 1st IP      |                                             |
+| Last IP     |                                             |
+|             |                                             |
+| 1st ANY     |                                             |
+| Last ANY    |                                             |
+|             |                                             |
+| Not Net     |                                             |
+
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### 🎯 Exercise 05: Apply the first and last non-Anycast IP on R4's e0/1 and P1's e0/1 respectively.
+- Use the ipv6 network from Exercise 1, 6th Office.
+
+<br>
+
+
+
+<br>
+
+|             | IP Address                                  |
+| ---         | ---                                         | 
+| Network ANY |                                             |
+| 1st IP      |                                             |
+| Last IP     |                                             |
+|             |                                             |
+| 1st ANY     |                                             |
+| Last ANY    |                                             |
+|             |                                             |
+| Not Net     |                                             |
+
+
+
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### 🎯 Exercise 06: Apply the first and last non-Anycast IP on R3's e0/0 and I3 - GLOBE's e0/0 respectively.
+- Use the ipv6 network from Exercise 2, 2nd Office.
+
+<br>
+
+
+
+<br>
+
+|             | IP Address                                  |
+| ---         | ---                                         | 
+| Network ANY |                                             |
+| 1st IP      |                                             |
+| Last IP     |                                             |
+|             |                                             |
+| 1st ANY     |                                             |
+| Last ANY    |                                             |
+|             |                                             |
+| Not Net     |                                             |
+
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### 🎯 Exercise 07: Apply the first and last non-Anycast IP on R3's e0/1 and P2's e0/1 respectively.
+- Use the ipv6 network from Exercise 2, 4th Office.
+
+<br>
+
+
+
+<br>
+
+|             | IP Address                                  |
+| ---         | ---                                         | 
+| Network ANY |                                             |
+| 1st IP      |                                             |
+| Last IP     |                                             |
+|             |                                             |
+| 1st ANY     |                                             |
+| Last ANY    |                                             |
+|             |                                             |
+| Not Net     |                                             |
+
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### Extended Unique Identifier 64
+
+| STEP                                         | MAC                      |
+| ---                                          | ---                      |
+| 1. Identify the MAC Address of the interface |                          |
+| 2. Insert FFFE in the Middle                 |                          |
+| 3. Flip the 7th bit from the left            |                          |
+
+<br>
+
+~~~
+!@R4
+conf t
+ int e0/3
+  no shut
+  ipv6 add fd00:4::/64 eui-64
+  end
+show ipv6 int e0/3
+~~~
+
+
+~~~
+!@R3
+conf t
+ int e0/3
+  no shut
+  ipv6 add fd00:4::/64 eui-64
+  end
+show ipv6 int e0/3
+~~~
+
+
+<br>
+
+R4 e0/3: 
+R3 e0/3: 
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### 🎯 Exercise 08: Apply the ipv6 network fd00:5::/64 between R3's e0/2 and R2's e0/2 using EUI-64. 
+- Determine the expected ipv6 address of both devices.
+
+~~~
+!@R2
+conf t
+ int e0/2
+  no shut
+  ipv6 add fd00:5::/64 eui-64
+  end
+show ipv6 int e0/2
+~~~
+
+~~~
+!@R3
+conf t
+ int e0/2
+  no shut
+  ipv6 add fd00:5::/64 eui-64
+  end
+show ipv6 int e0/2
+~~~
+
+
+<br>
+
+R2 e0/2: 
+R3 e0/2: 
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### DHCPv6
+
+### 🎯 Exercise 09: Subnet for TELSTRA.COM for 107 offices using the network address fd00:6::/105  Use the 5th subnet for DHCP.
+
+__CONVERT__  
+
+
+
+<br>
+
+
+__ADD__  
+
+  
+  
+<br>
+
+
+__INSERT(*IPASOK Many Times*)__  
+
+
+<br>
+
+
+1. Office: 
+2. Office: 
+3. Office: 
+4. Office: 
+5. Office: 
+
+
+<br>
+
+|             | IP Address                                  |
+| ---         | ---                                         | 
+| Network ANY |                                             |
+| 1st IP      |                                             |
+| Last IP     |                                             |
+|             |                                             |
+| 1st ANY     |                                             |
+| Last ANY    |                                             |
+|             |                                             |
+| Not Net     |                                             |
+
+
+<br>
+<br>
+
+
+~~~
+!@D1
+conf t
+ ipv6 unicast-routing
+ !
+ ipv6 dhcp pool ________
+  address prefix ________
+  domain-name ________
+  exit
+ !
+ vlan __
+  name ________
+  exit
+ int vlan __
+  no shut
+  ipv6 add ________
+  ipv6 dhcp server ________
+
+
+  end
+sh ipv6 dhcp pool 
+~~~
+
+<br>
+
+__SPAN__
+~~~
+!@D1
+conf t
+ int e3/3
+  no shut
+  exit
+ monitor session 1 source int e0/1 both
+ monitor session 1 dest int e3/3
+ end
+~~~
+
+
+<br>
+
+
+~~~
+!@A1
+conf t
+ int e0/0
+  no shut
+  switchport mode access
+  switchport access vlan __
+  end
+sh vlan br
+~~~
+
+~~~
+!@P1
+conf t
+ int e0/0
+  no shut
+  ipv6 enable
+  ipv6 add dhcp
+  end
+sh ipv6 int br
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### 🎯 Exercise 10: Subnet for CONCENTRIX.COM for 10 offices using the network address fd00:7::/83  Use the 2nd subnet for DHCP. Assign the network on VLAN 40 on D2. Make S2 the DHCP Client
+
+__CONVERT__  
+
+
+
+<br>
+
+
+__ADD__  
+
+  
+  
+<br>
+
+
+__INSERT(*IPASOK Many Times*)__  
+
+
+<br>
+
+
+1. Office: 
+2. Office: 
+3. Office: 
+4. Office: 
+5. Office: 
+
+
+<br>
+
+|             | IP Address                                  |
+| ---         | ---                                         | 
+| Network ANY |                                             |
+| 1st IP      |                                             |
+| Last IP     |                                             |
+|             |                                             |
+| 1st ANY     |                                             |
+| Last ANY    |                                             |
+|             |                                             |
+| Not Net     |                                             |
+
+
+<br>
+<br>
+
+
+~~~
+!@D2
+conf t
+ ipv6 unicast-routing
+ !
+ ipv6 dhcp pool ________
+  address prefix ________
+  domain-name ________
+  exit
+ !
+ vlan __
+  name ________
+  exit
+ int vlan __
+  no shut
+  ipv6 add ________
+  ipv6 dhcp server ________
+
+
+  end
+sh ipv6 dhcp pool 
+~~~
+
+~~~
+!@S2
+
+
+
+
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### SLAAC
+~~~
+!@D1
+conf t
+ vlan 80
+  name SLAAC
+  exit
+ int vlan 80
+  no shut
+  ipv6 add fd00:8::1/64
+  exit
+ int e1/0
+  switchport mode access
+  switchport access vlan 80
+  end
+~~~
+
+~~~
+!@D2,A2
+conf t
+ int e1/0
+  switchport mode access
+  switchport access vlan 80
+  end
+~~~
+
+~~~
+!@A1
+conf t
+ int e0/0
+  switchport mode access
+  switchport access vlan 80
+  end
+~~~
+
+~~~
+!@P1
+conf t
+ int e0/0
+  no shut
+  ipv6 enable
+  ipv6 add autoconfig
+  end
+sh ipv6 int br | ex una
+~~~
+
+~~~
+!@P2,S1,S2
+conf t
+ int e1/0
+  no shut
+  ipv6 enable
+  ipv6 add autoconfig
+  end
+sh ipv6 int br | ex una
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+## IPv6 NDP vs ARP
+
+1. Router Solicitation - Request info to local link 
+
+ 
+2. Router Advertisement - Response
+
+
+<br>
+<br>
+
+Replace ARP
+
+3. Neighbor Solicitation - Request to Neighbor | ARP Request
+
+4. Neighobr Advertisement - Respond to Requests | ARP Reply
+
+
+<br>
+
+
+Make P1 & P2 act like a host.
+~~~
+!@P1,P2
+conf t
+ no ipv6 unicast-routing
+ end
+clear ipv6 neighbors
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### Setup IPv6 Default Gateway
+
+~~~
+!@D1
+conf t
+ int vlan 80
+  ipv6 add fd00:8::1/64
+  ipv6 add fe80:8::1 link-local
+  ipv6 nd ra lifetime 65000
+  ipv6 nd router-preference high
+  end
+~~~
+
+~~~
+!@D2
+conf t
+ int vlan 80
+  no shut
+  ipv6 add fe80:8::2 link-local
+  ipv6 add fd00:8::2/64
+  ipv6 nd ra lifetime 65000
+  ipv6 nd router-preference high
+  end
+~~~
+
+~~~
+!@A1
+conf t
+ int vlan 80
+  no shut
+  ipv6 add fe80:8::3 link-local
+  ipv6 add fd00:8::3/64
+  ipv6 nd ra lifetime 65000
+  ipv6 nd router-preference medium
+  end
+~~~
+
+~~~
+!@A2
+conf t
+ int vlan 80
+  no shut
+  ipv6 add fe80:8::4 link-local
+  ipv6 add fd00:8::4/64
+  ipv6 nd ra lifetime 65000
+  ipv6 nd router-preference low
+  end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### Setup DNS Server
+
+~~~
+!@S1
+conf t
+ int e1/0
+  ipv6 add fd00:8::133/64
+  exit
+ !
+ ip dns server
+ ip host d1.rst fd00:8::1
+ ip host d2.rst fd00:8::2
+ ip host a1.rst fd00:8::3
+ ip host a2.rst fd00:8::4
+ end
+~~~
+
+~~~
+!@D1
+conf t
+ ipv6 dhcp pool SETDNS
+  dns-server fd00:8::133
+  domain-name D1.MGMTPOOL
+  exit
+ int vlan 80
+  ipv6 dhcp server SETDNS
+  ipv6 nd other-config-flag 
+  ipv6 nd ra interval 30
+  end
+~~~
+
+~~~
+!@D2
+conf t
+ ipv6 dhcp pool SETDNS
+  dns-server fd00:8::133
+  domain-name D2.MGMTPOOL
+  exit
+ int vlan 80
+  ipv6 dhcp server SETDNS
+  ipv6 nd other-config-flag 
+  ipv6 nd ra interval 30
+  end
+~~~
+
+~~~
+!@P1
+clear ipv6 neighbors
+conf t
+ ip domain lookup
+ int e0/0
+  ipv6 add autoconfig
+  end
+show run | s domain
+ping d1.rst.com
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+## IPv6 FHS
+
+1. NDGUARD
+2. DHCPGUARD
+3. NDINSPECTION
+
+
+<br>
+<br>
+
+### NDGUARD
+
+~~~
+!@A1
+conf t
+ ipv6 prefix-list ALLOW-RA seq 10 permit fe80:8::/64 le 128
+ !
+ ipv6 nd raguard policy TRUST-RA
+  device-role router
+  match ra prefix-list ALLOW-RA
+  exit
+ !
+ ipv6 nd raguard policy UNTRUST-RA
+  device-role host
+  exit
+ !
+ ipv6 nd raguard
+ ipv6 nd raguard attach-policy UNTRUST-RA
+ !
+ int range e0/1-3,e1/0
+  ipv6 nd raguard
+  ipv6 nd raguard attach-policy TRUST-RA
+  no shut
+ !
+ int e0/0
+  ipv6 nd raguard
+  ipv6 nd raguard attach-policy UNTRUST-RA
+  no shut
+  end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### DHCP GUARD
+
+~~~
+!@A1
+conf t
+ ipv6 access-list DHCPS
+  permit ip host fd00:8::1 any 
+  permit ip host fe80:8::1 any 
+  permit ip host fd00:8::2 any
+  permit ip host fe80:8::2 any
+ !
+ ipv6 dhcp guard policy TRUST-DHCP
+  device-role server
+  match server access-list DHCPS
+  exit
+ ipv6 dhcp guard policy UNTRUST-DHCP
+  device-role client
+  exit
+ !
+ ipv6 dhcp guard
+ ipv6 dhcp guard attach-policy UNTRUST-DHCP
+ !
+ int range e0/1-3,e1/0
+  ipv6 nd raguard
+  ipv6 nd raguard attach-policy TRUST-DHCP
+  no shut
+ !
+ int e0/0
+  ipv6 nd raguard
+  ipv6 nd raguard attach-policy UNTRUST-DHCP
+  no shut
+  end
+~~~
+ 
+  
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### ND INSPECTION
+
+~~~
+!@A1
+conf t
+ ipv6 nd inspection policy TRUST-INSP
+  device-role router
+  sec-level minimum 1
+  exit
+ ipv6 nd inspection policy UNTRUST-INSP
+  device-role host
+  drop-unsecure
+  sec-level minimum 5
+  drop-unsecure
+  exit
+ !
+ int e0/0
+  ipv6 nd inspection attach-policy UNTRUST-INSP
+  end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+## Time-Based ACL
+
+### Setup
+
+Devices:
+- 1x CSR1000v
+- IR_Elastics
+- 2x TinyCore (yvm.ova)
+
+
+CSR1000v:
+  Name: UTM-PH
+  
+  | NetAdapter   |        |
+  | ---          | ---    |
+  | NetAdapter   | NAT    |
+  | NetAdapter 2 | VMNet2 |
+  | NetAdapter 3 | VMNet3 |
+  
+  
+IR_Elastics
+  | NetAdapter   |        |
+  | ---          | ---    |
+  | NetAdapter   | NAT    |
+  | NetAdapter 2 | VMNet2 |
+  
+
+TinyCore (yvm.ova):
+  Name: BLDG-1
+  
+  | NetAdapter   |                    |
+  | ---          | ---                |
+  | NetAdapter   | VMNet3             |
+
+
+TinyCore (yvm.ova):
+  Name: BLDG-2
+  
+  | NetAdapter   |                    |
+  | ---          | ---                |
+  | NetAdapter   | VMNet4             |
+
+
+<br>
+
+
+~~~
+!@UTM-PH
+conf t
+ hostname UTM-PH
+ enable secret pass
+ service password-encryption
+ no logging cons
+ ip domain lookup
+ line vty 0 14
+  transport input all
+  password pass
+  login local
+  exec-timeout 0 0
+ int g1
+  ip add 208.8.8.11 255.255.255.0
+  no shut
+ int g2
+  ip add 192.168.102.11 255.255.255.0
+  no shut
+ int g3
+  ip add 11.11.11.113 255.255.255.224
+  no shut
+ !
+ ip route 0.0.0.0 0.0.0.0 208.8.8.2
+ ip name-server 8.8.8.8
+ !
+ username admin privilege 15 secret pass
+ service finger
+ service tcp-small-servers
+ service udp-small-servers
+ ip dns server
+ ip http server
+ ip http secure-server
+ ip http authentication local
+ end
+wr
+!
+~~~
+
+~~~
+!@BLDG-1
+sudo su
+ ifconfig eth0 11.11.11.101 netmask 255.255.255.224 up
+ route add default gw 11.11.11.113
+ping 11.11.11.113
+
+
+~~~
+
+~~~
+!@BLDG-2
+sudo su
+ ifconfig eth0 11.11.11.102 netmask 255.255.255.224 up
+ route add default gw 11.11.11.113
+ping 11.11.11.113
+
+
+~~~
+
+
+<br>
+
+BLDG-1  >  ICMP  >  8.8.8.8
+BLDG-2  >  ICMP  >  1.1.1.1
+
+<br>
+
+~~~
+!@UTM-PH
+conf t
+ __________
+  periodic ______
+  exit
+ ip access-list extended ______
+  permit icmp host __.__.__.__ host __.__.__.__ 
+  permit icmp host __.__.__.__ host __.__.__.__
+  exit
+ int g3
+  ip access-group _______ in
+  end
+~~~
+
+__Remove ACL__
+~~~
+!@UTM-PH
+conf t
+ int g3
+  no ip access-group NOPING in
+  end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### NAT & Port Forwarding
+
+~~~
+!@UTM-PH
+conf t
+ int g1
+  ip nat outside
+ int g3
+  ip nat inside
+ !
+ no access-list 1
+ access-list 1 permit 11.11.11.96 0.0.0.31
+ ip nat inside source list 1 int g1 overload
+ !
+ ip nat inside source static tcp 11.11.11.101 80 208.8.8.100 8080
+ ip nat inside source static tcp 11.11.11.102 80 208.8.8.100 80
+ end
+~~~
+
+
+<br>
+
+
+| Device | Inside Local | Outside Local |
+| ---    | ---          | ---           |
+| BLDG-1 | 443          | 8443          |
+| BLDG-2 | 443          | 443           |
+
+<br>
+
+~~~
+!@UTM-PH
+conf t
+ ip nat 
+ ip nat 
+ end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### 🎯 Exercise 11: Create Local Accounts on both buildings and map the following ports:
+
+| Device | Inside Local | Outside Local |
+| ---    | ---          | ---           |
+| BLDG-1 | 22           | 2222          |
+| BLDG-2 | 22           | 7777          |
+
+
+~~~
+!@BLDG
+useradd admin
+> pass
+> pass
+~~~
+
+~~~
+!@UTM-PH
+conf t
+ ip nat 
+ ip nat 
+ end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### Network Monitoring: Syslogs
+
+~~~
+!@UTM-PH
+conf t
+ service timestamps log datetime msec
+ service sequence-numbers
+ !
+ archive
+  log config
+   notify syslog
+   exit
+  exit
+ ip nat log translations syslog bind-only 
+ !
+ logging host 192.168.102.133 transport udp port 9001
+ logging source-interface g2
+ logging on
+end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### Log Severity Levels
+
+*log.level : "informational"  or log.level : "notification" or log.level : "warning" or log.level : "error" or log.level : "critical" or log.level : "alert" or log.level : "emergency"*
+
+
+~~~
+!@R4
+conf t
+ service timestamps log datetime msec
+ service sequence-numbers
+ logging host 208.8.8.133
+ logging source-interface e3/3
+ logging on
+ logging facility local7
+ !
+ logging trap 6
+end
+~~~
+
+<br>
+
+__Track Logins__
+~~~
+!@R4
+conf t
+ username admin priv 15 secret pass
+ ip domain name SYSLOG.COM
+ crypto key generate rsa modulus 2048 
+ ip ssh version 2
+ !
+ line vty 0 4
+  transport input all
+  login local
+  login on-success log
+  login on-failure log
+  end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+## Zone Based Policy
+
+~~~
+!@BLDG-1
+sudo su
+ ifconfig eth0 11.11.11.101 netmask 255.255.255.224 up
+ route add default gw 11.11.11.113
+ping 11.11.11.113
+
+
+~~~
+
+~~~
+!@BLDG-2
+sudo su
+ ifconfig eth0 208.8.8.102 netmask 255.255.255.0 up
+ route add default gw 208.8.8.11
+ping 208.8.8.11
+
+
+~~~
+
+
+<br>
+<br>
+
+
+### 1. Define Zone and Interfaces
+
+~~~
+!@UTM-PH
+conf t
+ zone security OUTSIDE
+  desc PUBLIC_INTERFACE
+ zone security INSIDE
+  desc LOCAL_LAN
+ zone security DMZ
+  desc SECURE_PUB_SERVERS
+ !
+ int g1
+  zone-member security OUTSIDE
+ int g3
+  zone-member security INSIDE
+  end
+~~~
+
+
+&nbsp;
+---
+&nbsp;
+
+
+### 2. Create an ACL to match traffic rules
+
+~~~
+!@UTM-PH
+conf t
+ no ip access-list extended IN-TO-OUT
+ ip access-list extended IN-TO-OUT
+  permit ip any any
+ no ip access-list extended OUT-TO-IN
+ ip access-list extended OUT-TO-IN
+  permit ip any any
+  end
+~~~
+
+
+&nbsp;
+---
+&nbsp;
+
+
+### 3. Group traffic using Class Maps
+
+~~~
+!@UTM-PH
+conf t
+ class-map type inspect match-any CM-IN-OUT
+  match access-group name IN-TO-OUT
+ class-map type inspect match-any CM-OUT-IN
+  match access-group name OUT-TO-IN
+  end
+~~~
+
+
+&nbsp;
+---
+&nbsp;
+
+
+### 4. Define Policy Maps to specify what to do with the traffic.
+
+~~~
+!@UTM-PH
+conf t
+ policy-map type inspect PM-IN-OUT
+  class type inspect CM-IN-OUT
+   inspect
+  class class-default
+   drop log
+   exit
+  exit
+ policy-map type inspect PM-OUT-IN
+  class type inspect CM-OUT-IN
+   drop log
+  class class-default
+   drop log
+   end
+~~~
+
+
+&nbsp;
+---
+&nbsp;
+
+
+### 5. Define Zone-Pairs to link source and destination zone to policies in a specific direction.
+
+~~~
+!@UTM-PH
+conf t
+ zone-pair security ZONE-IN-OUT source INSIDE dest OUTSIDE
+  service-policy type inspect PM-IN-OUT
+ zone-pair security ZONE-OUT-IN source OUTSIDE dest INSIDE
+  service-policy type inspect PM-OUT-IN
+  end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### Modify The Firewall to allow SSH and TELNET to BLDG-PH
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+
+
+
+__Evaluation Order__
+1. NAT
+2. ZBF
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### 🎯 Exercise 12: Modify The Firewall to allow access to HTTP & HTTPS
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<br>
+<br>
+
+
+__Clean the Config__
+~~~
+!@UTM-PH
+conf t
+ int g1
+  no zone-member security OUTSIDE
+ int g3
+  no zone-member security INSIDE
+  end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+## Quality of Service
+*Why need QoS? Periodic Congestion*
+
+1. __Best Effort__ - Not Strict. (FiFo) First come first serve traffic management.
+
+<br>
+
+2. __DiffServ__ - Less Strict. Bandwidth Guarantee for each application and share bandwidth with other apps depending on when they need it.
+
+<br>
+
+3. __IntServ__ - Strict. Bandwidth Guarantee for each app but does not share with other apps even if a certain app is not using bandwidth.
+
+
+&nbsp;
+---
+&nbsp;
+
+
+### L2 802.1q Frame
+1. Tag Protocol Identifier  
+2. Tag Control Information  
+   - Priority Code Point (CoS)  
+   - Drop Eligible Indicator  
+   - VLAN Identifier  
+
+__Class of Service__
+| Bin | Value | Use         |
+| --- | ---   | ---         |
+| 000 | 0     | Data BE     |
+| 001 | 1     |             |
+| 010 | 2     |             |
+| 011 | 3     | Signal      |
+| 100 | 4     | Video       |
+| 101 | 5     | Voice       |
+| 110 | 6     |             |
+| 111 | 7     | Net Control |
+
+
+&nbsp;
+---
+&nbsp;
+
+
+### L3 IPv4 Header
+1. Version
+2. Internet Header Length
+3. Type of Service (DSCP 6b & ECN 2b)  [8 bytes]
+4. Total Length
+5. Identification Field
+6. Flags
+7. Fragment Offset
+8. Time to Live
+9. Protocol
+10. Header Checksum
+11. Source Address
+12. Destination Address
+13. IP Options
+14. Payload
+
+
+&nbsp;
+---
+&nbsp;
+
+### DSCP IDs
+
+| #   | Name                       | Decimal | Binary  |
+| --- | ---                        | ---     | ---     |
+| 1   | Default                    | 0       | 00 0000 |
+| 2   | Expedited Forwarding (EF)  | 46      | 10 1110 |
+| 3   | Class Selector 1 (CS1)     | 8	     | 00 1000 |
+| 4   | Class Selector 2 (CS2)     | 16	     | 01 0000 |
+| 5   | Class Selector 3 (CS3)     | 24	     | 01 1000 |
+| 6   | Class Selector 4 (CS4)	   | 32	     | 10 0000 |
+| 7   | Class Selector 5 (CS5)     | 40      | 10 1000 |
+| 8   | Class Selector 6 (CS6)     | 48      | 11 0000 |
+| 9   | Class Selector 7 (CS7)     | 56	     | 11 1000 |
+
+<br>
+<br>
+
+| #   | Low Drop Probability   | Medium Drop Probability   | High Drop Probability  |
+| --- | ---                    | ---                       | ---                    |
+| 1   | AF11(10) 001 01_0      | AF12(12) 001 10_0         | AF13(14) 001 11_0      |
+| 2   | AF21(18) 010 01_0      | AF22(20) 010 10_0         | AF23(22) 010 11_0      |
+| 3   | AF31(26) 011 01_0      | AF32(28) 011 10_0         | AF33(30) 011 11_0      |
+| 4   | AF41(34) 100 01_0      | AF42(36) 100 10_0         | AF43(38) 100 11_0      |
+
+
+<br>
+<br>
+
+### SPAN
+~~~
+!@CoreBABA
+conf t
+ monitor session 1 source interface fa0/3,fa0/5,fa0/7
+ monitor session 1 destination interface fa0/1,fa0/9
+ end
+~~~
+
+<br>
+
+Remove SPAN
+~~~
+conf t
+ no monitor session 1
+ end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+## QoS Marking
+| Protocol | DSCP |
+| ---      | ---  |
+| SKINNY   |      |
+| RTCP     |      |
+| RTP      |      |
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### QOS Mechanisms
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+## Policing
+
+### 🎯 Exercise 13: Prevent ICMP Overload
+
+~~~
+!@UTM-PH
+config t
+ no ip access-list extended PING
+ ip access-list extended PING
+  permit icmp any any
+  !
+ class-map CM-PING
+  match access-group name PING
+  !
+ no policy-map PM-PING
+ policy-map PM-PING
+  class CM-PING
+   police 8000 conform-action transmit exceed-action drop
+   exit
+  exit
+ !
+ control-plane
+  service-policy input PM-PING
+  exit
+do sh policy-map control-plane
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### 🎯 Exercise 14: Rate-Limit Remote connections
+
+~~~
+!@UTM-PH
+config t
+ ip access-list extended TELNET
+  permit tcp any any eq 23
+  exit
+ ip access-list extended SSH
+  permit tcp any any eq 22
+  exit
+ ip access-list extended ICMP
+  permit icmp any any
+  exit
+ class-map match-all CM-TEL
+  match access-group name TELNET
+  exit
+ class-map match-all CM-SSH
+  match access-group name SSH
+  exit
+ class-map match-all CM-ICMP
+  match access-group name ICMP
+  exit
+ policy-map PM-COPP
+  class CM-TEL
+   police 8000 conform-action drop exceed-action drop
+  class CM-SSH
+   police 500000 conform-action transmit exceed-action transmit
+  class CM-ICMP
+   police rate 10 pps conform-action transmit exceed-action drop
+  class class-default
+   police 12000 conform-action transmit exceed-action transmit
+   exit
+ control-plane
+  service-policy input PM-COPP
+  end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### 🎯 Exercise 15: Configure CoPP  that will block HTTP & HTTPS Traffic but allow TELNET and SSH traffic using only one service-policy.
+Make sure the following parameters are set to prevent HTTP & HTTPS Traffic:
+- Rate: 80_000
+- Burst: 1500
+- Burst_Max: 1500
+
+~~~
+!@UTM-PH
+conf t
+ access-list 101 deny tcp any any eq 443
+ access-list 101 permit ip any any
+ !
+ class-map match-all WEB
+   match access-group 101
+ !
+ no policy-map Control-Plane-Policing
+ policy-map WEB-COPP
+  class WEB
+    police 80000 1500 1500 conform-action transmit exceed-action drop violate-action drop
+    exit
+  exit
+ !
+ control-plane
+  service-policy input Control-Plane-Policing
+  end
+~~~
