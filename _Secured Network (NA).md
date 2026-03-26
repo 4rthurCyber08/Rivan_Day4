@@ -421,7 +421,7 @@ net use x: \\10.k.1.10\c$
 Devices:
 - 2x CSR1000v
 - 1x NetOps
-- 2x TinyCore (yvm.ova)
+- 3x TinyCore (yvm.ova)
 
 CSR1000v:
   Name: UTM-PH
@@ -452,6 +452,13 @@ NetOps:
   | NetAdapter 3 | VMNet3             |
   | NetAdapter 4 | Bridge (Replicate) |
 
+TinyCore (yvm.ova):
+  Name: BLDG-PH
+  
+  | NetAdapter   |                    |
+  | ---          | ---                |
+  | NetAdapter   | VMNet3             |
+  
 TinyCore (yvm.ova):
   Name: BLDG-JP-1
   
@@ -533,6 +540,17 @@ conf t
  end
 wr
 !
+~~~
+
+<br>
+
+~~~
+!@BLDG-PH
+sudo su
+hostname BLDG-PH
+ifconfig eth0 11.11.11.101 netmask 255.255.255.224 up
+route add default gw 11.11.11.113
+ping 11.11.11.113
 ~~~
 
 <br>
@@ -1073,8 +1091,6 @@ NAT:
 conf t
  int g1
   ip nat outside
- int g2
-  ip nat inside
  int g3
   ip nat inside
   end
