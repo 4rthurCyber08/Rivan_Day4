@@ -1167,6 +1167,135 @@ ssh -l root 11.11.11.100
 ---
 &nbsp;
 
+## Syslogs
+
+~~~
+!@UTM-PH
+conf t
+ service timestamps log datetime msec
+ service sequence-numbers
+ !
+ archive
+  log config
+   notify syslog
+   exit
+  exit
+ ip nat log translations syslog bind-only 
+ !
+ logging host 192.168.102.133 transport udp port 9001
+ logging source-interface g2
+ logging on
+end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### Log Severity Levels
+
+*log.level : "informational"  or log.level : "notification" or log.level : "warning" or log.level : "error" or log.level : "critical" or log.level : "alert" or log.level : "emergency"*
+
+
+~~~
+!@R4
+conf t
+ service timestamps log datetime msec
+ service sequence-numbers
+ logging host 208.8.8.133
+ logging source-interface e3/3
+ logging on
+ logging facility local7
+ !
+ logging trap 6
+end
+~~~
+
+<br>
+
+__Track Logins__
+~~~
+!@R4
+conf t
+ username admin priv 15 secret pass
+ ip domain name SYSLOG.COM
+ crypto key generate rsa modulus 2048 
+ ip ssh version 2
+ !
+ line vty 0 4
+  transport input all
+  login local
+  login on-success log
+  login on-failure log
+  end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+### NetFlow
+
+~~~
+!@Cisco CSR1000v
+conf t
+ no flow record FLOW_RECORD
+ flow record FLOW_RECORD
+  match ipv4 source address
+  match ipv4 destination address
+  match transport source-port
+  match transport destination-port
+  match ipv4 protocol
+  match ipv4 version
+  match interface input
+  match interface output
+  collect counter bytes
+  collect counter packets
+  collect transport tcp flags
+  collect flow direction
+  collect timestamp absolute first
+  collect timestamp absolute last
+  !
+  collect ipv4 tos
+  collect ipv4 ttl
+  collect routing next-hop address ipv4
+  collect application name
+  collect routing source as
+  collect routing destination as
+ !
+ flow exporter FLOW_EXPORTER
+  destination 192.168.102.133
+  transport udp 2055
+  template data timeout 60
+  option interface-table timeout 60
+  option exporter-stats timeout 60
+ !
+ flow monitor FLOW_MONITOR
+  exporter FLOW_EXPORTER
+  record FLOW_RECORD
+ !
+ interface GigabitEthernet1
+  ip flow monitor FLOW_MONITOR input
+  ip flow monitor FLOW_MONITOR output
+  end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
 ## Packet Filtering (L3 ACL)
 ~~~
 !@NetOps-PH
