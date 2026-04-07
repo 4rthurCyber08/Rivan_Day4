@@ -1,5 +1,5 @@
 
-<!-- Your monitor number = #$34T# -->
+<!-- Your monitor number = 81 -->
 
 
 ## ⛅ Warm Up for Day 4.
@@ -368,7 +368,7 @@ net use x: \\10.k.1.10\c$
 - __Segments__
 - Three way handshake
 - TCP Sliding Window
-- Commands: `nmap -v 10.#$34T#.1.10`
+- Commands: `nmap -v 10.81.1.10`
 
 <br>
 
@@ -603,7 +603,7 @@ ip -br link
 3. Modify Interface IP
 VMNet2:  192.168.102.6/24
 VMNet3:  11.11.11.100/27
-Bridged: 10.#$34T#.1.6/24
+Bridged: 10.81.1.6/24
 
 <br>
 
@@ -611,7 +611,7 @@ Bridged: 10.#$34T#.1.6/24
 !@NetOps-PH
 ifconfig ens192 192.168.102.6 netmask 255.255.255.0 up
 ifconfig ens224 11.11.11.100 netmask 255.255.255.224 up
-ifconfig ens256 10.#$34T#.1.6 netmask 255.255.255.0 up
+ifconfig ens256 10.81.1.6 netmask 255.255.255.0 up
 ~~~
 
 <br>
@@ -662,13 +662,13 @@ type ethernet \
 con-name BRIDGED \
 ifname ens256 \
 ipv4.method manual \
-ipv4.addresses 10.#$34T#.1.6/24 \
+ipv4.addresses 10.81.1.6/24 \
 autoconnect yes
 
 nmcli connection up BRIDGED
 
-ip route add 10.0.0.0/8 via 10.#$34T#.1.4 dev ens256
-ip route add 200.0.0.0/24 via 10.#$34T#.1.4 dev ens256
+ip route add 10.0.0.0/8 via 10.81.1.4 dev ens256
+ip route add 200.0.0.0/24 via 10.81.1.4 dev ens256
 ip route add 0.0.0.0/0 via 11.11.11.113 dev ens224
 ~~~
 
@@ -959,25 +959,25 @@ conf t
 !@edge
 conf t
  ip access-list extended NAT-POLICY
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.11.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.12.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.21.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.22.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.31.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.32.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.41.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.42.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.51.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.52.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.61.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.62.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.71.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.72.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.81.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.82.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.91.0.0 0.0.255.255
-  deny ip 10.#$34T#.0.0 0.0.255.255 10.92.0.0 0.0.255.255
-  no deny ip 10.#$34T#.0.0 0.0.255.255 10.#$34T#.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.11.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.12.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.21.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.22.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.31.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.32.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.41.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.42.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.51.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.52.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.61.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.62.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.71.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.72.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.81.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.82.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.91.0.0 0.0.255.255
+  deny ip 10.81.0.0 0.0.255.255 10.92.0.0 0.0.255.255
+  no deny ip 10.81.0.0 0.0.255.255 10.81.0.0 0.0.255.255
   permit ip any any
   end
 ~~~
@@ -1001,11 +1001,11 @@ conf t
 conf t
  no router ospf 1
  router ospf 1
-  router-id #$34T#.0.0.1
-  network 10.#$34T#.#$34T#.0 0.0.0.255 area 0
+  router-id 81.0.0.1
+  network 10.81.81.0 0.0.0.255 area 0
   default-information originate always
   exit
- ip name-server 10.#$34T#.1.10   !8.8.8.8 8.8.4.4
+ ip name-server 10.81.1.10   !8.8.8.8 8.8.4.4
  ip domain lookup
  ip domain lookup source-int g0/0/0
  end
@@ -1018,7 +1018,7 @@ conf t
 !@edge
 conf t
  int tun1
-  ip add 172.16.1.#$34T# 255.255.255.0
+  ip add 172.16.1.81 255.255.255.0
   tunnel source g0/0/1
   tunnel mode gre multipoint
   no shut
@@ -1044,7 +1044,7 @@ conf t
   ip nhrp map 172.16.1.82 200.0.0.82
   ip nhrp map 172.16.1.91 200.0.0.91
   ip nhrp map 172.16.1.92 200.0.0.92
-  no ip nhrp map 172.16.1.#$34T# 200.0.0.#$34T#
+  no ip nhrp map 172.16.1.81 200.0.0.81
   end
 ~~~
 
@@ -1072,7 +1072,7 @@ conf t
  ip route 10.91.0.0 255.255.0.0 172.16.1.91 252
  ip route 10.92.0.0 255.255.0.0 172.16.1.92 252
  !
- no ip route 10.#$34T#.0.0 255.255.0.0 172.16.1.#$34T# 252
+ no ip route 10.81.0.0 255.255.0.0 172.16.1.81 252
  end
 ~~~
 
@@ -1478,7 +1478,7 @@ config t
 
 <br>
 
-Review: Create a DNS A record for www.ccna#$34T#.com
+Review: Create a DNS A record for www.ccna81.com
 208.8.8.100 www.bet100.com
 
 <br>
@@ -1519,7 +1519,7 @@ __SYSLOG__
 conf t
  service timestamps log datetime
  service timestamps debug datetime
- logging 10.#$34T#.1.10
+ logging 10.81.1.10
  logging trap 5
  end
 wr
