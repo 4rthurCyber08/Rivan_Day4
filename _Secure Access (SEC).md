@@ -1539,6 +1539,204 @@ conf t
 &nbsp; 
 
 
+## Certificates via Web Enrollment
+Set Routes for trustpoints:
+~~~
+!@cmd
+route add 208.8.8.11 mask 255.255.255.255 192.168.102.11
+route add 208.8.8.12 mask 255.255.255.255 192.168.102.12
+~~~
+
+
+__TRUSTPOINTS__
+~~~
+!@UTM-PH
+conf t
+ crypto key generate rsa modulus 2048 label CERTKEY
+ !
+ crypto pki trustpoint SECSTORE
+  enrollment url http://192.168.102.8/certsrv/mscep/mscep.dll
+  serial-number
+  fqdn utmph.sec#$34T#.com
+  ip-address 208.8.8.11
+  subject-name CN=UTM-PH,OU=NOC,O=RIVANCORP,L=MAKATI,ST=NCR,C=PH
+  subject-alt-name utmph.sec#$34T#.com
+  revocation-check none
+  source interface GigabitEthernet2
+  rsakeypair CERTKEY
+  end
+~~~
+
+~~~
+!@UTM-JP
+conf t
+ crypto key generate rsa modulus 2048 label CERTKEY
+ !
+ crypto pki trustpoint SECSTORE
+  enrollment url http://192.168.102.8/certsrv/mscep/mscep.dll
+  serial-number
+  fqdn utmjp.sec#$34T#.com
+  ip-address 208.8.8.12
+  subject-name CN=UTM-JP,OU=NOC,O=RIVANCORP,L=TOKYO,ST=KANTO,C=JP
+  subject-alt-name utmjp.sec#$34T#.com
+  revocation-check none
+  source interface GigabitEthernet2
+  rsakeypair CERTKEY
+  end
+~~~
+
+~~~
+!@UTM-PH,UTM-JP
+conf t
+ crypto pki enroll SECSTORE
+ end
+~~~
+
+
+__Phase 1 (IKEv2) & Phase 2 (IPSec)__
+- Encryption
+- Integrity
+- DH
+
+<br>
+
+__Tunnel Properties__
+- IP
+- Source Interface
+- Destination Peer IP
+- Remote Subnets
+
+
+&nbsp;
+---
+&nbsp;
+
+
+### STEP 1 - Phase 1 (IKEv2)
+~~~
+!@UTM-PH
+conf t
+ crypto ikev2 proposal IKEV2-PROP
+  encryption ______
+  integrity ______
+  group ______
+ !
+ crypto ikev2 policy IKEV2-POL
+  proposal IKEV2-PROP
+ !
+ crypto ikev2 profile IKEV2-PROF
+  match identity remote address __.__.__.__
+  authentication remote rsa-sig
+  authentication local rsa-sig
+  pki trustpoint SECSTORE
+  end
+~~~
+
+<br>
+
+~~~
+!@UTM-JP
+conf t
+ crypto ikev2 proposal IKEV2-PROP
+  encryption ______
+  integrity ______
+  group ______
+ !
+ crypto ikev2 policy IKEV2-POL
+  proposal IKEV2-PROP
+ !
+ crypto ikev2 profile IKEV2-PROF
+  match identity remote address __.__.__.__
+  authentication remote rsa-sig
+  authentication local rsa-sig
+  pki trustpoint SECSTORE
+  end
+~~~
+
+
+&nbsp;
+---
+&nbsp;
+
+
+### STEP 2 - Phase 2 (IPSEC)
+~~~
+!@UTM-PH, UTM-JP
+conf t
+ crypto ipsec transform-set TSET _____  _____
+  mode ____
+ !
+ crypto ipsec profile VPN-IPSEC-PROF
+  set transform-set TSET
+  set ikev2-profile IKEV2-PROF
+  end
+~~~
+
+
+&nbsp;
+---
+&nbsp;
+
+
+### STEP 3 - Tunnel Properties
+
+~~~
+!@UTM-PH
+conf t
+ int tun1
+  ip add __.__.__.__  __.__.__.__
+  tunnel source ___
+  tunnel destination __.__.__.__
+  tunnel mode ipsec ipv4
+  tunnel protection ipsec profile VPN-IPSEC-PROF
+  end
+~~~
+
+<br>
+
+~~~
+!@UTM-JP
+conf t
+ int tun1
+  ip add __.__.__.__  __.__.__.__
+  tunnel source ___
+  tunnel destination __.__.__.__
+  tunnel mode ipsec ipv4
+  tunnel protection ipsec profile VPN-IPSEC-PROF
+  end
+~~~
+
+
+&nbsp;
+---
+&nbsp;
+
+
+### STEP 4 - Remote Subnets / Interesting Traffic
+~~~
+!@UTM-PH
+conf t
+ ip route __.__.__.__  __.__.__.__  __.__.__.__
+ end
+~~~
+
+<br>
+
+~~~
+!@UTM-JP
+conf t
+ ip route __.__.__.__  __.__.__.__  __.__.__.__
+ end
+~~~
+
+
+<br>
+<br>
+
+---
+&nbsp; 
+
+
 ## Certificates via OPENSSL
 
 __IF USING TINYCORE FOR CA GENERATION__
