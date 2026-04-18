@@ -94,7 +94,7 @@ conf t
   ip add 192.168.102.11 255.255.255.0
   no shut
  int g3
-  ip add 11.11.11.113 255.255.255.224
+  ip add 10.11.11.113 255.255.255.224
   no shut
   exit
  int g4
@@ -164,9 +164,9 @@ wr
 !@BLDG-PH
 sudo su
 hostname BLDG-PH
-ifconfig eth0 11.11.11.111 netmask 255.255.255.224 up
-route add default gw 11.11.11.113
-ping 11.11.11.113
+ifconfig eth0 10.11.11.111 netmask 255.255.255.224 up
+route add default gw 10.11.11.113
+ping 10.11.11.113
 ~~~
 
 Create a user account:
@@ -257,7 +257,7 @@ type ethernet \
 con-name VMNET3 \
 ifname ens224 \
 ipv4.method manual \
-ipv4.addresses 11.11.11.100/27 \
+ipv4.addresses 10.11.11.100/27 \
 autoconnect yes
 
 nmcli connection up VMNET3
@@ -276,7 +276,7 @@ nmcli connection up BRIDGED
 
 ip route add 10.0.0.0/8 via 10.#$34T#.1.4 dev ens256
 ip route add 200.0.0.0/24 via 10.#$34T#.1.4 dev ens256
-ip route add 0.0.0.0/0 via 11.11.11.113 dev ens224
+ip route add 0.0.0.0/0 via 10.11.11.113 dev ens224
 ~~~
 
 
@@ -864,7 +864,7 @@ conf t
  !
  ip nat inside source list NAT int g1 overload
  !
- ip nat inside source static tcp  11.11.11.111  80  208.8.8.100  8080
+ ip nat inside source static tcp  10.11.11.111  80  208.8.8.100  8080
  !
  no ip route 10.0.0.0 255.0.0.0 10.#$34T#.1.4
  no ip route 200.0.0.0 255.255.255.0 10.#$34T#.1.4
@@ -1285,10 +1285,10 @@ clear ip nat trans *
 clear ip nat trans *
 conf t
  no ip nat inside source list NAT interface GigabitEthernet1 overload
- no ip nat inside source static tcp 11.11.11.100 22 208.8.8.100 2202 extendable
- no ip nat inside source static tcp 11.11.11.111 22 208.8.8.100 2222 extendable
- no ip nat inside source static tcp 11.11.11.111 80 208.8.8.100 8080 extendable
- no ip nat inside source static tcp 11.11.11.111 443 208.8.8.100 8443 extendable
+ no ip nat inside source static tcp 10.11.11.100 22 208.8.8.100 2202 extendable
+ no ip nat inside source static tcp 10.11.11.111 22 208.8.8.100 2222 extendable
+ no ip nat inside source static tcp 10.11.11.111 80 208.8.8.100 8080 extendable
+ no ip nat inside source static tcp 10.11.11.111 443 208.8.8.100 8443 extendable
  end
 ~~~
 
@@ -2624,7 +2624,7 @@ conf t
  ip access-list extended NETOPS-PBR
   deny ip 11.11.11.0 0.0.0.31  21.21.21.208 0.0.0.15
   deny ip 11.11.11.0 0.0.0.31  22.22.22.192 0.0.0.63
-  permit ip host 11.11.11.100 any
+  permit ip host 10.11.11.100 any
   exit
  route-map PBR-TO-JP permit 10
   match ip address NETOPS-PBR
