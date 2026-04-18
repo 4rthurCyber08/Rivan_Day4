@@ -495,7 +495,7 @@ conf t
   ip add 192.168.102.11 255.255.255.0
   no shut
  int g3
-  ip add 11.11.11.113 255.255.255.224
+  ip add 10.11.11.113 255.255.255.224
   no shut
  !
  username admin privilege 15 secret pass
@@ -548,9 +548,9 @@ wr
 !@BLDG-PH
 sudo su
 hostname BLDG-PH
-ifconfig eth0 11.11.11.101 netmask 255.255.255.224 up
-route add default gw 11.11.11.113
-ping 11.11.11.113
+ifconfig eth0 10.11.11.101 netmask 255.255.255.224 up
+route add default gw 10.11.11.113
+ping 10.11.11.113
 ~~~
 
 <br>
@@ -602,7 +602,7 @@ ip -br link
 
 3. Modify Interface IP
 VMNet2:  192.168.102.6/24
-VMNet3:  11.11.11.100/27
+VMNet3:  10.11.11.100/27
 Bridged: 10.#$34T#.1.6/24
 
 <br>
@@ -610,7 +610,7 @@ Bridged: 10.#$34T#.1.6/24
 ~~~
 !@NetOps-PH
 ifconfig ens192 192.168.102.6 netmask 255.255.255.0 up
-ifconfig ens224 11.11.11.100 netmask 255.255.255.224 up
+ifconfig ens224 10.11.11.100 netmask 255.255.255.224 up
 ifconfig ens256 10.#$34T#.1.6 netmask 255.255.255.0 up
 ~~~
 
@@ -652,7 +652,7 @@ type ethernet \
 con-name VMNET3 \
 ifname ens224 \
 ipv4.method manual \
-ipv4.addresses 11.11.11.100/27 \
+ipv4.addresses 10.11.11.100/27 \
 autoconnect yes
 
 nmcli connection up VMNET3
@@ -669,7 +669,7 @@ nmcli connection up BRIDGED
 
 ip route add 10.0.0.0/8 via 10.#$34T#.1.4 dev ens256
 ip route add 200.0.0.0/24 via 10.#$34T#.1.4 dev ens256
-ip route add 0.0.0.0/0 via 11.11.11.113 dev ens224
+ip route add 0.0.0.0/0 via 10.11.11.113 dev ens224
 ~~~
 
 
@@ -1156,7 +1156,7 @@ vi /etc/resolv.conf
 Forward Proxy
 ~~~
 !@BLDG-JP-1
-ssh -l root 11.11.11.100
+ssh -l root 10.11.11.100
 
 > (yes/no) yes
 ~~~
