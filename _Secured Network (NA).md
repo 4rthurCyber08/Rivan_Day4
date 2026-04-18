@@ -529,8 +529,8 @@ conf t
   ip add 192.168.102.12 255.255.255.0
   no shut
  int g3
-  ip add 21.21.21.213 255.255.255.240
-  ip add 22.22.22.223 255.255.255.192 secondary
+  ip add 10.21.21.213 255.255.255.240
+  ip add 10.22.22.223 255.255.255.192 secondary
   no shut
  !
  username admin privilege 15 secret pass
@@ -559,9 +559,9 @@ ping 10.11.11.113
 !@BLDG-JP-1
 sudo su
 hostname BLDG-JP-1
-ifconfig eth0 21.21.21.211 netmask 255.255.255.240 up
-route add default gw 21.21.21.213
-ping 21.21.21.213
+ifconfig eth0 10.21.21.211 netmask 255.255.255.240 up
+route add default gw 10.21.21.213
+ping 10.21.21.213
 ~~~
 
 <br>
@@ -570,9 +570,9 @@ ping 21.21.21.213
 !@BLDG-JP-2
 sudo su
 hostname BLDG-JP-2
-ifconfig eth0 22.22.22.221 netmask 255.255.255.192 up
-route add default gw 22.22.22.223
-ping 22.22.22.223
+ifconfig eth0 10.22.22.221 netmask 255.255.255.192 up
+route add default gw 10.22.22.223
+ping 10.22.22.223
 ~~~
 
 <br>
@@ -862,8 +862,8 @@ conf t
   tunnel destination 208.8.8.12
   tunnel protection ipsec profile WEBUI-IPSEC-PROFILE-Tunnel1
   exit
- ip route 22.22.22.192 255.255.255.192 Tunnel1
- ip route 21.21.21.208 255.255.255.240 Tunnel1
+ ip route 10.22.22.192 255.255.255.192 Tunnel1
+ ip route 10.21.21.208 255.255.255.240 Tunnel1
  end
 ~~~
 
@@ -910,7 +910,7 @@ conf t
   tunnel destination 208.8.8.11
   tunnel protection ipsec profile WEBUI-IPSEC-PROFILE-Tunnel1
   exit
- ip route 11.11.11.96 255.255.255.224 Tunnel1
+ ip route 10.11.11.96 255.255.255.224 Tunnel1
  end
 ~~~
 
@@ -921,8 +921,8 @@ conf t
 ~~~
 !@UTM-PH
 conf t
- ip route 22.22.22.192 255.255.255.192 208.8.8.12
- ip route 21.21.21.208 255.255.255.240 208.8.8.12
+ ip route 10.22.22.192 255.255.255.192 208.8.8.12
+ ip route 10.21.21.208 255.255.255.240 208.8.8.12
  end
 ~~~
 
@@ -931,7 +931,7 @@ conf t
 ~~~
 !@UTM-JP
 conf t
- ip route 11.11.11.96 255.255.255.224 208.8.8.11
+ ip route 10.11.11.96 255.255.255.224 208.8.8.11
  end
 ~~~
 
@@ -1103,8 +1103,8 @@ conf t
 !@UTM-PH
 conf t
  ip access-list extended NAT
-  deny ip 11.11.11.96 0.0.0.31 21.21.21.208 0.0.0.15
-  deny ip 11.11.11.96 0.0.0.31 22.22.22.192 0.0.0.63
+  deny ip 10.11.11.96 0.0.0.31 10.21.21.208 0.0.0.15
+  deny ip 10.11.11.96 0.0.0.31 10.22.22.192 0.0.0.63
   permit ip any any
   end
 ~~~
@@ -1115,8 +1115,8 @@ conf t
 !@UTM-JP
 conf t
  ip access-list extended NAT
-  deny ip 21.21.21.208 0.0.0.15 11.11.11.96 0.0.0.31 
-  deny ip 22.22.22.192 0.0.0.63 11.11.11.96 0.0.0.31 
+  deny ip 10.21.21.208 0.0.0.15 10.11.11.96 0.0.0.31 
+  deny ip 10.22.22.192 0.0.0.63 10.11.11.96 0.0.0.31 
   permit ip any any
   end
 ~~~
@@ -1631,8 +1631,8 @@ REMOVE THE TUNNEL
 ~~~
 !@UTM-PH
 conf t
- ip route 22.22.22.192 255.255.255.192 208.8.8.12
- ip route 21.21.21.208 255.255.255.240 208.8.8.12
+ ip route 10.22.22.192 255.255.255.192 208.8.8.12
+ ip route 10.21.21.208 255.255.255.240 208.8.8.12
  end
 ~~~
 
@@ -1641,7 +1641,7 @@ conf t
 ~~~
 !@UTM-JP
 conf t
- ip route 11.11.11.96 255.255.255.224 208.8.8.11
+ ip route 10.11.11.96 255.255.255.224 208.8.8.11
  end
 ~~~
 
@@ -1777,7 +1777,7 @@ config t
   25 deny ip 208.8.8.0 0.0.0.255 208.8.8.0 0.0.0.255
   exit
  !
- ip nat inside source static tcp 21.21.21.211 80 208.8.8.12 8080
+ ip nat inside source static tcp 10.21.21.211 80 208.8.8.12 8080
   end
 ~~~
 
@@ -1788,8 +1788,8 @@ Access the Web: http://208.8.8.200:8080
 <br>
 
 ### Exercise: Set Portforwarding Rules for:
-- 208.8.8.12 8443 > 22.22.22.221 443
-- 208.8.8.12 2222 > 21.21.21.211 22
+- 208.8.8.12 8443 > 10.22.22.221 443
+- 208.8.8.12 2222 > 10.21.21.211 22
 
 <br>
 
