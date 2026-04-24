@@ -139,8 +139,8 @@ conf t
   ip add 192.168.102.12 255.255.255.0
   no shut
  int g3
-  ip add 21.21.21.213 255.255.255.240
-  ip add 22.22.22.223 255.255.255.192 secondary
+  ip add 10.21.21.213 255.255.255.240
+  ip add 10.22.22.223 255.255.255.192 secondary
   no shut
   exit
  !
@@ -184,9 +184,9 @@ adduser admin
 !@BLDG-JP-1
 sudo su
 hostname BLDG-JP-1
-ifconfig eth0 21.21.21.211 netmask 255.255.255.240 up
-route add default gw 21.21.21.213
-ping 21.21.21.213
+ifconfig eth0 10.21.21.211 netmask 255.255.255.240 up
+route add default gw 10.21.21.213
+ping 10.21.21.213
 ~~~
 
 <br>
@@ -195,9 +195,9 @@ ping 21.21.21.213
 !@BLDG-JP-2
 sudo su
 hostname BLDG-JP-2
-ifconfig eth0 22.22.22.221 netmask 255.255.255.192 up
-route add default gw 22.22.22.223
-ping 22.22.22.223
+ifconfig eth0 10.22.22.221 netmask 255.255.255.192 up
+route add default gw 10.22.22.223
+ping 10.22.22.223
 ~~~
 
 
@@ -858,8 +858,8 @@ conf t
   ip nat inside
  !
  ip access-list extended NAT
-  deny ip 11.11.11.96 0.0.0.31  21.21.21.208 0.0.0.15
-  deny ip 11.11.11.96 0.0.0.31  22.22.22.192 0.0.0.63
+  deny ip 10.11.11.96 0.0.0.31  10.21.21.208 0.0.0.15
+  deny ip 10.11.11.96 0.0.0.31  10.22.22.192 0.0.0.63
   exit
  !
  ip nat inside source list NAT int g1 overload
@@ -2612,8 +2612,8 @@ conf t
  !
  no  ip access-list extended NAT
  ip access-list extended NAT
-  deny ip 11.11.11.0 0.0.0.31  21.21.21.208 0.0.0.15
-  deny ip 11.11.11.0 0.0.0.31  22.22.22.192 0.0.0.63
+  deny ip 11.11.11.0 0.0.0.31  10.21.21.208 0.0.0.15
+  deny ip 11.11.11.0 0.0.0.31  10.22.22.192 0.0.0.63
   permit ip any any
  !
  ip nat inside source list NAT int g1
@@ -2622,8 +2622,8 @@ conf t
  !
  no  ip access-list extended NETOPS-PBR
  ip access-list extended NETOPS-PBR
-  deny ip 11.11.11.0 0.0.0.31  21.21.21.208 0.0.0.15
-  deny ip 11.11.11.0 0.0.0.31  22.22.22.192 0.0.0.63
+  deny ip 11.11.11.0 0.0.0.31  10.21.21.208 0.0.0.15
+  deny ip 11.11.11.0 0.0.0.31  10.22.22.192 0.0.0.63
   permit ip host 10.11.11.100 any
   exit
  route-map PBR-TO-JP permit 10
@@ -2651,8 +2651,8 @@ conf t
   ip nat inside
  !
  ip access-list extended NAT
-  deny ip 21.21.21.208 0.0.0.15  11.11.11.96 0.0.0.31
-  deny ip 22.22.22.192 0.0.0.63  11.11.11.96 0.0.0.31
+  deny ip 10.21.21.208 0.0.0.15  10.11.11.96 0.0.0.31
+  deny ip 10.22.22.192 0.0.0.63  10.11.11.96 0.0.0.31
   permit ip any any
  !
  ip nat inside source list NAT int g1
