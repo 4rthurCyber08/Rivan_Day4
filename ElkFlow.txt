@@ -1,0 +1,166 @@
+## Deployment
+
+__IR-ElasticSys__
+| NetAdapter | VMNet   |
+| ---        | ---     |
+| 1          | NAT     |
+| 2          | VMNet 2 |
+
+
+__CSR1000v__
+| NetAdapter | VMNet   |
+| ---        | ---     |
+| 1          | NAT     |
+| 2          | VMNet 2 |
+| 3          | VMNet 3 |
+
+
+<br>
+<br>
+
+
+## Set the correct Time
+
+~~~
+!@IR-ElasticSys
+timedatectl set-timezone UTC
+timedatectl set-timezone Asia/Kuala_Lumpur
+date
+~~~
+
+~~~
+!@CSR1000v
+conf t
+ int g1
+  ip add 208.8.8.11 255.255.255.0         !- Access GUI with this IP
+  no shut
+ ip route 0.0.0.0 0.0.0.0 208.8.8.2
+ ip name-server 8.8.8.8   1.1.1.1
+ !
+ int g2
+  ip add 192.168.102.11 255.255.255.0     !- Telnet with this IP
+  no shut
+ int g3
+  ip add 192.168.103.11 255.255.255.0
+  no shut
+ !
+ ntp server 216.239.35.12
+ clock timezone PHT 8
+ end
+show clock
+show ntp associations
+sh ntp status
+show clock
+~~~
+
+
+<br>
+<br>
+
+
+### 1. Turn On ElasticSearch
+
+~~~
+!@IR-ElasticSys
+systemctl start elasticsearch
+~~~
+
+
+Verification
+~~~
+systemctl status elasticsearch
+ss -ulnp | grep 2055
+~~~
+
+- Elastic Search MUST be running
+- Filebeat MUST be listening on port 2055 for netflow traffic
+
+
+<br>
+<br>
+
+
+### 2. Access ElasticSearch GUI
+
+http://208.8.8.133:5601
+- Username: admin
+- Password: C1sc0123
+
+Path: Side Bar Menu ☰  >  Analytics  >  Dashboards  >  [Filebeat Netflow] Traffic Analysis
+
+
+<br>
+<br>
+
+
+### 3. Configure NetFlow on Cisco
+
+~~~
+!@CSR1000v
+conf t
+ no flow record FLOW_RECORD
+ flow record FLOW_RECORD                   !- Collect Specific Packet Info
+  match ipv4 source address
+  match ipv4 destination address
+  match transport source-port
+  match transport destination-port
+  match ipv4 protocol
+  match ipv4 version
+  match interface input
+  match interface output
+  collect counter bytes
+  collect counter packets
+  collect transport tcp flags
+  collect flow direction
+  collect timestamp absolute first
+  collect timestamp absolute last
+  !
+  collect ipv4 tos
+  collect ipv4 ttl
+  collect routing next-hop address ipv4
+  collect application name
+  collect routing source as
+  collect routing destination as
+ !
+ no flow exporter FLOW_EXPORTER
+ flow exporter FLOW_EXPORTER               !- Specify Where to send Flows (IR-ElasticSys via VMNet2)
+  destination 192.168.102.133
+  transport udp 2055
+  template data timeout 60                 !- Required
+  option interface-table timeout 60        !- Required
+  option exporter-stats timeout 60         !- Required
+ !
+ no flow monitor FLOW_MONITOR
+ flow monitor FLOW_MONITOR                 !- Combine EXPORTER & RECORD Info
+  exporter FLOW_EXPORTER
+  record FLOW_RECORD
+ !
+ interface GigabitEthernet1
+  ip flow monitor FLOW_MONITOR input       !- CSR will Monitor Packets Going through VMNet1 (NAT)
+  ip flow monitor FLOW_MONITOR output
+  end
+~~~
+
+
+<br>
+<br>
+
+
+### 4. Generate Packets to be converted to Flows
+
+Telnet OR SSH via 208.8.8.11
+ - Username: admin
+ - Password: pass
+
+
+~~~
+!@UTM-PH
+telnet www.rivanit.com  2000  /ipv4
+telnet www.rivanit.com  5060  /ipv4
+telnet www.cisco.com  53  /ipv4
+telnet www.neu.edu.ph  80  /ipv4
+telnet www.neu.edu.ph  443  /ipv4
+~~~
+
+
+Access the GUI: https://208.8.8.11/
