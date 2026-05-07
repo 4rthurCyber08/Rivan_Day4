@@ -1023,7 +1023,7 @@ conf t
   ip add 192.168.102.11 255.255.255.0
   no shut
  int g3
-  ip add 11.11.11.113 255.255.255.224
+  ip add 10.11.11.113 255.255.255.224
   no shut
  !
  ip route 0.0.0.0 0.0.0.0 208.8.8.2
@@ -1045,9 +1045,9 @@ wr
 ~~~
 !@BLDG-1
 sudo su
- ifconfig eth0 11.11.11.101 netmask 255.255.255.224 up
- route add default gw 11.11.11.113
-ping 11.11.11.113
+ ifconfig eth0 10.11.11.101 netmask 255.255.255.224 up
+ route add default gw 10.11.11.113
+ping 10.11.11.113
 
 
 ~~~
@@ -1055,9 +1055,9 @@ ping 11.11.11.113
 ~~~
 !@BLDG-2
 sudo su
- ifconfig eth0 11.11.11.102 netmask 255.255.255.224 up
- route add default gw 11.11.11.113
-ping 11.11.11.113
+ ifconfig eth0 10.11.11.102 netmask 255.255.255.224 up
+ route add default gw 10.11.11.113
+ping 10.11.11.113
 
 
 ~~~
@@ -1113,11 +1113,11 @@ conf t
   ip nat inside
  !
  no access-list 1
- access-list 1 permit 11.11.11.96 0.0.0.31
+ access-list 1 permit 10.11.11.96 0.0.0.31
  ip nat inside source list 1 int g1 overload
  !
- ip nat inside source static tcp 11.11.11.101 80 208.8.8.100 8080
- ip nat inside source static tcp 11.11.11.102 80 208.8.8.100 80
+ ip nat inside source static tcp 10.11.11.101 80 208.8.8.100 8080
+ ip nat inside source static tcp 10.11.11.102 80 208.8.8.100 80
  end
 ~~~
 
@@ -1259,9 +1259,9 @@ conf t
 ~~~
 !@BLDG-1
 sudo su
- ifconfig eth0 11.11.11.101 netmask 255.255.255.224 up
- route add default gw 11.11.11.113
-ping 11.11.11.113
+ ifconfig eth0 10.11.11.101 netmask 255.255.255.224 up
+ route add default gw 10.11.11.113
+ping 10.11.11.113
 
 
 ~~~
