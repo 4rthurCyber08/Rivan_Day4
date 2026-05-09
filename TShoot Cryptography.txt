@@ -1,6 +1,0 @@
-!@cmd
-ssh -l root 208.8.8.167 -o HostKeyAlgorithm=+ssh-rsa,ssh-dss 
-
--o PubkeyAcceptedAlgorithms=+ssh-rsa,ssh-dss
--o kexalgorithms=+diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1 
--o hostkeyalgorithms=+ssh-rsa
