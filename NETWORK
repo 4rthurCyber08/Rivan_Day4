@@ -1,0 +1,303 @@
+
+<!--   Your Monitor Number  =  #$34T#  -->
+
+## Review on IPv4 Essentials
+
+## CIDR
+
+| CIDR | NETMASK     | RIVAN Format | WILDCARD    |
+| ---  | ---         | ---          | ---         |
+| /20  |             | (Octet, i)   |             |
+| /27  |             | (Octet, i)   |             |
+| /14  |             | (Octet, i)   |             |
+
+
+<br>
+
+
+### Find the Network:
+
+| Dept       | Network             | Infected Hosts      |
+| ---        | ---                 | ---                 |
+| ADMIN      | 192.168.192.0       | 192.168.200.54  /18 |
+| HR         | 192.168.128.0       | 192.168.130.115 /20 | 
+| FINANCE    | 192.168.126.96      | 192.168.126.100 /27 |
+| SOC        | 192.168.120.0       | 192.168.122.187 /22 |
+| NOC        | 192.168.126.136     | 192.168.126.140 /29 |
+| MARKETING  | 192.168.0.0         | 192.168.27.216  /19 |
+|            |                     | 192.168.141.216 /20 |
+
+
+<br>
+<br>
+
+---
+&nbsp;
+
+
+# Lab Setup
+
+__WINDOWS__ = Server 2022  
+__LINUX__   = Rocky  
+__CISCO__   = CSR1000V 
+
+
+<br>
+<br>
+
+
+### 1. Deploy
+
+Deploy the following VMs   
+- CSR1000v  
+- YVM
+- NetOps  
+
+| VM        | NetAdapter | NetAdapter 2 | NetAdapter 3 | NetAdapter 4  |
+| ---       | ---        | ---          | ---          | ---           |
+| UTM-PH    | NAT        | VMNet2       | VMNet3       | Bridged (Rep) |
+|           |            |              |              |               |
+| UTM-JP    | NAT        | VMNet2       | VMNet4       |               |
+|           |            |              |              |               |
+| NetOps-PH | VMNet1     | VMNet2       | VMNet3       | Bridged (Rep) |
+|           |            |              |              |               |
+| BLDG-PH   | VMNet3     | VMNet2       |              |               |
+|           |            |              |              |               |
+| BLDG-JP-1 | VMNet4     |              |              |               |
+|           |            |              |              |               |
+
+
+<br>
+
+
+### 2. Bootstrap
+
+~~~
+!@UTM-PH
+conf t
+ hostname UTM-PH
+ enable secret pass
+ service password-encryption
+ no logging cons
+ no ip domain lookup
+ line vty 0 14
+  transport input all
+  password pass
+  login local
+  exec-timeout 0 0
+ int g1
+  ip add 208.8.8.11 255.255.255.0
+  no shut
+ int g2
+  ip add 192.168.102.11 255.255.255.0
+  no shut
+ int g3
+  ip add 10.11.11.113 255.255.255.224
+  no shut
+  exit
+ !
+ ip route 0.0.0.0 0.0.0.0 208.8.8.2
+ !
+ ip domain lookup
+ ip name-server 8.8.8.8 1.1.1.1
+ !
+ username admin privilege 15 secret pass
+ ip http server
+ ip http secure-server
+ ip http authentication local
+ ip http timeout-policy idle 600 life 86400 requests 10000
+ end
+wr
+!
+~~~
+
+<br>
+
+~~~
+!@UTM-JP
+conf t
+ hostname UTM-JP
+ enable secret pass
+ service password-encryption
+ no logging cons
+ no ip domain lookup
+ line vty 0 14
+  transport input all
+  password pass
+  login local
+  exec-timeout 0 0
+ int g1
+  ip add 208.8.8.12 255.255.255.0
+  no shut
+ int g2
+  ip add 192.168.102.12 255.255.255.0
+  no shut
+ int g3
+  ip add 10.21.21.213 255.255.255.240
+  ip add 10.22.22.223 255.255.255.192 secondary
+  no shut
+  exit
+ !
+ ip route 0.0.0.0 0.0.0.0 208.8.8.2
+ ip domain lookup
+ ip name-server 8.8.8.8 1.1.1.1
+ !
+ username admin privilege 15 secret pass
+ ip http server
+ ip http secure-server
+ ip http authentication local
+ ip http timeout-policy idle 600 life 86400 requests 10000
+ end
+wr
+!
+~~~
+
+<br>
+
+~~~
+!@BLDG-PH
+sudo su
+hostname BLDG-PH
+ifconfig eth0 10.11.11.111 netmask 255.255.255.224 up
+route add default gw 10.11.11.113
+ping 10.11.11.113
+~~~
+
+Create a user account:
+~~~
+!@BLDG-PH-1
+adduser admin
+
+> pass
+> pass
+~~~
+
+<br>
+
+~~~
+!@BLDG-JP-1
+sudo su
+hostname BLDG-JP-1
+ifconfig eth0 10.21.21.211 netmask 255.255.255.240 up
+route add default gw 10.21.21.213
+ping 10.21.21.213
+~~~
+
+
+<br>
+<br>
+
+
+### NAT/PAT
+
+~~~
+!@UTM-PH
+conf t
+ int g1
+  ip nat outside
+ int g3
+  ip nat inside
+  exit
+  !
+ no ip access-list extended NAT
+ ip access-list extended NAT
+  permit ip 10.11.11.96 0.0.0.31 any
+  !
+ ip nat inside source list NAT int g1 overload
+ !
+ ip route 0.0.0.0 0.0.0.0 208.8.8.2
+ end
+~~~
+
+
+<br>
+
+
+~~~
+!@UTM-JP
+conf t
+ int g1
+  ip nat outside
+ int g3
+  ip nat inside
+  exit
+  !
+ no ip access-list extended NAT
+ ip access-list extended NAT
+  permit ip 10.21.21.208 0.0.0.15 any
+  exit
+  !
+ ip nat inside source list NAT int g1 overload
+ !
+ ip route 0.0.0.0 0.0.0.0 208.8.8.2
+ end
+~~~
+
+
+<br>
+<br>
+
+
+### PROXY
+
+~~~
+!@UTM-PH
+config t
+ ip nat inside source static tcp 10.11.11.111 80  208.8.8.100 8080
+ ip nat inside source static tcp 10.11.11.111 443 208.8.8.100 8443
+ ip nat inside source static tcp 10.11.11.111 22  208.8.8.100 2222
+  end
+~~~
+
+
+~~~
+!@UTM-JP
+
+
+~~~
+
+
+<br>
+<br>
+
+
+### VPN
+
+~~~
+!@UTM-PH & UTM-JP
+conf t
+ ip domain name sec.plus
+ !
+ crypto key generate rsa modulus 2048 label key exportable
+ ip ssh version 2
+ ip ssh rsa keypair-name key
+ end
+show ip ssh
+~~~
+
+
+
+<br>
+
+
+View Private & Public Keys
+~~~
+!@UTM-PH & UTM-JP
+conf t
+ crypto key export rsa key pem terminal aes C1sc0123
+ end
+~~~
+
+
+<br>
+
+
+UTM-PH: https://192.168.102.11
+UTM-JP: https://192.168.102.12
+
+
+
+<br>
+<br>
+
+
