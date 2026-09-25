@@ -1034,6 +1034,16 @@ TinyCore (yvm.ova):
 !@R1
 conf t
  hostname R1-UTM-PH
+ enable secret pass
+ service password-encryption
+ no logging console
+ no ip domain lookup
+ line vty 0 14
+  password pass
+  transport input all
+  login local
+  exec-timeout 0 0
+ username admin privilege 15 secret pass
  int g1
   ip add 208.8.8.11 255.255.255.0
   no shut
@@ -1062,6 +1072,16 @@ conf t
 !@R2
 conf t
  hostname R2-UTM-JP
+ enable secret pass
+ service password-encryption
+ no logging console
+ no ip domain lookup
+ line vty 0 14
+  password pass
+  transport input all
+  login local
+  exec-timeout 0 0
+ username admin privilege 15 secret pass
  int g1
   ip add 10.1.2.2 255.255.255.0
   ip ospf 1 area 0
@@ -1088,6 +1108,16 @@ conf t
 !@R3
 conf t
  hostname R3-UTM-US
+ enable secret pass
+ service password-encryption
+ no logging console
+ no ip domain lookup
+ line vty 0 14
+  password pass
+  transport input all
+  login local
+  exec-timeout 0 0
+ username admin privilege 15 secret pass
  int g1
   ip add 10.2.3.3 255.255.255.0
   ip ospf 1 area 0
@@ -1251,7 +1281,7 @@ conf t
 conf t
  int g1
   ip nat outside
- int range g3-4
+ int range g3
   ip nat inside
  !
  ip access-list extended NAT
