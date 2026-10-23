@@ -248,14 +248,6 @@ R1#
 
 # IPv6 Deployment
 
-![IPv6_IMG](img/IPv6.jpg)
-
-
-&nbsp;
----
-&nbsp;
-
-
 ### IPv6 Address Compression Rules
 
 1. 2001:0db8:0000:0000:0000:0000:0000:0000 /64
