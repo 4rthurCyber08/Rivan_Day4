@@ -1,0 +1,9 @@
+{
+    "device_info": {
+        "device_type": "cisco_ios_telnet",
+        "ip": "192.168.108.164",
+        "password": "pass",
+        "secret": "pass",
+        "port": 2001
+    }
+}

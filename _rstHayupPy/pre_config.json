@@ -1,0 +1,203 @@
+{
+    "dhcp_config": {
+        "net_v10": "10.2.1.0"
+    },
+
+    "i_protocol": {
+        "mask_24": "255.255.255.0",
+        "mask_32": "255.255.255.255",
+        "mask_30": "255.255.255.252",
+        "mask_27": "255.255.255.224",
+        "def_route": "0.0.0.0 0.0.0.0",
+        "def_129": "192.168.1.129",
+        "def_130": "192.168.1.130",
+        "def_1_1": "10.2.1.1",
+        "def_1_2": "10.2.1.2",
+        "int_desc": "configured through python"
+    },
+
+    "eigrp_config": {
+        "named-eigrp": "hayupLAB",
+        "as100": "100",
+        "net_1_0": "10.2.1.0 0.0.0.255",
+        "net_2_0": "10.2.2.0 0.0.0.255",
+        "net_49": "10.1.49.0 0.0.0.255",
+        "net_50": "10.1.50.0 0.0.0.255",
+        "net_51": "10.1.51.0 0.0.0.255",
+        "net_v100": "192.168.1.128 0.0.0.31",
+        "net_4_4": "10.1.4.4 0.0.0.3",
+        "net_4_8": "10.1.4.8 0.0.0.3",
+        "net_1_8": "10.1.1.8 0.0.0.3",
+        "net_8_4": "10.1.8.4 0.0.0.3",
+        "net_8_8": "10.1.8.8 0.0.0.3",
+        "redis_ospf_1": "redistribute ospf 1 metric 10000 1000 255 1 1500"
+    },
+
+    "ospf_config": {
+        "process_id": "1",
+        "net_1_8": "10.1.1.8 0.0.0.3 area 34",
+        "net_1_4": "10.1.1.4 0.0.0.3 area 0",
+        "net_1_0": "10.1.1.0 0.0.0.3 area 12",
+        "net_2_4": "10.1.2.4 0.0.0.3 area 0",
+        "net_2_8": "10.1.2.8 0.0.0.3 area 352",
+        "net_2_12": "10.1.2.12 0.0.0.3 area 352",
+        "net_3_4": "10.1.3.4 0.0.0.3 area 26",
+        "net_3_0": "10.1.3.0 0.0.0.3 area 26",
+        "redis_eigrp_100": "redistribute eigrp 100 subnets metric-type 1 metric 40000",
+        "redis_bgp": "default-information originate",
+        "ref-bw": "100000"
+    },
+
+    "bgp_config": {
+        "as_34": "bgp 34",
+        "as_1": "bgp 1",
+        "as_25": "bgp 25",
+        "ipv4_fam": "address-family ipv4",
+        "net_45": "45.4.5.0",
+        "net_24": "24.2.4.0",
+        "net_208": "208.8.8.0",
+        "net_32": "32.3.2.0",
+        "net_25": "25.2.5.0",
+        "net_207": "207.7.7.0",
+        "net_35": "35.3.5.0",
+        "net_209": "209.9.9.0",
+        "net_0": "0.0.0.0",
+        "net_10": "10.1.1.0",
+        "fake_net": "10.0.0.0 255.0.0.0"
+    },
+
+    "d1_config": {
+        "hostname": "D1",
+        "r_id": "10.10.0.0",
+        "dhcp_pool": "d1POOL",
+        "gateway": "10.2.1.1",
+        "excip_01": "10.2.1.1 10.2.1.100",
+        "excip_02": "10.2.1.200 10.2.1.250"
+    },
+
+    "d2_config": {
+        "hostname": "D2",
+        "r_id": "10.20.0.0",
+        "dhcp_pool": "d2POOL",
+        "gateway": "10.2.1.2",
+        "excip_01": "10.2.1.1 10.2.1.199",
+        "excip_02": "10.2.1.250 10.2.1.254"
+    },
+
+    "a1_config": {
+        "hostname": "A1",
+        "r_id": "10.10.1.0"
+    },
+
+    "a2_config": {
+        "hostname": "A2",
+        "r_id": "10.10.2.0"
+    },
+
+    "p1_config": {
+        "hostname": "P1",
+        "r_id": "10.10.1.1"
+    },
+
+    "p2_config": {
+        "hostname": "P2",
+        "r_id": "10.10.2.1"
+    },
+
+    "s1_config": {
+        "hostname": "S1",
+        "int_1_0": "192.168.1.133",
+        "gateway_1": "192.168.1.129",
+        "gateway_2": "192.168.1.130"
+    },
+
+    "s2_config": {
+        "hostname": "S2",
+        "int_1_0": "10.2.2.133",
+        "gateway_1": "10.2.2.2",
+        "gateway_2": "10.2.2.1"
+    },
+
+    "r6_config": {
+        "hostname": "R6",
+        "r_id": "6.6.6.6"
+    },
+
+    "r5_config": {
+        "hostname": "R5",
+        "r_id": "5.5.5.5"
+    },
+
+    "r4_config": {
+        "hostname": "R4",
+        "r_id": "4.4.4.4"
+    },
+
+    "r3_config": {
+        "hostname": "R3",
+        "r_id": "3.3.3.3"
+    },
+
+    "r2_config": {
+        "hostname": "R2",
+        "r_id": "2.2.2.2"
+    },
+
+    "r1_config": {
+        "hostname": "R1",
+        "r_id": "1.1.1.1",
+        "neigh_209": "neighbor 209.9.9.3 remote-as 34",
+        "neigh_207": "neighbor 207.7.7.2 remote-as 25",
+        "neigh_208": "neighbor 208.8.8.4 remote-as 34",
+        "neigh_209_on": "neighbor 209.9.9.3 activate",
+        "neigh_207_on": "neighbor 207.7.7.2 activate",
+        "neigh_208_on": "neighbor 208.8.8.4 activate"
+    },
+
+    "i1_config": {
+        "hostname": "ISP1",
+        "lo0": "44.44.44.44",
+        "neigh_45": "neighbor 45.4.5.5 remote-as 25",
+        "neigh_24": "neighbor 24.2.4.2 remote-as 25",
+        "neigh_208": "neighbor 208.8.8.1 remote-as 1",
+        "neigh_45_on": "neighbor 45.4.5.5 activate",
+        "neigh_24_on": "neighbor 24.2.4.2 activate",
+        "neigh_208_on": "neighbor 208.8.8.1 activate"
+    },
+
+    "i2_config": {
+        "hostname": "ISP2",
+        "lo0": "22.22.22.22",
+        "neigh_32": "neighbor 32.3.2.3 remote-as 34",
+        "neigh_25": "neighbor 25.2.5.5 remote-as 25",
+        "neigh_24": "neighbor 24.2.4.4 remote-as 34",
+        "neigh_207": "neighbor 207.7.7.1 remote-as 1",
+        "neigh_32_on": "neighbor 32.3.2.3 activate",
+        "neigh_25_on": "neighbor 25.2.5.5 activate",
+        "neigh_24_on": "neighbor 24.2.4.4 activate",
+        "neigh_207_on": "neighbor 207.7.7.1 activate"
+    },
+
+    "i3_config": {
+        "hostname": "ISP3",
+        "lo0": "33.33.33.33",
+        "neigh_35": "neighbor 35.3.5.5 remote-as 25",
+        "neigh_32": "neighbor 32.3.2.2 remote-as 25",
+        "neigh_209": "neighbor 209.9.9.1 remote-as 1",
+        "neigh_35_on": "neighbor 35.3.5.5 activate",
+        "neigh_32_on": "neighbor 32.3.2.2 activate",
+        "neigh_209_on": "neighbor 209.9.9.1 activate"
+    },
+
+    "i4_config": {
+        "hostname": "ISP4",
+        "lo0": "55.55.55.55",
+        "google": "8.8.8.8",
+        "neigh_35": "neighbor 35.3.5.3 remote-as 34",
+        "neigh_25": "neighbor 25.2.5.2 remote-as 25",
+        "neigh_45": "neighbor 45.4.5.4 remote-as 34",
+        "neigh_35_on": "neighbor 35.3.5.3 activate",
+        "neigh_25_on": "neighbor 25.2.5.2 activate",
+        "neigh_45_on": "neighbor 45.4.5.4 activate"
+    }
+}
