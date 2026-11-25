@@ -8,74 +8,8 @@
 
 <br>
 
-## 🎯 Review
-### 1. Which two encoding methods are supported by REST APIs? (Choose Two)
-	A. SGML
-	B. YAML
-	C. XML
-	D. JSON
-	E. EBCDIC
-
-<br>
-
-### 2. Which output displays a JSON data representation?
-A.
-~~~
-	{
-	  "response":{
-	  "taskld":{};
-	  "url": "string"
-	  };
-	  "version": "string"
-	}
-~~~
-
-<br>
-
-B.
-~~~
-	{
-	  "response"-{
-	  "taskld"-{},
-	  "url"- "string"
-	  },
-	  "version"- "string"
-	}
-~~~
-
-<br>
-
-C.
-~~~
-	{
-	  "response":{
-	  "taskld":{},
-	  "url": "string"
-	  },
-	  "version": "string"
-	}
-~~~
-
-<br>
-
-D.
-~~~
-	{
-	  "response",{
-	  "taskld",{};
-	  "url", "string"
-	  };
-	  "version", "string"
-
-	}
-~~~
-
-&nbsp;
----
-&nbsp;
-
-### 3. OSPF Configuration
-Refer to the Topology.   
+### 1. OSPF Configuration
+Refer to the Topology (OSPF Configuration.png)   
 All routers are configured with IP addressing EXCEPT for the link between R1 & R3.  
 Finish the configuration by completing the ff:  
 
@@ -299,31 +233,15 @@ conf t
 
 
 ## OSI Layer
-PDU (Protocol Data Unit)
+7. Application
+6. Presentation
+5. Session
+4. Transport
+3. Network
+2. Data-Link
+1. Physical
 
 <br>
-
-### 7. Application Layer 
-"Underlying service that supports applications"
-- SMTP
-- Resource sharing
-- Service advertisement
-- Gramaphone
-
-<br>
-
-### 6. Presentation Layer - File extension
-- __Data__
-- Anything "-tion" (encryption, )
-- .wav .jpg .au .exe .psd
-
-<br>
-
-### 5. Session Layer - Session established
-- __Data Stream__
-- Session Established, Session Terminated
-- Commands: netstat -s -p tcp, telnet, ssh
-
 <br>
 
 __SPAN__
@@ -334,77 +252,6 @@ conf t
  monitor session 1 destination interface fa0/1,fa0/9
  end
 ~~~
-
-<br>
-
-Real-time Transport Protocol
-
-<br>
-
-~~~
-!@cmd
-nmap -sP 10.k.1.0/24
-nmap -v 10.k.1.10
-~~~
-
-<br>
-
-What ports are revealed?  
-139? 445?  
-
-<br>
-
-That's a vulnerable system. No Firewall. Attack it.
-~~~
-!@cmd
-net use \\10.k.1.10\ipc$     Privilege Escalation
-net use x: /delete
-net use x: \\10.k.1.10\c$
-~~~
-
-<br>
-
-### 4. Transport Layer - TCP/UDP
-- __Segments__
-- Three way handshake
-- TCP Sliding Window
-- Commands: `nmap -v 10.#$34T#.1.10`
-
-<br>
-
-- __Well-known ports__ 0 - 1023
-- __Registered ports__ 1024 - 49151
-- __Ephemeral/Dynamic__ ports 49152 - 65535
-
-<br>
-
-### 3. Network Layer - IP addresses
-- __Packets__
-- Routing protocols
-- Forwarding packets
-- Commands: `show ip int br` `sh ip route`
-
-<br>
-
-### 2. Data-link Layer - MAC Addresses
-- __Frames__
-- FCS
-- Preamble
-
-<br>
-
-- Commands: `show vlan brief`
-
-<br>
-
-### 1. Physical Layer - "Things you touch"
-- __Bits__
-- Speed = b 
-- Data = B
-
-<br>
-
-- Commands: `show cdp neigh`
 
 
 <br>
@@ -1297,22 +1144,6 @@ conf t
 
 
 ## Packet Filtering (L3 ACL)
-~~~
-!@NetOps-PH
-youporn.com
-pornhub.com
-redtube.com
-faketaxi.com
-bangbros.com
-bangbus.com
-pinayflix.com
-xhamster.com
-iyottube.com
-~~~
-
-<br>
-
-Protect your most important asset: The brain
 
 <br>
 
